@@ -1,4 +1,6 @@
 .. Kenneth Lee 版权所有 2017-2019
+:Authors: Kenneth Lee
+:Version: 1.0
 
 1. 道可道
 *********
