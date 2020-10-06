@@ -57,5 +57,16 @@
    :caption: Contents:
 
    思维上洞2
+   git-submodule的理解
+   思维的串行化要求
+   什么是函数式编程
+   管理上的判断和技术上的判断
+   基于逻辑链建立约束
+   高级需求分析
+   False_Sharing
+   芯片验证软件的4+1方法
+   软件之硬
+   诚其意
+
 
 .. vim: tw=80 fo+=mM
