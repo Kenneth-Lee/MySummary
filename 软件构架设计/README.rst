@@ -56,7 +56,7 @@
    :maxdepth: 2
    :caption: Contents:
 
-   思维上洞2
+   思维上的洞2
    git-submodule的理解
    思维的串行化要求
    什么是函数式编程
