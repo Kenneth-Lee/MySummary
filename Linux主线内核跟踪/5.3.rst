@@ -1,0 +1,53 @@
+5.3
+****
+2019-9-15
+
+pidfd
+=====
+这是一个升级，过去已经做了，不是一个太好的方案。pidfd_open(pid, flags)为某个pid
+创建一个fd，然后你可以用pidfd_send_signal()发消息给特定的进程，而不用使用pid，pid
+可能被循环再用，导致发信号给错误的进程。
+
+Clamping调度算法（应该是个addon)
+================================
+让进程有机会说明自己的能耗需求，调度大核还是小核来出来任务。
+
+用户态等待
+==========
+
+x86加了三条用户态忙等支持指令
+
+* umonitor 确定一个用于忙等的地址范围
+* umwait 地址范围等待
+* tpause 无条件等待
+
+内核增加的接口是在sysfs中加一个配置最大等待时间的属性
+
+IoT ACRN supervisor
+===================
+一个实时虚拟环境，针对IoT的应用，图上看来是type1的，分安全和非安全区，跑安全和
+非安全的OS，可以模拟各种guest，比如windowns和android，当然也可以跑实时Linux。
+
+现在只支持x86，
+
+海思和华为
+==========
+* 1620加了PMU事件
+* Hi13x1网卡的mac
+* hns/hns3升级
+
+其他
+====
+* 支持兆芯（主要是x86目录下加一个CPU文件，增加初始化和描述这个芯片的capa）
+  maintainer是TonyWWang@zhaoxin.com
+
+* 开放0.0.0.0/8 IPv4地址网段
+
+* io_uring升级
+
+* RV增加大页支持，和Image中用于bootloader的header。来自sifive的工作
+
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges

@@ -1,0 +1,23 @@
+5.4
+****
+
+内核lockdown mode
+=================
+作为一个安全模块，一旦使能部分功能不让使用。暂时看来只是设了个标记，怎么用再说。
+
+virtiofs
+=========
+类似9pfs，基于fuse，需要运行一个virtiofsd，提供文件访问接口，qemu通过fuse的内核接口来访问这个daemon提供的服务
+
+海思
+=====
+* 陈祥传了sas的debugfs特性
+* 王州传了qm和zip
+
+其他
+====
+* erofs一个扩展的只读fs
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges

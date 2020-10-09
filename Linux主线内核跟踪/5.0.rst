@@ -1,0 +1,67 @@
+5.0
+****
+
+Energy-aware Scheduling for ARM big.Little
+===========================================
+
+终于上主线了。但删除了很多原来的功能，才能保证它能上线。
+Dietmar Eggemann上传的。
+使用了能力-能耗模型来调度：::
+
+        struct capacity_state {
+          unisgned long cap; //计算能力
+          unisgned long power; //需要能耗
+        };
+
+底层驱动报告相关信息到Energy Model Framework（em），Thermal(IPA)，Scheduler（EAS）使用相关信息。
+perf_domain管理一组cpu。
+增加两个SD：sd_asym_packing/cpucapacity
+
+
+成本主要在唤醒上，如果核多，要全部查一次才能决定唤醒进程调度给谁。因为它要每个
+CPU都算一次compute_energy()来计算如果放一个进程进来，这个CPU的功耗增加多少。这
+个调度算法在SD_FAIR上完成。所以数据中心这种很多核的设备不使能。测试有用例表达可
+以降低2%的throughput的时候降低33%功耗。
+
+这个补丁被接受，但maintainer没有发表什么已经和参与。所以它是个进步，但不一定就
+表示就能成为主流。
+
+这个功能不需要配置，自动从dts中获得参数决定是否使能。
+
+Adiantum FS
+============
+非ecryptfs: 基于fuse，在用户态完成，~/.Private放加密数据，~/Private放解密数据。
+靠PAM在登录的时候帮你搞定（modprobe ecryptfs,
+ecryptfs-utils/ecryptfs-setup/mount/umount-private)是fscrypt: 用法类似，fscrypt
+setup/encrypt/decrypt <dir>
+
+注册给crypto，用于低端Android设备，比如用A7的，速度可以快很多。
+
+cgroup v2增加cpuset控制
+
+介绍一下cgroup v2
+------------------
+可以和v1共存，独立控制： ::
+
+        mount -t cgroup2 none /my_cgroup_v2
+
+/proc/<pid>/cgroup有两个版本的信息，表示进程在哪个控制器的控制下（可多个），格式：
+controller_id:name:/path
+其中v2的格式没有中间的name，这样：::
+
+        conroller_id::/path
+
+其他
+====
+Android binder现在变成一个文件系统了。这样通过多文件系统，就可以支持多个Android
+实例。ARM8.3 PAUTH Kristina Martsenko（但ARM的kernel组好像都参与开发了）每个进
+程有一个随机的Key，给这个进程的指针带这个key，通过ptrace可以改，看来这是一个基
+本修改
+
+这个版本提到Hisi的只有陈祥的sas的一个小补丁。
+
+
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges

@@ -1,0 +1,64 @@
+5.2
+****
+发布时间：2019-7-7
+
+Sound Open Firmware
+===================
+https://www.sofproject.org/
+这是开源声卡DSP平台，Intel和Google发起的，但这种源代码需要私有编译器的支持，这
+能否成功，真不好说。现在提供这种编译器的只有Xtensa。
+
+内核一侧是抽象了一个标准化的而接口
+
+Press Stall Information升级
+===========================
+这是4.20引入的功能，主要是把一段时间内，进程无法获得资源的情况记下来。::
+
+        /proc/pressure/cpu|io|memory
+
+输出可能是这样的：::
+
+    some avg10=70.24 avg60=68.52 avg300=69.91 total=3559632828
+    full avg10=57.59 avg60=58.06 avg300=60.38 total=3300487258
+
+这个含义是：
+some是有一个进程，full全系统的情况。avg10是10秒平均，值是百分比。
+
+新的修改主要是允许配置采样窗口的大小。
+
+
+新的mount内核接口
+=================
+新的系统调用是这样的：::
+
+        fsopen(2)
+        fsconfig(2)
+        fsmount(2)
+        move_mount(2)
+        fspick(2)
+        open_tree(2)
+
+用法是这样的：::
+
+        fd = fsopen("nfs");
+        fsconfig(fd, FSCONFIG_SET_STRING, "option", "val", 0);
+        fsconfig(fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+        mfd = fsmount(fd, MS_NODEV);
+        move_mount(mfd, "", AT_FDCWD, "/mnt", MOVE_MOUNT_F_EMPTY_PATH);
+
+
+海思和华为
+==========
+* Hi3660的USB Phy
+
+其他
+====
+* BFQ(Budget Fair Queuing) IO调度器性能提升80%，对SSD磁盘性能更有很大好处。
+* Mali驱动，好像还是个社区驱动，不是ARM的那个，支持t4xx/6xx/7xx
+* ext4支持大小写不敏感的文件名，EXT4_CASEFOLD_FL
+* cgroupv2支持freezer功能（v1已经支持的功能）
+* dm支持一种新的target叫dust，用来模拟磁盘访问异常
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges

@@ -1,0 +1,72 @@
+5.6
+****
+
+2020-3-29发布
+
+Wireguard
+==========
+一个新的VPN框架，号称可以像ssh那样用。三层加密。
+wireguard.ko，wg命令。::
+
+	# wg genkey
+	# ip link add wg0 type wireguard
+	# ip addr add 10.0.0.1/24 wg0
+	# wg set wg0 private-key <private-key-file>
+	# ip link set wg0 up
+	# wg set wg0 peer <public-key> allowed-ips 10.0.0.2/32 endpoint <ip-addr>:44556
+
+另一端也一样设，两边就用公网IP互联起来，然后在三层上支持wg0进行VPN通讯了。
+
+usb4
+====
+usb4基本上就是Thunderbolt 3的改版，兼容Thunderbolt 3，Linux原来就支持
+Thunderbolt 3，这次仅仅是在这上面修改。驱动的位置：./drivers/thunderbolt/usb4.c
+，Intel的人改的。
+
+time namespace
+===============
+每个ns一个时钟机制，包括boottime，墙钟。settime，timer_create等的结果控制在ns之
+内。
+
+MPTCP
+======
+多路TCP，比如可以让wifi和5g合起来做链路，上面实现一个tcp链接。
+
+zonefs
+======
+不同特性的存储混合组合成的fs。主要指conversional的和sequential两种，mount以后就
+有con和seq两个子目录，里面放的内容会走到不同的介质上。
+
+暂时想不到这鬼东西有啥用。
+
+海思
+====
+
+* 王州上传了dma引擎
+
+* 徐仔波上传了sec2的AEAD驱动
+
+* bmc增加了debugfs的vram调试信息，suse的人改的
+
+* John合入了spi flash controller的驱动
+
+* 郭寒军给1620s合了一个I2c驱动
+
+其他
+====
+
+* BTRFS支持提供SSD wearing方面的优化
+
+* vboxsf，virtualbox的共享目录文件系统，现在主线化了
+
+* pidfd加了一个新调用pidfd_getfd()，这个框架的主要目的是避免pid重新分配导致获取
+  另一个pid对不上的问题
+
+* dmabuf支持heap，意图取代Android ION
+
+* 在ARM64上对osq_lock进行优化（用wfe），这个spinlock的实现类似mcs_lock，用于
+  mutex和rwsem
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges

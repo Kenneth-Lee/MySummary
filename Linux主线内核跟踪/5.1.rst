@@ -1,0 +1,92 @@
+5.1
+****
+
+io_uring
+=========
+
+AIO的升级，用户态的库在这里：http://git.kernel.dk/cgit/liburing
+
+原来是aio_read, aio_write，这两个函数进去一个控制结构，可以设定信号，然后等信号来再做出响应。
+这个接口问题很多：
+
+1. 只支持O_DIRECT
+2. metadata不足的时候，还是会等待
+3. API需要不小的拷贝
+
+
+新的接口是个ringbuffer，靠mmap做共享内存，然后做通讯。
+
+
+fanotify增强
+============
+这个特性2.6.36加入，比inotify scales更好，这个版本支持super block root watch.
+
+pidfd_sned_signal
+=================
+用pidfd_send_signal代替原来直接基于pid发signal的形式，这样就不会因为pid重用杀错
+人。
+
+把持久内存真当内存用
+====================
+Intel的人做的，好像是把qemu的内存整个放在这个内存上，然后用来离线迁移？驱动更新
+在drivers/dax/pmem.c中，DAX：direct access to differentialed memory，这个东西通
+过mmap到/dev/daxX.Y来实现的。
+
+TEO
+====
+在原来的两个Idle Governor：Menu和Ladder外，增加了一个TEO，Timer Events Oriented
+Governor。Ladder（一点点休眠下去，缺点是要深睡很慢）Menu（根据任务数合作激活历
+史来猜）TEO（基于始终中断的激活历史来猜，因为如果是tickless内核，不考虑IO，我们
+知道什么时候才需要醒）
+
+2038年问题的最后准备
+====================
+把所有time_t，无论在32位还是64位机器上，都改成了64bit，相关API，比如futex在32位
+上变成futex_time32，64位上叫futex_time64。
+
+这样的接口包括： adjtimex(), clock_adjtime(), clock_getres(), clock_gettime(),
+clock_nanosleep(), clock_settime(), futex(), io_getevents(), io_pgetevents(),
+mq_timedsend(), mq_timedreceive(), nanosleep(), ppoll(), pselect6(),
+recvmmsg(), rt_sigtimedwait(), sched_rr_get_interval(), semtimedop(),
+timer_gettime(), timer_settime(), timerfd_gettime(), timerfd_settime(), and
+utimensat()
+
+这些是大方向修改，但其实我们不知道还有多少小地方还会有问题。
+
+
+直接使用dm-crypt的分区启动
+==========================
+它包括两个改进：
+
+1. 提前dm-crypt的初始化时间
+
+2. 通过模块参数直接开始启动分区（取代dm-setup)：
+        ::
+        dm-mod.create=<name>,<uuid>,<minor>,<flags>,<table>[,<table>+][;<name>,<uuid>,<minor>,<flags>,<table>[,<table>+]+]
+
+LivePatch支持replace和积累（Cumulative）补丁
+============================================
+
+LivePatch依赖三个特性：
+1. kprobe
+2. ftrace（function trace要开了）
+3. livepatch
+4. 支持模块（查看：/proc/sys/kernel/modules_disabled）
+
+控制点：/sys/kernel/livepatch
+
+打了Patch，这里会有tained标记：/proc/sys/kernel/tainted
+
+其他
+====
+1. /proc/stat本来是在读的时候累加的，为了做优化，现在变成直接统计的时候就加在一个变量上，加快速度。
+
+2. Socinext的SC2000加进来了
+
+3. 海思相关的就两个，一个sas加debugfs，一个是k3升级dma引擎
+
+
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
