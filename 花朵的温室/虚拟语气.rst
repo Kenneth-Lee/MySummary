@@ -1,0 +1,228 @@
+.. Kenneth Lee 版权所有 2018-2020
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+虚拟语气
+********
+
+虚拟语气是中学英语中的必考题目，也是我们理解英语和中文的不同的重要语法点，国内
+不少老师（至少我中学时是这样，现在看到网上一些总结，基本上还是这样），总是用一
+个“背模式[1]”的方式教这个知识点，弄得学生糊里糊涂的，我这里来深入介绍一下，以便
+学生对这个有比较直观的感受。
+
+首先我们重新理解一下时态这个概念。时态这种东西，很能反映中文和英文思考方法不同
+。我们是通过增加词语来表明描述的时间概念的，而英文是通过替换词语来表明描述的时
+间概念的。
+
+我们说“我吃饭”，这是没有说明时间的，这说的是“我吃饭”这个事情，这个事情发生在过
+去，现在，还是未来？这里没有说。如果我们要表示过去，我们需要增加词语特别说明一
+下，我们说：
+
+        | 我 *刚才* 吃饭了
+
+或者我们要表示现在或者未来，我们还会说：
+
+        | 我 *正在* 吃饭
+        |
+        | 我 *会去* 吃饭
+
+而英文不需要增加任何词语，它表示这几个意思，是通过替换动词的形式做到的：
+
+        | I ate
+        | I'm eating
+        | I will eat
+
+还有，你们都知道的，现在完成时：
+
+        | 我吃过了
+        | I have eaten
+
+这是强调“xx过了”。
+
+还有，过去完成时，强调过去的过去：
+
+        | 我刚才告诉你我吃过了
+        | I told you I had eaten
+
+这相对中文来说，这是个很奇怪的思考模型，但这确实是他们考量时间的方式。我们记忆
+时态，一定不能老去想这是什么时间，那是什么时间，而是我记住我们表达的是个什么意
+思，我们想强调什么，这样才是正常人说话的方式。
+
+我们看个例子。《Harry Potter and the Deathly Hallows》24章The Wandmaker中有如下
+对话：
+
+        | Ollivander performed the same examination.
+        | "Hawthorn and unicorn hair. Ten inches precisely. Reasonably springy.
+        | This was the wand of Draco Malfoy."
+        | "Was?" repeated Harry. "Isn't it still his?"
+        | "Perhaps not. If you took it -"
+        | "- I did -"
+
+你看，哈利很敏感地捕获了那个“was”，当我们用过去时的时候，很强调的是这个事情已经
+过去了。所以我们说：
+
+        | I'm a teacher.
+
+我们强调的是“我现在是个老师”，过去一段时间肯定也是，但不表示我过去一直是。
+
+但如果我们说：
+
+        | I was a teacher.
+
+这就是一种强调了，它强调的是，“我现在已经不是老师了”。
+
+好了，只有你理解了英国人这种思考问题的方式，你才会理解为什么会有“虚拟语气”。我
+们中国人，如果要强调某件事不是真的，我们是要额外加话才能说清楚的。比如：“如果你
+得了狂犬病——别激动，我是说如果，没说你就得了——你就要立即去打针”。
+
+但按英国人的思路，他们想着要换一个动词就搞定这个问题，这种通过换动词时态的方式
+来表示“这不是真的”的方式，就叫“虚拟语气”(Subjunctive Mood)。
+
+虚拟语气也通过替换动词的方法来强调这个是“虚拟”的，所以，它必须选择一种正常时态
+不会用的方式来说这个事情，才能起到这种“强调”的效果。所以，虚拟语气的情况特别多
+，你要一种种来记（其实最终要记的情况是不多的，我只是建议你不要去记规律，而去记
+几类例句就好了）
+
+我们先看一个例子，如果中文上我们这样说一个事情：
+
+        | 如果他昨天来了，它就知道王老师是什么意思了。
+
+由于没有插入语，所以中文的这个表述，实际可能有两个意思：
+
+        | 我不知道他昨天来了没有，但如果他来了，他就知道王老师什么意思了，
+        | 但如果他没有，他应该就不知道。
+
+或者
+
+        | 我知道他昨天没有来，就是因为他没有来，所以他不知道王老师是什么意思
+
+
+英语可以用虚拟语气区分这两个意思：
+
+        | If he was here yesterday, he would understand what Miss Wang meant
+
+这个是陈述语气，表示我不知道它昨天在不在。但如果这样说：
+
+        | If he were here, he would understand what Miss Wang meant
+
+这就强调了——我知道他这家伙昨天没有来，所以他才不知道Miss Wang什么意思！
+
+虚拟语气用的动词有多个时态：Present Subjunctive, Past Subjunctive, Future
+Subjunctive。很多人被这个名字弄糊涂了，这其实只是表示用什么动词，和时间是一点关
+系没有的。仅仅是用途不同。
+
+我们一个个看。
+
+Present Subjunctive表示所描述的事情是一种假设，估计，希望和要求等，不是事实。通
+常用于insist, suggest等的宾句。或者作为it might be xxx that的宾句。它通过把动词
+换成原型来表达。
+
+我们看一个例子：
+
+        | I insist that he is here.
+        | I insist that he was here.
+        | I insist that he has been here.
+
+这是陈述语气，表示我坚持：他正在这里，他曾经在这里，他来过这里。如果写成虚拟语
+气，就变成这样了：
+
+I insist that he be here.
+
+你看，这和时态无关了，这强调的是：他现在不在这里，但我坚持：他必须在这里。这个
+时态是从insist这里体现出来的。如果这里说的是：
+
+        | I insisted that he be here.
+
+这个意思就变成了：他当时不在这里，但我坚持过了：他必须在这里。
+
+其实美式英语有更接近中文的表达形式：
+
+        | I insist that he should be here.
+        | I insisted that he should have been here. 
+        | （注意这个should have，这是一种很常用的，表示“本应”的模型，
+        | 这里坚持的是“他本应在这里”）
+
+这也是虚拟语气。
+
+下面是一组来自维基百科的例子：
+
+* I insist (that) he leave now.
+
+* We asked that it be done yesterday.
+
+* It might be desirable that you not publish the story.
+ 
+* I support the recommendation that they not be punished.
+
+* I braked in order that the car stay on the road.
+
+* That he appear in court is a necessary condition for his being granted bail.
+
+可以明显看到，这种虚拟语气可以用于任何时间的表述，但都是用的原型。
+
+Present Subjunctive有一种特殊的使用形式，就是作为Lest从句，我建议直接记住它：
+
+        | I am running faster lest she catch me (我得跑快点，免得她追上我)
+        | I was worried lest she catch me (我担心她会追上我)
+
+背两个句子以后就会用了，不要记“规律”。
+
+现在看Past Subjunctive。它表示所描述的事情是一种反事实，通常用于if条件句，或者
+suppose, as if, as though, unless, less的从句。它的特征很简单，就是联系动词be，
+统一使用were。比如，都知道的：
+
+        | If I were you, I would hung myself.
+
+下面是另一组维基百科的例子：
+                                                                                                                                   * Suppose that I were there now.
+
+* She looks as though she were going to kill him.
+
+* I were your wife, I would put poison in your coffee.
+
+* I wish [that] he were here now.
+
+* If only the door were unlocked.
+
+* I would rather [that] she were released.
+
+* Would that it were true!Oh that it were so.
+
+这种形式其实很不科学，比如下面这句话：
+
+        | if you were here, you would understand what boss meant
+
+这你就分不出是不是虚拟语气了，但这是语言的特点——它不保证总是有规律的，它是通过
+类比一点点扩大的。比如这句话：
+
+        | He is doing you know what.
+
+这不符合语法，但都知道这什么意思。
+
+具体就这个问题，英语可以用辅动词前置消除这种误会，如果你要表示虚拟语气，可以省
+略if，前置were，变成：
+
+        | Were you here, you would understand what boss meant.
+
+一般来说，记住这两种情况，大部分情形都记住了。
+
+Future Subjunctive表示的说话者对假设的怀疑，也用于if从句。对于这种语气，我查了
+一下一些英语论坛的讨论，似乎在生活中大家都不认为存在这种语气，只是用作过去时虚
+拟语气的一种变体，因为过去时虚拟语气都用过去时态作为特征，很容易和真正表达得时
+态搞在一起，如果用were to来表达，就会很有强调效果，比如：
+                                                                                                                                            | If I went to the concert, I would enjoin it.
+
+这到底说自己会去音乐会还是不去？不好理解，但如果强化这个虚拟语气：
+
+        | If I were to go to the concert, I would enjoy it.
+
+这就很好理解了，就是说我很想去，但实在去不了。
+
+正如前面所说的，虚拟语气这种“说法”在历史发展，地区分散的过程中，在不同地方是不
+一样的，这些经验，这里就不总结了，我们随着阅读经验的增加，一点点成长就是了。
+
+.. [1] 背“模式”的方法的缺点是理解错语言的发展方法。语言发展的方法是我为了表述一
+       个意思，先这样用了，后面要表达另一个类似的意思，我就会借用这个表达（但意
+       思有一点偏离），整个发展的模式是遇到一种情况，作出一点变化的。所以，完整
+       记忆完整“规律”，而不是用“某种情况是借用前一种什么情况”，很容易出现偏差。
