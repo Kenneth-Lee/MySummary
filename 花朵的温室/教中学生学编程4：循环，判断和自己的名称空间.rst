@@ -1,0 +1,151 @@
+.. Kenneth Lee 版权所有 2018-2020
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+教中学生学编程4：循环，判断和自己的名称空间
+*******************************************
+
+上一个教程我们讲了一个比较复杂的定义，叫plotall，可以把几个不同指数大小的函数拿
+来做对比。我们把这个定义优化一下。
+
+首先是名字：plotall这个名字太土了，这次叫plotall，再plot另一个东西，叫什么呢？
+叫plotall2还是plotallnew呢？
+
+所以，我们还是用一个表示它本来意思的词语来命名这个定义，比如我们可以叫
+plot_power_functions，这样下次我们至少自己看到了，也知道自己写了个什么“定义”啊
+。这是我们程序员一个基本行规，这就叫“基于语义编程”，虽然你把这个东西叫阿猫阿狗
+也是可以的，但名字的意思和你理解的意思不一致，会给你带来无尽的烦恼。“画3个函数”
+变成“阿猫三个阿狗”，你还怎么去理解这个程序？
+
+有了一个好名字，我们有了一个好的开始，现在我们看看能不能把话说得短一点，这是我
+们程序员的第二个行规：一句话能说清楚的东西，不用两句话。我们看看前面这个程序，
+它是这样写的：::
+
+        def plot_power_functions(x):
+          y=x**2
+          z=x**3
+          o=x**4
+          p=x**5
+          plot(x,y)
+          plot(x,z)
+          plot(x,o)
+          plot(x,y)
+          show()
+
+这些话其实基本上是一样的，我们能不能统一说？其实是可以的，这时我们用for这个句式
+：::
+
+        def plot_power_function(x):
+          for t in [2,3,4,5]:
+            plot(x,x**t)
+
+for的意思是“对于在[...]中的每个值，令这个值为t，我们执行：……”，你看，自然语言中
+说得忒复杂的一句话，计算机语言就说得特别简练，这就叫“行话”，行话都是特别简练的
+，因为用多了，每次都这么说，废话就可以少很多。
+
+所以这个定义的意思就很简单了：对于t等于2, 3, 4, 5，每个我们都计算一个y出来，然
+后对x,y打点。这种句式叫“循环”。
+
+既然可以循环，我们可以扩大这个定义的能力，我们要不这样：::
+
+        def plot_power_function(x, begin=2, end=5):
+          for t in arange(begin, end+1, 1):
+            plot(x,x**t)
+
+这样就表示我们这个定义中的第二第三个参数是可选的，你不给的话，它就用默认值，所
+以这个定义就可以这样用：::
+
+        plot_power_function(arange(-3, 3, 0.2))
+        plot_power_function(arange(-3, 3, 0.2), 1)
+        plot_power_function(arange(-3, 3, 0.2), 1, 10)
+        plot_power_function(arange(-3, 3, 0.2), end=2)
+
+这些都是可以的。
+
+
+我们注意到，如果t是0，这个图像会退化为一条直线，假设我们不想看到这条直线，我们
+就要判断一下了，这时这个函数可以这样写：::
+
+        def plot_power_function(x, begin=2, end=5):
+          for t in arange(begin, end+1, 1):
+            if t!=0:
+              plot(x,x**t)
+
+这表示t不等于0的时候，我们才打点，等于0的时候，就不要打了。我们还可以这样：::
+
+        def plot_power_function(x, begin=2, end=5):
+          for t in arange(begin, end+1, 1):
+            if t!=0:
+              plot(x,x**t)
+            else:
+               print("大哥, 0我就不打了, 您不介意吧")
+
+这样，到了0那里，就打印一段文字就完了。
+
+这样，我们就学习了编程中两个最基本的语法结构了：循环和判断。
+
+关于循环，其实我们还有一个表达方法，叫while，前面这个程序（我们先忽略掉判断），
+我们用while改写一下：::
+
+        def plot_power_function(x, begin=2, end=5):
+          t=begin
+          while t<=end:
+            plot(x,x**t)
+            t=t+1
+
+这实现一样的效果，其中while表示：“当t还小于或者等于end”，请一直做后面的动作”。
+
+while和if都需要使用“比较”，我们需要记住的一些比较符号。这包括：::
+
+        >, <, ==, !=, >=, <=
+
+这是什么意思，猜都可以猜到了。
+
+比较的结果是True和False，这表示条件成立或者不成立，你可以把多个比较的结果组合，
+比如这样：::
+
+        def plot_power_function(x, begin=2, end=5):
+          t=begin
+          i=0
+          while (t<=end and i<10) or begin<0:
+            plot(x,x**t)
+            t=t+1
+            i=i+1
+
+这里那个while的条件就变得很复杂了，它表示：“当如下条件其中一个成立就执行后面语
+句：t小于等于end而且i小于0， 或者begin小于0”
+
+当我们开始把我们的定义写得如此复杂的时候，我们慢慢就有了我们自己的“名称空间”了
+。我们可以把我们的“定义”写在一个文本文件中，后缀叫.py，这样我们就可以直接import
+我们自己写的这个名称空间。比如前面这个函数，我们可以这样写在一个文本文件中（暂
+时我建议不要写中文，那个需要一些其他处理）：::
+
+        from numpy import *
+        from matplotlib.pyplot import *
+
+        def plot_power_function(x, begin=2, end=5):
+          for t in arange(begin, end+1, 1):
+            if t!=0:
+              plot(x,x**t)
+          show()
+
+然后我们保存在一个myplot.py文件中，放在“文档”目录下面，如果你不确定具体是哪个目
+录，可以用下面命令问Anaconda ::
+
+        import os
+        os.path.abspath(os.path.curdir)
+
+这样之后，你就可以import myplot来使用它了：::
+
+        from numpy import *
+        import myplot
+        myplot.plot_power_function(arange(-10, 10, 0.1))
+
+请注意了，这里你提到了arange这个名字，这个名字是numpy名称空间里面定义的，虽然你
+的myplot中import了这个东西，但那只是那个名称空间里面的事，你这里要用这个名字，
+就要重新import numpy。但你这里不再提起matplotlib，所以你就不再需要import
+matplotlib了。
+
+到此为止，我们提供的信息已经足够一般中学生使用Anaconda了，我们的介绍在这里告一
+段落，等我们遇到新的问题的时候，我们接着来学新的知识。

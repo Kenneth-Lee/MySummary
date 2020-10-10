@@ -1,0 +1,403 @@
+.. Kenneth Lee 版权所有 2018-2020
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+快速学习
+*********
+
+这个专栏已经终结了，但物理上它还是存在，我用它作为分类，放相关的一些总结。
+
+最近家里的两位小姑娘开始学立体几何，觉得有很多困扰，和她们讨论了一下怎么学习的
+问题，我突然意识到，其实我也算是“学习”的专家了，不少同事都说我学新领域特别快，
+所以，我分享一下我“学习”的技巧，看看这个经验对她们是否有帮助。
+
+我自己是做软件的，但常常和做芯片的同事讨论如何更好支持他们的功能，所以对芯片表
+现出来的行为有一些了解，但我对芯片本身的设计限制，或者在设计中会遇到什么问题，
+一直没有什么了解。最近Chisel大火，我就花了一点业余的时间简单学习了一下。
+
+这正好可以作为一个例子，来说明面对一个新的领域，我的学习策略。
+
+首先，在我没有开始学之前，我通常就会开始做笔记。这个最初的笔记我忘了留版本了，
+我现在复原一下，它大概是这样的：::
+
+    Chisel是一种和Verilog竞争的新的芯片结构描述语言。
+
+    Chisel相对Verilog据称可以用更少的语义，描述更多的逻辑概念。
+
+    Chisel据称可以解决Verilog没有控制参数的问题，换句话说，对于两个分别是32位和
+    64位的芯片模块，Verilog只能写两个模块分别描述，Chisel可以在一个源文件中统一
+    描述，这为提高源文件的复用度带来了很大的优势。
+
+    疑问：Chisel如何描述一个电路？Chisel如何描述时钟的节奏？
+
+这里面的信息，有些是我从和其他人的交流和一些广告式的新闻中听回来的，有些是我推
+理出来的，我对它们并没有细节上的认知，但我已经取了我觉得最可信的部分来描述了，
+很多“断语”，背后是有投资支撑我这样判断的。
+
+然后我开始看细节，我先看两个东西，一个是：generator-bootcamp工程，另一个是
+chisel3项目。然后我首先换掉了上面的第一个判断，我写成了这样：::
+
+        Chisel，Constructing Hardware In a Scala Embedded Language。换句话说，
+        它是用Scala作为基本语言，描述一个电路的连线应该是怎么样的。相当于一种
+        DSL，我猜他会像其他寄生DSL一样，会用Scala语法的一个子集，在这个之上构建
+        一个扩展语义，从而实现对电路的描述。
+
+然后我就专心开始分析Scala的语法是什么样的：
+
+        .. figure:: _static/学习总结1.jpg
+
+这里的例子很多直接来自介绍材料，但大部分我都根据我的理解进行了一个调整。这有两
+个目的：一个是通过改变描述我可以知道对方的重点在哪里；另一个是引入一些变化，就
+会导致我后面的逻辑不通，这样我更容易发现我“误会”了什么概念了。
+
+这个笔记我通过自己写一些例子程序来运行来校验（这有点像学立几的时候做一些习题）
+，校验一段时间后，大概就知道scala的主要行为特征了。
+
+然后我开始总结什么是Chisel：
+
+        .. figure:: _static/学习总结2.jpg
+
+这样总结了一把以后，我会尝试去运行一些具体的Chisel模块，顺便把Chisel3跑起来，这
+个具体的过程让我意识到，Scala是用Java实现的另一种描述语言，而Chisel并非用作一种
+语言，而是作为一个Scala的模块引进去。然后通过调用这些模块，形成对RTL的定义。
+
+几次调整以后，我的总结就会变成这样：::
+
+        Chisel Module
+        =============
+
+        Chisel是基于Scala写的硬件DSL。有点像我们的TIK，是用这个脚本定义了一种
+        RTL的需求，然后根据这个定义，用Scala生成Verilog，FIRRTL这类描述语言，然
+        后最终生成RTL。
+
+        RTL说到底最后就是数字电路，简单把它想象为一个门电路组合就好了。定义一个
+        RTL，说到底就是在输入定义每个引脚的真值，然后定义一个电路，说明它的输出
+        的真值是怎么计算出来的，对输入做什么样的电路组合才能得到那个输出，这是
+        个可以固化的方法，这就给了硬件电路建模软件一个机会了。
+
+        Chisel通过定义一个Module来定义一个电路，类似这样：
+
+        .. code-block:: scala
+
+                // import库
+                import chisel3._
+                import chisel3.util._
+                import chisel3.iotesters.{ChiselFlatSpec, Driver, PeekPokeTester}
+
+                // 定义一个模块
+                clasi Passthrough extends Module {
+                        val io = IO(new Bundle {
+                                val in = Input(UInt(4.W))
+                                val out = Output(UInt(4.W))
+                        })
+                        io.out := io.in
+                }
+
+                // 输出下游的代码
+                println(getVerilog(new PassthroughGenerator()))
+                println(getFirrtl(new Passthrough))
+
+        这定义了一个叫Passthrough的模块，IO定义了它的输入输出，里面的in和out分
+        别是Input和Output的对象，用于表示输入输出线。要多少根线Chisel可以自动计
+        算。比如：
+
+        * 1.U 是一位
+        * 4.U 是两位
+        * 4.S 是三位
+        * 'h1a'.U 是5位（前面的1只需要一位）
+
+        x.W也可以直接表示你要多少位，比如前面的1.U是一位，但你想要四位，你可以
+        这样写：
+
+        * 1.U(4.W)
+
+        生成的verilog代码是这样的：
+
+        .. code-block:: verilog
+
+                module Passthrough(
+                        input        clock, <-- 注意了，这两个是默认有的
+                        input        reset, <--
+                        input  [3:0] io_in,
+                        output [3:0] io_out
+                );
+                assign io_out = io_in; // @[cmd2.sc 6:10]
+                endmodule
+
+        [FIRRTL]_ 的代码是这样的：
+
+        .. code-block:: firrtl
+                circuit Passthrough : 
+                        module Passthrough : 
+                                input clock : Clock
+                                input reset : UInt<1>
+                                output io : {flip in : UInt<4>, out : UInt<4>}
+
+                        io.out <= io.in @[cmd2.sc 6:10]
+
+        里面的各种运算就是电路连接（称为 [DAG]_ ）。比如：
+
+        * a:=b 是直连
+        * (a & b) | (~c & d) 这样是组合逻辑
+        * 也可以用更复杂的直接用乘法，比如我们可以用y:=3.U*x*x+2.U*x+1.U计算
+
+          .. math:: y = 3x^2 + 2x + 1
+
+
+        组合这些逻辑，就得到一个静态的电路连接，但还没有考虑时钟，相当于你在输
+        入上放固定的电平，我给你输出固定的电平。
+
+        Bundle和Vec用于生成类型，可以定义为类，在电路组织的时候，Bundle是集合，
+        Vec是向量。这样可以组合使用软件。这样判断电路可以这样写：
+
+        .. code-block:: scala
+
+                when (c1) { u1 }
+                .elsewhen (c2) { u2 }
+                .else { u3 }
+
+                switch (idx) {
+                  is (v1) { u1 }
+                  is (v2) { u2 }
+                }
+
+        函数可以看做是一个门的集合，比如你可以这样：
+
+        .. code-block:: scala
+
+                def Add (c1: UInt, c2: UInt): UInt = { c1 + c2 }       
+
+                def Add[ T <: Bits ] (c1: T, c2: T): T = { c1 + c2 }
+
+        后一种形态定义了类似模板的东西，当Add被调用的时候决定了入口参数的位宽，
+        它就可以直接用那个长度作为输入。比如Add(10.U, 11.U)。
+
+        用专用的 [HCL]_ 工具可以把代码转化为Verilog，这个过程叫elaboration。
+
+        println(getVerilog(...))就是一种elaboration。
+
+        Chisel相比Verilog这些工作的最大的好处在于，可以通过一些控制参数的变化，
+        让Verilog不一样。比如，上面的代码可以修改一下：
+
+        .. code-block:: scala
+
+                class Passthrough(width: Int) extends Module {
+                        val io = IO(new Bundle {
+                                val in = Input(UInt(width.W)) //里面放的是类型，决定了字长
+                                val out = Output(UInt(width.W))
+                        })
+                        io.out := io.in
+                }
+
+        width就变成一个控制变量了，你可以修改这个控制变量来调整输出的Verilog代码：
+
+        .. code-block:: scala
+
+                println(getVerilog(new PassthroughGenerator(10)))
+                println(getVerilog(new PassthroughGenerator(20)))
+
+        chisel提供测试Bench，比如这样：
+
+        .. code-block:: scala
+
+                val testResult = Driver(() => new Passthrough()) {
+                        c => new PeekPokeTester(c) {
+                                poke(c.io.in, 0)     // 从端口上灌数据进去
+                                step(1)              // 这会走一步时钟
+                                expect(c.io.out, 0)  // 测试输出端口
+                                poke(c.io.in, 2)
+                                expect(c.io.out, 2)
+                        }
+                }
+                assert(testResult)   // Scala Code: if testResult == false, will throw an error
+                println("SUCCESS!!") // Scala Code: if we get here, our tests passed!
+
+        这样可以模拟一跳一跳，但这个依赖外部输入来控制跳动。要在时钟的驱动下发出动作。
+
+到这里为止，组合电路的定义方法我大概理解了，大概就是你直接对输入的信号线进行运
+算，建模工具帮你生成对应的电路。比如这样：
+
+        .. figure:: _static/组合电路.jpg
+
+        in1, in2通过不同电平输入两个数字，建模工具自动根据你给出的计算要求，
+        帮你连成电路，让你输入电平是某种数字的时候，数据按要求得到另一个数
+        字(out)
+
+但我仍无法理解这个怎么和时钟共同配合，于是，我拿着例程中的时钟定义去找了一位做
+芯片的同事，问他这个时钟定义是什么意思。他其实也没有用过chisel，他的经验都是用
+Verilog，所以他给我介绍了他们在Verilog中是怎么使用时钟的，然后我就形成这样一个
+总结了：::
+
+        这样可以模拟一跳一跳，但这个依赖外部输入来控制跳动。要在时钟的驱动下发出动作，
+        就需要寄存器。
+
+        寄存器通过这样的语法定义：
+
+        .. code-block:: scala
+
+                val register = Reg(UInt(12.W))
+                register = io.in + 1.U
+                io.out = register
+
+        你在模块中放这么一个语句，就是在电路中放一个寄存器，输入输出对它的影响就是每次
+        输入进入模块，寄存器就会把它的内容加1再存入寄存器。
+        这个生成的代码是这样的：（包括完成的模块定义代码）
+
+        .. code-block:: verilog
+
+                module RegisterModule(
+                  input         clock,
+                  input         reset,
+                  input  [11:0] io_in,
+                  output [11:0] io_out
+                );
+                  reg [11:0] register; // @[cmd2.sc 7:21]
+                  reg [31:0] _RAND_0;
+                  assign io_out = register; // @[cmd2.sc 9:10]
+                `ifdef RANDOMIZE_GARBAGE_ASSIGN
+                `define RANDOMIZE
+                `endif
+                `ifdef RANDOMIZE_INVALID_ASSIGN
+                `define RANDOMIZE
+                `endif
+                `ifdef RANDOMIZE_REG_INIT
+                `define RANDOMIZE
+                `endif
+                `ifdef RANDOMIZE_MEM_INIT
+                `define RANDOMIZE
+                `endif
+                `ifndef RANDOM
+                `define RANDOM $random
+                `endif
+                `ifdef RANDOMIZE_MEM_INIT
+                  integer initvar;
+                `endif
+                initial begin
+                  `ifdef RANDOMIZE
+                    `ifdef INIT_RANDOM
+                      `INIT_RANDOM
+                    `endif
+                    `ifndef VERILATOR
+                      `ifdef RANDOMIZE_DELAY
+                        #`RANDOMIZE_DELAY begin end
+                      `else
+                        #0.002 begin end
+                      `endif
+                    `endif
+                  `ifdef RANDOMIZE_REG_INIT
+                  _RAND_0 = {1{`RANDOM}};
+                  register = _RAND_0[11:0];
+                  `endif // RANDOMIZE_REG_INIT
+                  `endif // RANDOMIZE
+                end
+                  always @(posedge clock) begin
+                    register <= io_in + 12'h1;
+                  end
+                endmodule
+
+        除了Reg，Chisel还提供了比如RegNext和RegInit这些基础封装。比如前面这个功
+        能，创建一个RegNext(io.in + 1.U)就可以了，它除了生成一个寄存器，还控制
+        每次时钟变化的时候，这个寄存器怎么变化。相应地RegInit控制了复位信号线来
+        的时候，怎么给初值。
+
+        寄存器变化需要一个时机，这个时机是时钟信号，Module的IO Bundle里面默认就
+        放了一个Reset和Clock信号，所以你在外面做poke，其实就是触发这个时钟跳动
+        ，跳动的这个时刻io.in当前的电平信号被投入做布尔运算，输出到io.out或者寄
+        存器。下一个时钟进来，它可以用寄存器里的值和输入信号组合计算，得到新的
+        io.out和新的寄存器状态。Reset信号线同理。
+
+        你可以用多时钟驱动，或者有多个复位信号。这样只需要在IO的Bundle里定义这
+        条信号线，在内部逻辑中，可以定义当这条信号线有信号线的时候，内部走的逻
+        辑是什么。比如这样：
+
+        .. code-block:: scala
+
+                class MyModule extends Module {
+                        val io = IO(new Bundle {
+                                val in = Input(UInt(10.W)
+                                val alternateReset    = Input(Bool())
+                                ...
+                        })
+                        ...
+                        withReset(io.alternateReset) {
+                                val altRst = RegInit(0.U(10.W))
+                                altRst := io.in
+                        }
+                }
+
+        当然，这样这个复位和主时钟信号就有一个如何同步的问题，这是电路逻辑本身
+        的问题，就需要设计者自己关心了。另外需要注意的是，那个测试Bench对这种情
+        形的支持是不感知的，所以有可能测试结果是不对的。
+
+这样我对整个工具的基础框架就有所了解了。
+
+有了这样一个理解，我就开始回去看我原来做的《Computer Architecture: A
+Quantitative Approach》学习笔记，然后我现在就补全我原来缺失的逻辑。比如我原来在
+逻辑上无法理解为什么Data Path和Control Path要分开讨论。现在我就在里面补上了这段
+逻辑：::
+
+        Data Path和Control Path进行分离，是一个显而易见的设计思路。好比我现在知
+        道你要把两个寄存器加起来，我的加法器（作为一个模块），从上一级拿到两个
+        寄存器的值作为输入，然后经过一个静态电路的计算过程，输出到下一级。每次
+        时钟跳动，就会产生一次完整的计算，只要信号一致性能保证（电路相移不超出
+        范围），一个cycle就可以完成整个连续的计算过程。这种情况下，如果我对加法
+        器有另一个要求（比如要求加上进位位），我就需要用另一个信号来控制加法器
+        的行为，这在设计上，就会很自然分成了Data Path，单独考虑主数据流是如何被
+        计算的，而Control Path，在计算的时候如何微调对计算的要求。
+
+        由此也可以理解流水线的目的：如果每个指令都可以一个cycle完成计算，完全没
+        有必要有流水线。但如果我某个步骤需要多个cycle（比如输入信号的线宽不够）
+        ，第二个cycle有一堆的电路停下来没有用，我就有必要让这些部件独立出来，让
+        它在这个“第二cycle”上，提前执行其他动作了。
+
+把这个打通了，我又可以为Chisel这边的学习提出更复杂的问题了，比如：存储分层设计
+的时候，CPU的时钟和总线的时钟匹配怎么描述？
+
+通过这样的一个学习过程，我就大概掌握了Chisel的设计框架了，更多的细节知识就要靠
+每个具体的设计过程，解决问题的过程，交流的过程来刷新我对基础框架的认识，从而让
+更多的细节可以组织到我的总体框架上，我就“掌握”这个知识了。
+
+最后让我总结一下我的思路：
+
+1. 从学习开始的时候，就要开始整理自己的逻辑，让你的知识有一个“框架”可以依附，否则
+   你会一直是离散的状态。
+
+2. 但不要指望你的框架一开始就是完善或者对的，只要有效把你当前的认知总结出来就好
+   ，甚至只花10分钟的时间都可以，因为没有细节去填充，你花的时间越多，你就越被自
+   己迷惑了。
+
+3. 然后开始看教材，修正你原来的逻辑框架，这种修正，既可以是对框架整个认识的修正
+   ，也可能是对框架“断语”的修正。比如，你一开始认为立体几何是“计算体积的几何”，
+   后来看到细节后，发现它是计算线性三维空间中位置关系的几何，你可以调整你原来的
+   范围定义。你一开始“断言”：理解一个立体形状，需要找到一些和视线垂直的面才能获
+   得那个面的真正长度。但后面你在教材中找到了从任意切面计算非垂直切面的计算方法
+   ，这个断言可以改变或者进行补充。
+
+4. 当教材中，或者我们生活中，实验中，你发现和你的框架不符的东西，作为一个和逻辑
+   不一致的断言记录下来，它们就像当初说的“物理大厦的最后两朵乌云”一样，会成为你
+   更进一步的关键逻辑的。这一点很重要：不要为了模型的完美，而拒绝对事实的认知。
+   是事实定义模型，而不是模型定义事实。
+
+5. 用自己的语言或者典型例子重新描述教材的概念，好记比严谨更重要，因为这可以是两
+   件事：用你好记的语言记住概念，然后用严谨的表述去解决问题，这不需要统一在一起
+   的。
+
+6. 在自己重新描述教材概念的时候，尽量和教材的概念不一样，尝试用“其实就是XXXX嘛”
+   这种方法去表述它，这样能让你最终明白教材为什么要那样定义。
+
+7. 不要指望模型可以取代细节知识和经验，模型知识帮助你整理知识，让你快速发现知识
+   细节，它不能取代你去不断学习和实习细节知识。模型只属于你自己，其他人看你的抽
+   象，也学不会你掌握的知识；反过来，你看别人的总结，可能对你有所帮助，但一定无
+   法取代你本身去学习那些细节，所以，反复实习，反复刷题，仍是你进一步学习进去的
+   必要条件，那是不可取代的，但模型可以避免你无效刷题，刷了半天一点进步没有。
+
+说到底，学习这个过程，不能是“记住”最优表述（或者老师讲课，教材说明）的过程，这
+样的记住过程，知识只是一段无意义的文字本身，而不是知识的本体，你要学习知识的本
+体，必须去蹂躏它，去反复折叠和展开它，你才会从这个蹂躏它的过程中摸到哪部分才是“
+教材说明”想说的，哪部分只是表述的时候因为文字的局限性不得不带入的。这个知识才最
+终到你脑子里了。我反对补课其实也是这个原因，上课老师给你传递一次，补课老师再给
+你传递一次，如果没有经过你自己去组织去质疑，去思考这么一个过程，这个知识进不了
+你的脑子。
+
+这其实同样是我们进行架构分析的一般方法。
