@@ -49,7 +49,7 @@ git的核心需求是一个文件树版本管理工具。这个事情的本质�
 hash-object/update-index/write-tree/commit-tree这样的命令手工建出相关的数据结构
 来）
 
-        .. figure:: git1.jpg
+        .. figure:: _static/git1.jpg
 
 好了，这就是我要说到架构控制的点了，很多工程师会认为，新文件仅仅是对旧文件的修
 改，应该只保存新文件的变化才对。但从架构控制的观点来看，这个理解是错误的，因为
@@ -93,7 +93,7 @@ commit索引了这个commit的tree，tree里面有它相关的tree和blob，所�
 完全变成了：我具有一组包含大量重复数据的文件，如何对其进行压缩保存？这有无数的
 方法可以用，而且完全和主逻辑无关。就像下面这样：
 
-        .. figure:: git2.jpg
+        .. figure:: _static/git2.jpg
 
 这样的优化，我们就可以完全聚焦在“压缩”这个主题上，和object能否被保存在不同的文
 件系统上完全无关了。
@@ -104,11 +104,11 @@ checkout <sha1_of_commit>。给定了commit，就拿到了tree，拿到了tree�
 
 然后我们加一个别名的概念，比如branch和tag的名字，本质就是一个commit:
 
-        .. figure:: git3.jpg
+        .. figure:: _static/git3.jpg
 
 而当前的branch，用HEAD来标识，HEAD是branch的索引：
 
-        .. figure:: git4.jpg
+        .. figure:: _static/git4.jpg
 
 有了这样一个基础结构，后面能想象到的功能，怎么想都只是一个工作量的问题，这就能
 称为良好的架构控制了。

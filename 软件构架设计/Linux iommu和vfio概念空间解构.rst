@@ -37,7 +37,7 @@ SMMU通过substream id来进行区分
 DFD方法就可以把对应数据模型的充要性建立出来（注意下面这个不是DFD，它是基于AID的
 一个数据充要性说明）：
 
-        .. figure:: smmu1.jpg
+        .. figure:: _static/smmu1.jpg
 
 至于很多人想引入到这个模型的“虚拟化”的概念，我认为你急了，虚拟化的概念在MMU的页
 表翻译机制中是自恰的，根本没有必要引入到这里来。
@@ -84,7 +84,7 @@ devicetree/ACPI扫描的时候）。
 
 这样，整个框架的模型就是这样的：
 
-        .. figure:: smmu2.jpg
+        .. figure:: _static/smmu2.jpg
 
 注意这个图右下角的那个对象，ARM是用arm_smmu_domain来管理驱动和设备之间的关联的
 ，它为每个domain申请了一个独立的asid（和进程的asid完全无关）。也就是说，ARM认为
@@ -135,7 +135,7 @@ driver：vfio-iommu-type1和iommu-vfio-powerpc。但很明显，你可以有更�
 
 综合起来，这个名称空间是这样的：
 
-        .. figure:: smmu3.jpg
+        .. figure:: _static/smmu3.jpg
 
 最后看看vfio-mdev。vfio-platform和vfio-pci都是针对静态设备的，前者描述在DTS或者
 ACPI DSDT表中。后者描述在PCI的硬件枚举中。但如果我的设备是动态创建出来的呢？比

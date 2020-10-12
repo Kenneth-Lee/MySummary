@@ -20,7 +20,7 @@ The Basic Idea
 IOMMU is the facility to separate the DMA space of different devices. This is
 illustrated as follow figure: 
 
-        .. figure:: iommu1.png
+        .. figure:: _static/iommu1.png
 
 IOMMU works just like MMU for the CPU. Address request issued by the device
 will be translated according to the page table assigned to its IOMMU. In many
@@ -32,7 +32,7 @@ In Linux, iommu_group is used as the representative of the group of devices
 owned by the same IOMMU. It contains a iommu_domain referring to the status of
 the IOMMU currently applied:
 
-        .. figure:: iommu2.png
+        .. figure:: _static/iommu2.png
 
 The iommu_group (along with its iommu_domain) is taken as the security border
 for the CPU to control the device. When the CPU enables some address mapping in
@@ -57,7 +57,7 @@ address space (managed as a rb_tree).
 
 This can be illustrated as follow:
 
-        .. figure:: iommu3.png
+        .. figure:: _static/iommu3.png
 
 New iommu_groups can be attached to a container, its vfio_group is created and
 added to an exist or new created vfio_domain (so as its iommu_domain, and this
@@ -146,7 +146,7 @@ course, as a VFIO-ized device. It cannot share the facility as the other device
 do. So it uses its own iommu_domain and takes care of all DMA operations by its
 own. This change the VFIO framework a little bit: 
 
-        .. figure:: iommu4.png
+        .. figure:: _static/iommu4.png
 
 external_domain list are introduced to maintain the domain which is controlled
 directly by the device driver itself. The notifier_chain is used to notify the

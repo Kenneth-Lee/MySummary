@@ -16,7 +16,7 @@
 
 SMP（Shared Memory Processing）计算机的CPU核和内存的关系大概可以表达如下：
 
-        .. figure:: smp.jpg
+        .. figure:: _static/smp.jpg
 
         图1：SMP架构模型。
 
@@ -24,7 +24,7 @@ SMP（Shared Memory Processing）计算机的CPU核和内存的关系大概可�
 
 把设备也考虑在内，其实也是差不多的：
 
-        .. figure:: smp2.jpg
+        .. figure:: _static/smp2.jpg
 
         图2：CPU SMP构架（连设备）
 
@@ -194,7 +194,7 @@ RISCV的文档是让大家写程序的时候按WMO来写，这样写完以后，
 从那个图上看，会觉得让谁先看到哪个操作生效，不过是一句话的事。但从芯片的角度，
 也许你得这样看：
 
-        .. figure:: smp3.jpg
+        .. figure:: _static/smp3.jpg
         图3 CPU微架构
 
 你就认为每个CPU和内存控制器，其实都是台计算机（Cache就是他们本地的内存），中间

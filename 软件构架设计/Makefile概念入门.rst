@@ -101,7 +101,7 @@ app.executable（这个目标）的依赖的时候，它首先去检查main.o的
 一般的脚本不一样。Makefile的执行过程不是基于语句顺序的，而是基于依赖链的顺序的
 。
 
-        .. figure:: makefile依赖.png
+        .. figure:: _static/makefile依赖.png
 
 phony依赖
 =========
@@ -361,7 +361,7 @@ http://Makefile.in，然后把里面的宏替换掉，生成Makefile。剩下的
 
 把上面这个过程画成一副图，就是这个样子的：
 
-        .. figure:: autoconf依赖.png
+        .. figure:: _static/autoconf依赖.png
 
 也许你已经注意到了，图中比我的描述多了http://config.h.in，这只是另一个类似
 autoscan的helper工具，辅助你生成不同平台上不同库函数宏定义的，你自己运行一下

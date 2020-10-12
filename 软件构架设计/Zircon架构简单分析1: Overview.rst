@@ -15,14 +15,14 @@ https://fuchsia.googlesource.com/zircon/+/HEAD/docs/getting_started.md），git
 clone，安装依赖，build arm64版本（现在只支持x64和arm64两个平台），用qemu运行，
 系统可以轻松模拟起来：
 
-        .. figure:: zircon1.jpg
+        .. figure:: _static/zircon1.jpg
 
 这不是个标准的Unix目录结构，但形式类似。大部分目录都还是空的，主要的命令在/boot
 下，这是一个内置的只读文件系统，在编译内核的时候用lz4压缩直接放到加载镜像中，启
 动完成后mount成文件系统，提供最基础的用户支持。我把所有命令都运行了一遍。看起来
 ，很多命令还不稳定，一言不合就coredump：
 
-        .. figure:: zircon2.jpg
+        .. figure:: _static/zircon2.jpg
 
 从代码上看，内核主要是C++写的，系统调用（参考
 build-arm64/gen/global/include/zircon/zx-syscall-numbers.h）主要包括这些类型：

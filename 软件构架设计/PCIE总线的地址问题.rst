@@ -11,7 +11,7 @@ PCIE总线的地址问题
 
 PCIE的总线的体系结构示例抽象如下（只能用示例才比较好表述，否则更难理解）：
 
-        .. figure:: pcie1.png
+        .. figure:: _static/pcie1.png
 
 我特别高亮这里的三个特征：
 
@@ -94,7 +94,7 @@ IOMMU提供设备一侧的翻译能力，让设备直接访问虚拟地址，经
 
 这种能力Map到PCIE中，就是ATS服务了。ATS服务在上面的Topo中是这样的定义的：
 
-        .. figure:: pcie2.png
+        .. figure:: _static/pcie2.png
 
 AT是地址翻译代理，正如前面说的，它的行为特征，实现方法，这都是RC的烂事，PCIE标
 准是不管的。PCIE标准只关心请求到了RC，你给我搞定它。在具体实现的时候，这个东西

@@ -33,7 +33,7 @@ Device Tree（简称DTS），不同，ACPI支持函数接口，也就是说，OS
 
 用图来表达，区别如下：
 
-        .. figure:: aml调用1.jpg
+        .. figure:: _static/aml调用1.jpg
 
 严格来说，前两个方案没有什么区别，内存这东西，都是一样的内存。什么你的我的，其
 实都是我的！：）我们差不多就可以了。
@@ -70,7 +70,7 @@ Device Tree（简称DTS），不同，ACPI支持函数接口，也就是说，OS
 https://acpica.org/sites/acpica/files/asl_tutorial_v20190625.pdf，其中的表述如
 下：
 
-        .. figure:: aml.jpg
+        .. figure:: _static/aml.jpg
 
 这说明OS中是存在一个解释器，AML是一个类似Java的Bincode，通过解释器建立数据结构
 ，从而可以解释执行。

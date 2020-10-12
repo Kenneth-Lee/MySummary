@@ -29,7 +29,7 @@ RISC-V的PMA和ARM的Page Attribute背后体现了一个不同的取向：RISC-V
 要我用Cache，我就用Cache，你让我不要用，我就不用，这是我的行为，不是你对端内存
 的行为。参考一下前面引用材料中这幅图：
 
-        .. figure:: Cache同步.jpg
+        .. figure:: _static/Cache同步.jpg
 
 任何一个CPU看到的语义的实现，背后都是这些节点之间的复杂通讯。
 

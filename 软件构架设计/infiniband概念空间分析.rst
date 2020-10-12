@@ -54,7 +54,7 @@ IB的基础理念是这样的：我有一个程序，要和另一个程序（可
 
 这个概念我们用下面这幅图来表达：
 
-        .. figure:: ib1.jpg
+        .. figure:: _static/ib1.jpg
 
 在实现理念上，IB心目中的Application可以在用户态，也可以在内核态（统称Client），
 但为了保证效率，IB认为，这个通讯是直接和硬件沟通的，不经过第三方的软件代理。也
@@ -89,7 +89,7 @@ QP是直接mmap到用户态的，MR也是直接暴露为实际的内存，直接
 
 这样，这些通讯方就构成这样一个协议栈了：
 
-        .. figure:: ib2.jpg
+        .. figure:: _static/ib2.jpg
 
 下层的通讯栈可以根据不同的通讯协议承载在不同的协议上的，最常见的协议当然是
 Mellanox的Infiniband协议了，这也是它总造成误会的原因。IB软件框架和IB通讯协议，
@@ -100,14 +100,14 @@ Socket实现了一个Transport Layer，下面根本就没有那些层次，但�
 从这个角度来看，比如你做了一个压缩引擎的加速器，你完全可以把这个加速引擎本身作
 为一个通讯方构成这样的一个构架：
 
-        .. figure:: ib3.jpg
+        .. figure:: _static/ib3.jpg
 
 这是不考虑通讯本身的语义的情况，但如前所述，实际上IB是从通讯发展起来的（实际上
 主要就是发明了支持上层做verb和rdma语义的专用硬件），所以它的QP在一定程度上是认
 知下面的通讯层的。所以，我们还需要认知在这个语义空间中，有CA，HCA，TCA，Switch
 ，Channel这个概念（图片来自IBTA）：
 
-        .. figure:: ib4.jpg
+        .. figure:: _static/ib4.jpg
 
 但大部分时候我们都用不上，但我们可以知道的是CA就是Channel Adapter，指那个支持通
 讯的设备，TCA和HCA是target和Host CA。Channel是连接TCA和HCA的一条通道（连接），

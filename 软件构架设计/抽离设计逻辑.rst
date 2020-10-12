@@ -9,7 +9,7 @@
 今天有人来找我讨论一个程序怎么改。他这个程序包括三个Linux内核模块，有点类似
 Linux的device-bus-driver的模型：包括一组engine，一个框架，和一组app：
 
-        .. figure:: 架构例子1.png
+        .. figure:: _static/架构例子1.png
 
 大概的意思是，app和engine都可以注册给框架，如果框架发现两者需求匹配，就会引起两
 者的关联（attach），从而让app可以使用engine的能力。

@@ -491,7 +491,7 @@ AutoFDO依赖于PMU的这个特性：PERF_SAMPLE_BRANCH_STACK。简单说，就�
    板都没有104中ARM总结了一下Aarch8的特性引入时间，感觉挺有助于记忆的，我贴上来
    ：
 
-        .. figure:: lkft.jpg
+        .. figure:: _static/lkft.jpg
 
 * Home - Akraino Edge Stack，ARM热推的“雾计算”的一个实现，我觉得是一个卖轻量级
   服务器的市场

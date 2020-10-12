@@ -41,7 +41,7 @@
 https://content.riscv.org/wp-content/uploads/2018/05/15.55-16-30-UL-001906-PT-C-RISCV-Debug-Specification-Update-and-Tutorial-for-Barcelona-Workshop.pdf
 ）：
 
-        .. figure:: rv-debug1.jpg
+        .. figure:: _static/rv-debug1.jpg
 
 很明显，可以看到，它不是定义和软件的接口的，它其实定义的是核的硬件和片上的Debug
 Module的接口的。

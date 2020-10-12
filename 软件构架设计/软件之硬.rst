@@ -39,7 +39,7 @@
 
 软件要同时支持多种硬件，它会构成这样一种实现结构：
 
-        .. figure:: hardware_abstraction.jpg
+        .. figure:: _static/hardware_abstraction.jpg
 
 这个“功能抽象”的代码，抽象了A1, A2……这些硬件的共性。但这个代码一旦写下来，它就
 变“硬”了，你做了一个A3，修改了不少东西，要求修改这个“功能抽象”中的内容，我们就
@@ -50,7 +50,7 @@
 
 更重要的是，上面这个图其实只是故事的部分，完整画出来可能是这样的：
 
-        .. figure:: full_hardware_abstraction.jpg
+        .. figure:: _static/full_hardware_abstraction.jpg
 
 你这些if xxx，能不能保证不影响功能抽象对上面这些软件的承诺？
 

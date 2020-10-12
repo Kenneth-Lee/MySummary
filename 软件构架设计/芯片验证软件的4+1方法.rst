@@ -77,7 +77,7 @@ Use Case视图
 
 所以，系统的上下文就显得很重要了，比如你的验证软件范围可能是这样的：
 
-        .. figure:: verify_sw_uc1.jpg
+        .. figure:: _static/verify_sw_uc1.jpg
 
 这就是Use Case图。这个图极容易画错。正如我前面反复强调的，如果你学习“怎么画才能
 符合专家的要求”，你这个图百分百会画错。这个图是一种设计，设计的目的不是“我没错”
@@ -99,7 +99,7 @@ Use Case视图
 我们根据这个模型对设计进行取舍。比如，我们希望测试用例写作和你的验证平台是相对
 独立的，你的模型可能可以改成这样：
 
-        .. figure:: verify_sw_uc2.jpg
+        .. figure:: _static/verify_sw_uc2.jpg
 
 你可能还会认为：我只负责写平台，用例有其他团队来写，验证软件本身不包括用例。或
 者“我只负责基本用例，大部分用例需要别人写”，那么，你这里这个“用例增加”的功能，
@@ -219,13 +219,13 @@ fail或者通过uc_fault()抛出异常。……”
 最后，可能有人会奇怪，为什么讲4+1视图会不需要讲UML图的。其实UML图根本不是4+1视
 图的关键，UML图的用途就那么几个：
 
-        .. figure:: uml_elements.jpg
+        .. figure:: _static/uml_elements.jpg
 
 在概念视图中，它通常只是用来表明我们描述每个架构模型的时候，那些概念之间的关系
 而已。比如这里的概念视图，我们要说明白验证软件，测试用例，硬件使能软件，用UML的
 类图来表达关系更加容易而已：
 
-        .. figure:: verify_sw_concept_diag.jpg
+        .. figure:: _static/verify_sw_concept_diag.jpg
 
 有这张图你肯定更容易说明白你整个软件的组成，但概念空间的建模的重点就不是那几张
 UML图。
@@ -253,7 +253,7 @@ UML图。
 
 比如我设想一种情况，可能就是这样的：
 
-        .. figure:: verify_sw_dev_view.jpg
+        .. figure:: _static/verify_sw_dev_view.jpg
 
 这个很简单，我们认为被测试的平台除了初始化，都是一样的代码，所以，除了特定的适
 配，我们可以只出一个TestBench的开发库，Testcases直接集成到其中（就是你要加用例
@@ -319,7 +319,7 @@ TestBench”这样的维度，很可能你要定义针对处理视图的概念�
 
 我也画一个例子吧：
 
-        .. figure:: verify_sw_process_view.jpg
+        .. figure:: _static/verify_sw_process_view.jpg
 
 如果你的验证很简单，就是验证一个测试片是不是符合架构定义，直接在测试片上运行，
 那你也不需要处理视图，你可以不做这个建模，而不是假惺惺满足这个4+1的名字，什么都

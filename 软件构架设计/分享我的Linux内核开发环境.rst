@@ -310,7 +310,7 @@ vi的，这是我的inputrc：::
 blame去看看它的修改记录，你就可以知道某段代码是谁写的，在那个补丁里面写进去的，
 为什么要写进去，比如这样：
 
-        .. figure:: git-blame.jpg
+        .. figure:: _static/git-blame.jpg
 
 这是kernel/kmod.c的每行修改记录，你可以看到，每个头文件是谁包含进去的，在哪个补
 丁包含进入的，都是可以找到的。
@@ -318,7 +318,7 @@ blame去看看它的修改记录，你就可以知道某段代码是谁写的，
 比如你这里看到Al Viro包含了ptrace.h，你不知道他为什么要加这个，你可以看看他当时
 提交的补丁：git show a74fb73：
 
-        .. figure:: git-show.jpg
+        .. figure:: _static/git-show.jpg
 
 所以，通常我们把开发过程和提交过程是分开来管理的。比如你要开发一个新功能，你可
 以git clone一个最新的内核分支，然后git co -b一个新的分支，在那里随便修改，每天
@@ -378,7 +378,7 @@ pop3服务器上，你就能直接用文本和它互动，你觉得互相独立�
 这个维护者用mutt收到这个补丁了，他可以选择他们，存到一个mailbox里面（这其实仍是
 一个文本文件），然后用git am直接合入自己的一个分支上：
 
-        .. figure:: mutt.jpg
+        .. figure:: _static/mutt.jpg
 
 然后他就可以Review或者测试这个补丁了。
 

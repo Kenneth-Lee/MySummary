@@ -38,7 +38,7 @@ Target和Host就是不一样的。手上能随时调度一台服务器出来用�
 器软件方案）就看出来了。我现场玩了一下用Snapdragon 835, 850做的Laptop，老实说，
 这个性能我也是接受不了的。
 
-        .. figure:: linaro-ad1.jpg
+        .. figure:: _static/linaro-ad1.jpg
 
 ARM Server这条路就有趣了，它需要的软件设计的时候都考虑是本地编译的，但作为ARM，
 他们又被按交叉编译来考虑，这个生态就比较难受了。我们只有两条路：要不彻底把ARM
@@ -52,12 +52,12 @@ Server当做一个交叉目标，要不我们就必须有自己的PC。这一点
 得出手，你用来编译Linux内核？只能当玩具。现在能拿来开发性能最强的可能是日本
 Cocionext的SynQuacer了，但对一般开发者来说，这个性能还是没法接受的。
 
-        .. figure:: synquacer.jpg
+        .. figure:: _static/synquacer.jpg
         SynQuacer内部结构
 
 演讲302构想了一种开发者用机需求：
 
-        .. figure:: linaro-ad2.jpg
+        .. figure:: _static/linaro-ad2.jpg
 
 我觉得其他部分难度其实都不大，最麻烦的可能是HDMI，这也是为什么96Board派系都用手
 机芯片来做，因为这些货都集成GPU。但单插显卡就有个显卡生态的问题。所以，其实我觉

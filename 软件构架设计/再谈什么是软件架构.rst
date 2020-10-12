@@ -27,7 +27,7 @@
 所以，我分析这个软件，第一反应是它的维护者是如何定义这个软件本身的，这通过看它
 的主页就可以了：
 
-        .. figure:: container.png
+        .. figure:: _static/container.png
 
         我看到两个关键字：Management和Production。现在我看它卖什么，靠什么赚钱
         ，公司有多少人，这决定了它的投资模式（实际上这部分我藏了私，我没有放在

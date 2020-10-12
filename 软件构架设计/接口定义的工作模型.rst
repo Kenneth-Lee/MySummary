@@ -11,7 +11,7 @@
 能看起来多不像一个计算，计算机系统能干的也就是数据加工。我们拿一个计算辅助功能
 来举例，比如说，MMU。用DFD来讨论MMU功能，它是这样的：
 
-        .. figure:: mmu_dfd.jpg
+        .. figure:: _static/mmu_dfd.jpg
 
 MMU处理的DFD图，上图是Context Diagram，下图是DFD。如果你觉得这个图缺了缺页流程
 ，请再去看一下DFD图是什么，否则应该看不懂下文。

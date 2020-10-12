@@ -122,7 +122,7 @@ vfio-pic的定义是这样的：::
 -netdev创建了两个本地设备，-device用这两个本地设备制造了两张网卡，我们给定了
 addr，整个拓扑就是这样的：
 
-        .. figure:: pcie_topo1.jpg
+        .. figure:: _static/pcie_topo1.jpg
 
 我们再增加两条根桥和一个virtio网卡：::
 
@@ -141,7 +141,7 @@ addr，整个拓扑就是这样的：
 
 整个系统变成这样：
 
-        .. figure:: pcie_topo2.jpg
+        .. figure:: _static/pcie_topo2.jpg
 
 这里这个chassis不能省略，qemu里现在没有自动分配这个id，你不给它就直接互相冲突，
 保证你至少给定chassis或者slot就可以规避（保证这个组合对每个设备都是唯一的）。我
