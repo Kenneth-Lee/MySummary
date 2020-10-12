@@ -17,10 +17,11 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import sys
+import os
+import sphinx
 
+major, minor, patch = sphinx.version_info[:3]
 
 # -- General configuration ------------------------------------------------
 
@@ -38,6 +39,11 @@ extensions = ['sphinx.ext.doctest',
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+if (major == 1 and minor > 3) or (major > 1):
+    extensions.append("sphinx.ext.imgmath")
+else:
+    extensions.append("sphinx.ext.pngmath")
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -86,7 +92,14 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+# html_theme = 'alabaster'
+
+try:
+    import sphinx_rtd_theme
+    html_theme = 'sphinx_rtd_theme'
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+except ImportError:
+    sys.stderr.write('Warning: The Sphinx \'sphinx_rtd_theme\' HTML theme was not found. Make sure you have the theme installed to produce pretty HTML output. Falling back to the default theme.\n')
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
