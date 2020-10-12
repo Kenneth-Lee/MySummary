@@ -1,0 +1,103 @@
+.. Kenneth Lee 版权所有 2018-2020
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+单元测试的效果问题
+*******************
+
+很多项目经理不愿意执行单元测试，因为这个东西的收益，很难用鞭子抽出来。
+
+
+因为单元测试很容易进入特定的陷阱。
+
+
+考虑如下代码（随便从Linux Kernel中拷贝出来的）：::
+
+        static int hclge_get_vector(struct hnae3_handle *handle, u16 vector_num,
+                                    struct hnae3_vector_info *vector_info)
+        {
+                struct hclge_vport *vport = hclge_get_vport(handle);
+                struct hnae3_vector_info *vector = vector_info;
+                struct hclge_dev *hdev = vport->back;
+                int alloc = 0;
+                int i, j;
+
+                vector_num = min(hdev->num_msi_left, vector_num);
+
+                for (j = 0; j < vector_num; j++) {
+                        for (i = 1; i < hdev->num_msi; i++) {
+                                if (hdev->vector_status[i] == HCLGE_INVALID_VPORT) {
+                                        vector->vector = pci_irq_vector(hdev->pdev, i);
+                                        vector->io_addr = hdev->hw.io_base +
+                                                HCLGE_VECTOR_REG_BASE +
+                                                (i - 1) * HCLGE_VECTOR_REG_OFFSET +
+                                                vport->vport_id *
+                                                HCLGE_VECTOR_VF_OFFSET;
+                                        hdev->vector_status[i] = vport->vport_id;
+                                        hdev->vector_irq[i] = vector->vector;
+
+                                        vector++;
+                                        alloc++;
+
+                                        break;
+                                }
+                        }
+                }
+                hdev->num_msi_left -= alloc;
+                hdev->num_msi_used += alloc;
+
+                return alloc;
+        }
+
+错误的测试考量是，这个函数基于i, j做了两重循环，所以准备一个hdev的一个
+vector_status数组，，然后让它进行循环，跑起来，看看覆盖率达到没有，有没有出现死
+机，如果有修正测试桩，测试完成，覆盖率，用例数，完全满足要求，工作完美完成，收
+工领饭盒。
+
+
+正确的考量是，先看懂这个代码是干什么的：它的原理是在hdev中有个数组，里面有一个
+域表示这个数组成员是否有效，如果无效，就分配出去（并置为有效），相同的方法分配
+多次，直到完成整个分配过程。
+
+
+好了，知道这个要点，就要忘掉这个代码了。单元测试的目的是发现“肉眼review看不见的
+错误”，这种错误主要是那些循环，跳出，判断的时候有没有想错了的东西，那种东西要靠
+各种边界用例来发现。比如这样：
+
+
+1) 在vector_status中预设10个成员，4个有效：然后分配0个，1个，3个，4个，5个，
+1000个，看分配结果对不对。
+
+2) 在vector_status中预设10个成员，全部无效：然后分配5个，看结果是否正确
+
+3)在vector_status中预设10个成员，全部有效，然后分配1个，5个，9个，10个，11个，
+1000个，看结果是否正确
+
+
+这样就能发现那些判断是否正确，有没有考虑不周的情况。
+
+
+两个测试行为，从项目经理，乃至同伴看来，行为完全一样，只是一个过脑子，一个不过
+脑子，测试效果完全不同。聚焦成功的团队才能实施单元测试，聚焦“我没错”的团队，做
+这种事情基本上是浪费时间。中间的情况是，测试执行工程师可能还没有掌握这种基本的
+技能，这就需要花时间来辅导了。
+
+
+而代码Review应该解决什么问题呢。还是拿这个例子来说：从算法上来看一看，解决这样
+一个分配问题，尼玛需要两重循环吗？脑子生锈了吧？尼玛这也敢开始UT？信不信捏死你
+？——你看，这是代码Review干的活：）
+
+
+从效果上来说，我们的经验是：ST主要发现组合功能逻辑，发现的是端到端的错误，比如
+正在收发包的时候，修改网卡的MTU；对VF reset以后重新ifconfig。这种组合的功能，ST
+和IT的性价比是最高的。UT主要发现的是一般ST进入不了的流程的错误，比如大流量的时
+候链路突然闪断重连，这个过程一般ST根本模拟不出来，不靠UT就很难发现。而RV一般发
+现的是覆盖性测试无法进行全覆盖的问题。比如系统状态机的所有可能情况，每种状态下
+，所有功能是否继续生效？这种通过测试是做不到覆盖的，但Review的时候审视整个状态
+机的行为，是很容易发现错误的。
+
+
+补充说明：有人可能不知道我说的单元测试是什么，那么请参考：从单元测试理解软件。
+（所以，请注意，这里的测试的“单元”，是C文件，不是函数，你看到我的例子是一个函数
+，但如果这个函数调用了本C文件的另一个函数，那个函数是不打桩的）
