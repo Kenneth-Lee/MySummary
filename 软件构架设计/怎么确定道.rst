@@ -175,7 +175,7 @@ device_group需要上锁才能访问啊，device是个稀疏阵啊。”，我�
 
 我的设计大部分都不能公开，这里有一个难得是公开的，可以作为参考：
 
-        in nek：Progress and confusion of the IOMMU name space
+        :doc:`Progress and confusion of the IOMMU name space`
 
 我这里喋喋不休地描述iommu_group的原始定位，vfio_group的设计意图，竭尽所能要描述
 出现各个势力在这个问题上的预期图景。这些观点，我不认为他们对，也不认为他们错，

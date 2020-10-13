@@ -61,4 +61,4 @@ some是有一个进程，full全系统的情况。avg10是10秒平均，值是�
 
 参考
 ====
-.. [1] https://kernelnewbies.org/LinuxChanges
+[1] https://kernelnewbies.org/LinuxChanges

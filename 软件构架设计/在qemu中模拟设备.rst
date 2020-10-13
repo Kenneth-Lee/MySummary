@@ -9,7 +9,7 @@
 介绍
 ====
 
-本文作为这个文档的补充：in nek：X86上的ARM Linux调试环境。
+本文作为这个文档的补充：:doc:`X86上的ARM Linux调试环境` 。
 
 在那个文档中，我们已经可以在x86机器上模拟一个ARM Linux的运行环境。本文我们简单
 介绍一下怎么在qemu中模拟一个设备给Guest Linux。这对于很多SoC软件使能工程师来说
@@ -75,7 +75,7 @@ ARM aarch64，编译命令如下（我验证的时候最新的stable版本是2.9
         make
 
 先确认你可以编译过，这样我们加东西的基础就有了。（现在的版本使用了submodule，你
-还需要更新submodule，submodule的原理可以看这里：《in nek：git submodule的理解》
+还需要更新submodule，submodule的原理可以看这里：《:doc:`git-submodule的理解` 》
 ）
 
 然后我们要加一个设备驱动，qemu/hw/目录里面全部都是，每个就是一个设备驱动，你找

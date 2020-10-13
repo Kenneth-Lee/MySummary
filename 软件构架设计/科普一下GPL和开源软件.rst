@@ -212,7 +212,7 @@ GPL的，但因为用户没有向第三方提供这个“产品”，所以用�
 
 你们可以看看我这里写的一个设计讨论：
 
-        in nek：Progress and confusion of the IOMMU
+        :doc:`Progress and confusion of the IOMMU name space`
 
 这是我们要给我们的加速器做一个统一的软件引擎，我已经写好这个代码很久了，也在实
 际的产品中使用了，但我仍需要这样公开表达出来，因为在我写我的引擎的时候，其他公

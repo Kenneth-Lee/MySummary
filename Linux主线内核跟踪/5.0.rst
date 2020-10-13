@@ -64,4 +64,4 @@ Android binder现在变成一个文件系统了。这样通过多文件系统，
 
 参考
 ====
-.. [1] https://kernelnewbies.org/LinuxChanges
+[1] https://kernelnewbies.org/LinuxChanges

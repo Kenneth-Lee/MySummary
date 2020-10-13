@@ -50,4 +50,4 @@ IoT ACRN supervisor
 
 参考
 ====
-.. [1] https://kernelnewbies.org/LinuxChanges
+[1] https://kernelnewbies.org/LinuxChanges

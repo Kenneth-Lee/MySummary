@@ -378,7 +378,9 @@ WARNING:Considerusingvma_pageshelperonvma
 
 动态检查的，我们有如下工具可以用：
 
-kselftest：这个类似LTP，是内置的一组功能测试用例，这样编译和运行：::
+kselftest
+----------
+这个类似LTP，是内置的一组功能测试用例，这样编译和运行：::
 
 make-Ctools/testing/selftest
 makekselftest
@@ -389,15 +391,18 @@ makekselftest
 下。我看了一下代码，这个基本上是个很自由的测试用例，框架本身仅仅是提供错误计数
 一类的东西，其他是你爱怎么写就怎么写。
 
-gcov：这是把gcov的功能用到内核上。在用户态做单元测试一般会用gcov和lcov检查覆盖
-率的，这个功能现在在内核中也可以用了。它通过配置项CONFIG_GCOV_KERNEL使能。开启
-后，可以在/sys/kernel/debugfs/gcov找到所有跟踪数据文件（*.gcda)，用gcov命令就可
-以直接看到代码的执行覆盖率。
+gcov
+-----
+这是把gcov的功能用到内核上。在用户态做单元测试一般会用gcov和lcov检查覆盖率的，
+这个功能现在在内核中也可以用了。它通过配置项CONFIG_GCOV_KERNEL使能。开启后，可
+以在/sys/kernel/debugfs/gcov找到所有跟踪数据文件（.gcda)，用gcov命令就可以直接
+看到代码的执行覆盖率。
 
-
-kmemleak和Kasan：这两个是自动内存检查，前者发现内存泄漏，后者发现use-after-free
-错误，分别通过CONFIG_DEBUG_KMEMLEAK和CONFIG_KASAN使能，发现有问题会自动抱错的，
-可以作为基本CI系统的一部分来用。
+kmemleak和Kasan
+-----------------
+这两个是自动内存检查，前者发现内存泄漏，后者发现use-after-free错误，分别通过
+CONFIG_DEBUG_KMEMLEAK和CONFIG_KASAN使能，发现有问题会自动抱错的，可以作为基本CI
+系统的一部分来用。
 
 还有一个Kcov，我在ARM64平台跑不起来，就不讨论了。
 
