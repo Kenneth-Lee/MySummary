@@ -3,8 +3,8 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 
-7. 曲则全
-**************
+Understand Chinese -- Da De Jing Introduction
+***********************************************
 
 This is an introduction about Dao De Jing to some of my friends who speak
 English.
