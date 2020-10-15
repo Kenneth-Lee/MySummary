@@ -1,7 +1,7 @@
 .. Kenneth Lee 版权所有 2020
 
 :Authors: Kenneth Lee
-:Version: 1.0
+:Version: 2.0
 
 “知不知”如何影响决策的？
 ************************
