@@ -1,5 +1,10 @@
+.. Kenneth Lee 版权所有 2000
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
 5.7
-****
+******
 
 todo
 

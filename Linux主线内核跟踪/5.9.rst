@@ -1,0 +1,68 @@
+.. Kenneth Lee 版权所有 2000
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+5.9
+******
+
+十月11日发布。
+
+大特性
+======
+
+1. 无名内存算法优化：仍是active，unactive的LRU链算法，但优化了调度。算是调度参
+   数调整吧。居然是LG的人做的。
+
+2. Cgropu slab controller优化了算法：看起来是把原来生硬的直接分没有controller一
+   个独立算法变成可以共享的。据说facebook用这种方法可以减少35-45%的内存浪费。
+
+3. Proactive Memory Compaction：提前进行页面移动和合并，为更快可以分配到大页创
+   造条件。
+
+4. 新系统调用：close_range()，关闭成组的fd。ubuntu的补丁，FreeBSD也传了的特性。
+   一个基本用途就是你clone以后，可以用比如close_range(__STDERR__, ~0U)把stderr
+   之后的所有文件都给它关了。它的关键好处是不用你在用户态去枚举你到底打开是哪些
+   文件，再去关它们。内核本来就有整个列表。
+
+5. BPF_PROG_TYPE_SK_LOOKUP：在查找socket句柄的算法上加了一个BPF钩子，以便你可以
+   把多个流合并到一个socket中，或者把同一个流分给多个socket。
+
+6. Deadline调度器\ [注1]_ \ 增加对当前CPU能力的判断，主要是优化big-little的场景
+   [注2]_\ 。老实说，我作为软件工程师，是很不喜欢big-little这种东西的，你下面硬
+   件明明不同，非要让软件认为它们是一样的，用一个调度器去自动去确定怎么部署，这
+   怎么看怎么都做不出性能的。
+
+7. 内核压缩增加对zstd的支持，这个算法压缩速度挺有优势的，有望取代现在常用的xz算
+   法。facebook干的，他们用了这个算法。
+
+.. [注1] kernel/sched/deadline.c
+
+.. [注2] ARM的Dietmar Eggemann传的代码
+
+有趣的东西
+===========
+
+1. Intel的FSGSBASE特性2012年\ [注3]_\ 就引入了，现在才被用到主线内核
+   （X86_FEATURE_FSGSBASE）中，这个特性其实很简单，就是把FS/GS（这俩东西常用于
+   做TLS指针之类的东西）做成MSR，可以在用户态修改（用RD/WR FSBASE这种指令），不
+   用做系统调用。但就这样一个特性，进主线都用了8年。
+
+        .. note::
+                这里的关键还是软件本身那些多余的判断是否可以在一个复杂的逻辑中
+                被每个独立的逻辑所认可。所以，越是基本的约束，对架构的影响就越
+                大，特别是你有些硬件有，有些硬件没有，这个就更加麻烦。
+
+2. perf增加了一个ftrace命令
+
+3. ARM指针监权开始支持Guest
+
+4. 龙芯和阿里分别在mips和riscv分支上传东西了，是个好的开始
+ 
+
+.. [注3] Ivy Bridge开始。AMD也有这个特性，版本是哪个没有调查。对于特性本身，内
+         核文档 x86/x86_64/fsgs.rst 有比较详细的介绍。
+
+参考
+====
+[1] https://kernelnewbies.org/LinuxChanges
