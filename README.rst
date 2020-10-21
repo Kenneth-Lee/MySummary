@@ -24,10 +24,10 @@ Kenneth Lee的工作和生活总结
 
    Linux主线内核跟踪
 
-本文用Python Sphinx进行管理，所有的文本都是reStructure Markdown文档，这是一种文
-字安排有特殊设置的文本问题，可以被很多git托管服务所解释，所以阅读者可以在如
-gitee，github这样的代码托管服务上直接阅读每个独立的文件。但如果文档之间有相互引
-用，这种引用是看不到的。维持我不定期会对文档进行编译，编译结果可以在这里找到：
+本文用Python Sphinx进行管理，所有的文本都是reStructuredText文档，这是一种文字安
+排有特殊设置的文本文件，可以被很多git托管服务所解释，所以阅读者可以在如gitee，
+github这样的代码托管服务上直接阅读每个独立的文件。但如果文档之间有相互引用，这
+种引用是看不到的。为此我不定期会对文档进行编译，编译结果可以在这里找到：
 
         https://gitee.com/Kenneth-Lee-2012/my-summary_build
 

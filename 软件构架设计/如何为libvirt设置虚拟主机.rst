@@ -43,7 +43,7 @@
 https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg）
 ：
 
-        .. figure:: _static/iptable-qemu.jpg
+        .. figure:: _static/qemu-iptable.jpg
 
 veth是路由一层的协议，不经过nat链在链路层布下的PREROUTING钩子的，所以如果不在
 OUTPUT上做DNAT，就没有DNAT了。
