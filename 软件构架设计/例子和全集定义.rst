@@ -3,8 +3,8 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 
-例子和约束
-**********
+例子和全集定义
+**************
 
 最近评审了一个设计，其中提到，某某特性实现在$project/src/feature1/xxxx.c中。
 
