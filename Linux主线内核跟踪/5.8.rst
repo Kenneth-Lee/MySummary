@@ -1,0 +1,105 @@
+.. Kenneth Lee 版权所有 2020
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+5.8
+******
+
+2020年8月2日发布。
+
+大特性
+======
+
+1. LRU算法的又一个优化，主要处理SSD一类的随机IO设备的行为导致的内存抖晃。
+
+2. CONFIG_KCSAN，Kernel Concurrency Sanitizer。又一个Snaitizer类的特性（就是先
+   用高成本来运行一些额外的检测，让部分错误突出来，等大部分问题消除了，就可以取
+   消的特性），可以检查数据访问一致性问题。这个检查的效率下降大概是2.8-5倍，可
+   以通过仅开启部分模块的检查提高效率。
+
+   特性文档在内核文档dev-tools/kcsan.rst中，作者Marco Elver <elver@google.com>
+   来自Google。
+
+   特定定义的所谓数据访问一致性主要就是在多个线程同时访问同一个内存，原理就是加
+   数据断点，当一个地址被写的时候，加上数据断点，其他线程再访问就会发现错误。只
+   是KCSAN不靠硬件断点\ [DataCollider]_\ ，而是靠编译器插桩实现一样的功能。现在
+   支持gcc和llvm。代码中允许通过特定的宏和hint禁止对刻意这样做的代码的检查，比
+   如可以在函数前面加__no_kcsan，或者用类似ASSERT_EXCLUSIVE_ACCESS_SCOPED(var)
+   这样的宏主动关闭对特定变量的检查。
+   编译器也能认知WRITE_ONCE()这些宏，特性开发者在不少地方通过增加这些宏避免误报
+   。
+   动态运行的时候，也可以通过debugfs kcsan接口用黑白名单关闭。
+
+3. 一个新的通用notification框架，来自Redhat 。允许通过pipe监控内核特定的事件。
+   内核一方用init_watch_list创建数据源，用户态通过keyutils和pipe接口提供。使用
+   者创建一对O_TMPFILE的pipe，然后通过keyctl把写方向的pipe加一个写Watch（
+   KEYCTL_WATCH_KEY），之后就可以从读端读到跟踪的数据了。
+
+   当前主要的用户是smack LSM（一个和SELINUX平行的安全框架），这也解释了为什么是
+   Redhat在传这个代码。
+
+4. 私有procfs实例。作者没有组织信息，按Patch说明的说法它的目的是建立一个沙箱，
+   让每个进程看不到对方。这个和namespace看来没有什么区别，但至少现在功能是不同
+   的，比如它允许mount procfs的时候可以加这种参数：hidepid=4，subset=5（内核文
+   档proc.rst中有详细介绍）。据说可以用于Yama LSM上，我直接这样看，看不到使用场
+   景是什么。
+
+5. pidfds增强：允许通过pidfds直接打开namespace。这是Ubuntu上传的nsproxy特性的一
+   部分。整个特性的目的是让一个外在的代理对另一个进程设置namespace。
+
+6. ARMv8.5-BTI特性（Branch Target Identification）进入内核，用户态仍需要使用
+   LLVM。BTI和PAuth一样，前者处理跳转目标指针鉴权，后者处理数据访问指针鉴权。可
+   以提高代码被攻击的难度。
+
+7. Inline加密支持。直接在bio层的数据通路上对数据进行加密。这个特性需要硬件支持
+   ，为这条通路建立一个硬件处理能力，内核的功能只是提供统一的接口设置这个通路的
+   算法，key一类的管理信息。之后数据加密都是硬件的能力。
+
+   Google提供的特性，还没有看见实际的用户。
+
+8. 增加两个CAP：CAP_BPF和CAP_PERFMON，以便把这两个功能的授权独立出来（以前直接
+   需要CAP_SYS_ADMIN权限）
+
+9. IPv6 MPLS支持，这个特性我不关心，但我看了一眼，它是作为一个长期维护分支被
+   Davem并进来的，开发者很多，不是一个公司的工作。
+
+10. MRP（Media Redundancy Protocol）协议支持，这是一个工业互联的Ethernet协议，
+    类似普通Ethernet中的STP协议。这也是一个大特性（分支合并），但主要是是
+    microchip的人合入的。
+
+11. 这个版本合入了支持编译用户程序的逻辑，现在编译内核的时候可以同时把配套的用户
+    程序一起编译了的能力（比如tools目录下那一堆）。原来没有这个预期的，因为编译
+    内核的CC不一定能支持用户编译。
+
+   当前版本先支持了sample目录中的程序和bpfilter\ [bpfilter]_\ 。
+
+12. FB在持续修改Btrfs，微软在持续维护CIFS，IBM在持续维护ext4，华为在持续维护
+    F2FS，Redhat在弄AFS。Intel则在各个文件系统中加入他们的DXA特性。
+
+.. [DataCollider] 相关概念，参考：
+   https://www.usenix.org/legacy/events/osdi10/tech/full_papers/Erickson.pdf
+
+.. [bpfilter] bffilter_umh是net/bpfilter目录中的用户态helper。这个Makefile是这
+   么写的：
+   
+        userprogs := bpfilter_umh
+        bpfilter_umh-objs := main.o
+
+   语法和原来Kernel的逻辑也很接近了。
+
+有趣的东西
+===========
+
+1. 看上面的补丁的时候，好几个地方看到有来自mchehab+huawei@kernel.org的维护性修
+   改，我很好奇这位哥们是个什么身份。
+
+2. MIPS分支的修改很多都是龙芯的Patch，看来龙芯开始密集上传特性了。
+
+3. RISCV的修改不多，但来源很杂：sifive，google，suse的人都有。
+
+4. 这个版本海思上传的代码主要是加速器的调试和RAS功能，
+
+参考
+====
+[1] https://kernelnewbies.org/LinuxChanges

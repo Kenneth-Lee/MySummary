@@ -1,4 +1,4 @@
-.. Kenneth Lee 版权所有 2000
+.. Kenneth Lee 版权所有 2020
 
 :Authors: Kenneth Lee
 :Version: 1.0
@@ -28,17 +28,17 @@
 5. BPF_PROG_TYPE_SK_LOOKUP：在查找socket句柄的算法上加了一个BPF钩子，以便你可以
    把多个流合并到一个socket中，或者把同一个流分给多个socket。
 
-6. Deadline调度器\ [注1]_ \ 增加对当前CPU能力的判断，主要是优化big-little的场景
-   [注2]_\ 。老实说，我作为软件工程师，是很不喜欢big-little这种东西的，你下面硬
-   件明明不同，非要让软件认为它们是一样的，用一个调度器去自动去确定怎么部署，这
-   怎么看怎么都做不出性能的。
+6. Deadline调度器\ [sched_dl1]_ \ 增加对当前CPU能力的判断，主要是优化big-little
+   的场景\ [sched_bl1]_\ 。老实说，我作为软件工程师，是很不喜欢big-little这种东
+   西的，你下面硬件明明不同，非要让软件认为它们是一样的，用一个调度器去自动去确
+   定怎么部署，这怎么看怎么都做不出性能的。
 
 7. 内核压缩增加对zstd的支持，这个算法压缩速度挺有优势的，有望取代现在常用的xz算
    法。facebook干的，他们用了这个算法。
 
-.. [注1] kernel/sched/deadline.c
+.. [sched_dl1] kernel/sched/deadline.c
 
-.. [注2] ARM的Dietmar Eggemann传的代码
+.. [sched_bl1] ARM的Dietmar Eggemann传的代码
 
 有趣的东西
 ===========
