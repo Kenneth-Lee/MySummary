@@ -14,7 +14,7 @@
 
 但即使如此，这些平台也会存在在build阶段执行的算力。比如下面这段代码：
 
-        .. code:: c
+        .. code-block:: c
 
         const int unit_of_m = 1024 * 1024;
 
@@ -22,7 +22,7 @@
 
 对于更高级的代码，这就更加复杂了，比如ocaml中的match语法：
 
-        .. code:: ocaml
+        .. code-block:: ocaml
 
         let rec map sum ls = 
           match ls with
@@ -38,7 +38,7 @@
 这样，需要放在target上的算力，又被移动到build上去完成了。Haskell上也有大量这种
 语法，比如：
 
-        .. code:: haskell
+        .. code-block:: haskell
 
         diff x y = if x > y then gap else -gap where gap=x-y
 

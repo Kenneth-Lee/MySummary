@@ -1,7 +1,7 @@
 .. Kenneth Lee 版权所有 2019-2020
 
 :Authors: Kenneth Lee
-:Version: 1.0
+:Version: 1.1
 
 在qemu中模拟设备
 *****************
@@ -27,32 +27,36 @@ qemu的设备模拟原理很简单，可以很快上手，是值得SoC软件工�
 
 首先我们理解一下Qemu的工作原理。很多系统工程师对Qemu有距离感，其实只是不熟悉，
 说起来，我觉得Qemu比Linux Kernel还是容易很多的。作为最基础的原理，我原来写过一
-个演示性的例子：in nek：一个非常简单的CPU模拟器，那个只写了几个小时，当然并不实
-用，但用来说明模拟器是什么已经足够了。这一定程度上说明，模拟器在原理上并不复杂
-。
+个演示性的例子：
+
+        https://github.com/nekin2017/pipeline_simulator.git
+
+那个只写了几个小时，当然并不实用，但用来说明模拟器是什么已经足够了。这一定程度
+上说明，模拟器在原理上并不复杂。
 
 Qemu要解决具体问题，相对当然复杂得多，但得益于良好的封装性，我们要在Qemu里面加
 模拟设备，需要知道的原理并不多。它的代码模型大概就是这样的（我用Python当做伪码
-来表述这个逻辑）：::
+来表述这个逻辑）：
 
-        def run_a_guest():
-          vm = create_vm()
-          vm.create_cpu_object()
-          vm.create_device_object()
-          for_each_cpu(cpu):
-            create_thread(cpu_thread, cpu)
+  .. code-block:: python
 
-        def cpu_thread(cpu):
-          while true:
-            try:
-              cpu.run(vm)
-            except EIO eio:
-               find_device(eio.io_address).handle_io();
+  def run_a_guest():
+    vm = create_vm()
+    vm.create_cpu_object()
+    vm.create_device_object()
+    for cpu in cpus: create_thread(cpu_thread, cpu)
+
+  def cpu_thread(cpu):
+    while true:
+      try:
+        cpu.run(vm)
+      except EIO eio:
+        find_device(eio.io_address).handle_io();
 
 对很多人来说，那个cpu.run()是最难理解的，在Qemu中有各种各样的实现方式，比如基于
 qemu.ko的，基于TCG（翻译执行），或者基于KVM的。但对于做设备的人来说，这些统统不
 用管，你就认为它是个系统调用好了。如果是KVM，这个地方其实就是个ioctl(KVM_RUN）
-，如果是TCG，哪里就是翻译块的动态执行。反正你认为是个黑盒，Hypervisor帮你能执行
+，如果是TCG，那里就是翻译块的动态执行。反正你认为是个黑盒，Hypervisor帮你能执行
 到哪里就执行到哪里，如果执行不了了（比如虚拟机里面访问IO空间了），就从系统调用
 中返回，注册了这片IO空间的设备出来响应要求，进行一些处理。处理完了，就回去接着
 ioctl(KVM_RUN)就好了。
@@ -81,7 +85,7 @@ ARM aarch64，编译命令如下（我验证的时候最新的stable版本是2.9
 然后我们要加一个设备驱动，qemu/hw/目录里面全部都是，每个就是一个设备驱动，你找
 一种驱动来拷贝就好。
 
-如果你要模拟PCIE设备，推荐模仿edu.c，这个模块有文档(qemu/docs/devel)，解释比较
+如果你要模拟PCIE设备，推荐模仿edu.c，这个模块有文档(qemu/docs/specs)，解释比较
 充分，但你要图简单（模拟PCIE设备你至少要模拟配置空间吧），你可以像我一样，直接
 模拟platform_device，我选的拷贝对象是pl011，你自己可以先运行一个虚拟机，然后到
 /sys/devices/platform里面挑，看哪个顺眼学哪个就好了。
@@ -92,22 +96,23 @@ ARM aarch64，编译命令如下（我验证的时候最新的stable版本是2.9
 一个设备驱动类似一个Linux内核的LKM，通过type_init(type_init_function)定义，其语
 义空间如下：
 
-Type/Class：一种设备类型（相当于Java中的Class）
+Type/Class
+        一种设备类型（相当于Java中的Class）
 
-Instance：一个设备实例（相当于Java中的Object)
+Instance
+        一个设备实例（相当于Java中的Object)
 
 通常你在Instance的初始化函数中申请一些MemoryRegion，注册你的IO空间被访问的回调
 函数，问题就基本解决了）
 
-注：更多信息，参考后面的QOM一节。
-
+        | 注：更多信息，参考后面的QOM一节。
 
 创建设备
 =========
 
 增加设备驱动仅仅是表明这个设备可以被创建了，还没有创建。设备由“机器”来定义，就
 是你用-machine xxxx指定的那个东西。这也是一个驱动，比如我们在ARM平台上常用virt
-这中平台，用的机器定义就是qemu/hw/arm/virt.c。RISCV也有类似的，比如
+这种平台，用的机器定义就是qemu/hw/arm/virt.c。RISCV也有类似的，比如
 qemu/hw/riscv/virt.c。
 
 这个也基本上不用学，你仿照其他设备那样创建一个设备就可以了。一般包括两个动作：
@@ -116,6 +121,18 @@ qemu/hw/riscv/virt.c。
    sysbus_create_simple(驱动的名字，IO地址，IRQ编号)。
 
 2. 创建dts或者acpi入口，这个都有标准函数，比如qemu_fdt_add_subnode()。
+
+代码示意如下：
+
+        .. code-block:: c
+
+        dev = qdev_new(设备类型);
+        ... // 设置dev其他属性
+        sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+        sysbus_connect_irq(dev, i, irq)... //注册每个irq
+        memory_region_add_subregion(get_system_memory(), base, sysbus_mmio_get_region(s, 0)); //注册mmio空间
+
+通用平台设备和PCIE桥也是一种特殊的设备，方法是一样的。
 
 做完这个动作，用这个虚拟机运行你的Linux，对应的设备就能被发现到。
 
@@ -221,6 +238,7 @@ iommu是操作上下文，addr是物理地址，flag是访问属性，iommu_idx�
 剩下的问题可能是花几个小时试一试了。
 
 
+
 QOM
 ====
 
@@ -248,7 +266,7 @@ Qemu是用C写的，不支持面向对象特性，但偏偏设备极为适合使
 
 * Interface：一种特殊的类。不用于继承，用于实现
 
-* State：一个纯概念的东西，表示类或者类实例的数据。呈现TypeInfo的class_size和
+* State：一个纯概念的东西，表示类或者类实例的数据。呈现为TypeInfo的class_size和
   instance_size，子类的State必须包含父类的数据本身
 
 * Device：类型是DeviceClass的“device”的一种Object。
@@ -331,3 +349,4 @@ qdev_create()创建，也可能会是在处理命令行参数device的时候用q
 整个QOM就管理两种对象：Device和Bus。两者通过props进行互相关联。这种关联有两种类
 型：composition和link，分别用object_property_add_child/link()建立。最后用qemu
 console中使用Info qom-tree命令看到的树状结构就是这个属性建立的关联。
+
