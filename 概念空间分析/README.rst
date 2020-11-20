@@ -27,3 +27,4 @@
    infiniband概念空间分析
    Linux iommu和vfio概念空间解构
    vfio-mdev逻辑空间分析
+   qemu概念空间分析
