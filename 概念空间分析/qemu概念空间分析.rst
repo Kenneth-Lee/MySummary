@@ -1,7 +1,7 @@
 .. Kenneth Lee 版权所有 2020
 
 :Authors: Kenneth Lee
-:Version: 0.1
+:Version: 0.2
 
 qemu概念空间分析
 ****************
@@ -14,7 +14,8 @@ qemu概念空间分析
 
         :doc:`../软件构架设计/在qemu中模拟设备`
 
-这个文档当前的版本还在写作中，根据需要会慢慢补充更多的内容。
+这个文档当前的版本还在不断更新中，后面根据需要会慢慢补充更多的内容。等我觉得补充
+的内容足够多了，我会把版本和升级到1.0以上。
 
 基础名称空间
 ============
@@ -25,8 +26,8 @@ Host
         也可以表示运行Qemu的那个操作系统，反正不是被虚拟的那个平台。
 
 VM/Guest
-        这表示被模拟的那个平台。如果我们在X86上模拟一个RISCV，X86就是Host，
-        而RISCV是VM或者Guest。如果我们说Host的CPU，那么这个CPU是X86的，而如果
+        这表示被模拟的那个平台。如果我们在X86上模拟一个RISCV的机器，X86就是Host
+        ，而RISCV是VM或者Guest。如果我们说Host的CPU，那么这个CPU是X86的，而如果
         我们说Guest的CPU，那么这个CPU是RISCV的。
 
 Backend
@@ -41,7 +42,7 @@ Qemu使用glib作为基础设施，所以，读者如果需要和代码细节进
 执行模型
 ========
 
-整个qemu软件的执行模型如下：
+整个qemu软件的执行模型用Pyhton作为伪码可以表达如下：
 
 .. code-block:: python
   
@@ -61,12 +62,15 @@ Qemu使用glib作为基础设施，所以，读者如果需要和代码细节进
 
 Qemu是Host上的一个进程，它模拟了一个VM，这是我们理解Qemu的基础。
 
-一个VM就是一组Object的组合体，Qemu的模拟过程就是执行这些对象，然后用这些对象的
-模拟行为去改变其他对象的状态，从而模拟VM的行为。
+一个VM是一组被模拟对象（Object）的组合体，Qemu的模拟过程就是模拟这些对象在时间
+的发展过程中的状态变化，以及它们之间的互相影响，从而模拟VM的行为。
 
-对象主要有两种：cpu和device。qemu为每个cpu创建一个线程，然后这些线程就好像占据
-了整个CPU一样，顺序模拟CPU的每个跳动的行为了（通常是执行指令）。Device当然也可
-以创建自己的线程，但更多时候，是它被动被CPU的行为所控制。
+Qemu的对象主要有两种：cpu和device。qemu为每个Guest的CPU对象创建一个线程，这些线
+程就可以利用Host CPU的算力，模拟VM CPU在遇到每条指令时的行为，更新VM CPU对象的
+状态，如果遇到VM CPU做了IO一类的影响其他对象的行为，这个线程就暂时离开VM CPU的
+模拟，跳出来，寻找对应的设备（或者其他CPU），去处理这个变化了。
+
+Device当然也可以创建自己的线程，但更多时候，是它被动被CPU的行为所控制。
 
 .. note::
 
@@ -76,16 +80,18 @@ Qemu是Host上的一个进程，它模拟了一个VM，这是我们理解Qemu的
    我们常常不得不跨越这些独立空间之间的交叉空间，请读者特别注意分清楚这些概念属
    于哪个概念空间。
 
-上面代码中的cpu.run(vm)，有不同的cpu backend。比如，对于KVM backend，这本质
-是一个系统调用，用户进程进入Hypervisor，由Hypervisor决定如何实际执行相关代码，
-而用户进程自身则被挂起在当前线程上了。而对于TCG backend，TCG程序会直接使用当前
-线程去翻译当前指令为一段本地执行代码，然后跳进翻译缓冲去执行。
+上面代码中的cpu.run(vm)，有不同的cpu backend。比如，对于KVM backend，这本质是一
+个系统调用，用户进程进入Hypervisor，由Hypervisor决定如何实际执行相关代码，而用
+户进程自身则等待在系统调用上。而对于TCG backend，TCG程序会直接使用当前线程去翻
+译当前指令为一段本地执行代码，然后跳进翻译缓冲去执行，这个执行本身就是用户线程
+的一部分。
 
 无论是哪种过程，我们在总体上都可以看作是一种黑盒，如果它用自己的逻辑可以一直执
 行下去，就在黑盒中一直占据Host上的这个线程，知道它碰到一个无法处理的事件，它就
 可以从cpu.run(vm)退出，Qemu就可以分析这个退出的原因，调用其他的对象去处理这个原
 因。比如cpu.run(vm)中有人访问了io，Qemu退出来后就可以根据这个io的地址看是哪个
-device backend提供的，让对应的backend完成自己的动作即可。
+device backend提供的，让对应的backend完成自己的响应动作。
+
 
 QOM
 ====
@@ -160,7 +166,9 @@ props
      - DeviceState
      - 可以通过qdev_new创建
 
-我们看一个简单的例子建立感性认识：
+实例化这些类，就可以构成一个完整的VM。
+
+我们看一个简单的例子对类建立感性认识：
 
 .. code-block:: C
 
@@ -217,29 +225,36 @@ qdev_create()创建，也可能会是在处理命令行参数device的时候用q
 设备被创建后，这个设备的realized属性被设置为true，对应的函数就会被调用，这里一
 般用于实现和backend的关联。
 
-整个QOM就管理两种对象：Device和Bus。两者通过props进行互相关联。这种关联有两种类
-型：composition和link，分别用object_property_add_child/link()建立。最后在qemu
-console中使用Info qom-tree命令看到的树状结构就是这个属性建立的关联。
+整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关联。这种关联有两
+种类型：composition和link，分别用object_property_add_child/link()建立。最后在
+qemu console中使用Info qom-tree命令看到的树状结构就是这个属性建立的关联。
 
-child和link
-------------
+child和link关联
+----------------
 child和link是通过对象props建立的关联。本质上就是给一个对象增加一个prop，名字叫
 child<...>或者link<...>，和手工创建一个这样的属性也没有什么区别。
 
-它的主要作用是可以枚举，比如调用：
+child的主要作用是可以枚举，比如：
 
 .. code-block:: C
 
    object_child_foreach();
    object_child_foreach_recursive();
 
-对每个child对象做相同的操作。而link通常用来做简单的索引，比如：
+利用这个机制，比如你模拟一个SAS卡，上面有多个端口，端口就可以创建为SAS的一个
+child，而端口复位的时候就可以用这种方法找到所有的子端口进行通知。
+
+而link通常用来做简单的索引，比如：
 
 .. code-block:: C
 
    object_link_get_targetp();
 
-这不算什么特别的功能，只是简单的数据结构控制而已。
+这可以用于找关联设备，比如IO设备的IOMMU或者GIC控制器，或者一个网卡关联的PHY设备
+等。
+
+这不算什么特别的功能，只是简单的数据结构控制而已。用户自己用其他方法建立索引
+去找到其他设备，也无不可。
 
 MemoryRegion
 =============
