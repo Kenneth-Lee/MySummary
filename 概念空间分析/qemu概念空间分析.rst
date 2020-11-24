@@ -159,12 +159,12 @@ props
      - "bus"
      - BusClass
      - BusState
-     -
+     - 包含一组qbus_控制函数
    * - 设备
      - "device"
      - DeviceClass
      - DeviceState
-     - 可以通过qdev_new创建
+     - 可以通过qdev_new创建，还包括一组qdev_控制函数
 
 实例化这些类，就可以构成一个完整的VM。
 
