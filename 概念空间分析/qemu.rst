@@ -205,7 +205,10 @@ Instances列表中给定了一组类名称，表示一组没有State数据的类
 对应的回调，但不能使用那一层的数据。
 
 静态定义的Type的class_init可以在系统初始化的时候完成调用，动态定义的通过Lazy算
-法在创建类的时候完成。
+法在创建类的时候完成。这个回调的作用是让你有机会替换父类的回调函数。以便让你调
+用父类实现的方法的时候，可以换用一个新的函数。比如你的父类是A，子类是B，父类实
+现一个relealize函数，里面调用ClassA->config()，你要换掉这个函数，只要在B的
+class_init中换一个函数就可以了。
 
 对象通过object_new("object_name")来创建，这可能会是在machine初始化的时候调用
 qdev_create()创建，也可能会是在处理命令行参数device的时候用qdev_device_add()创
@@ -260,8 +263,8 @@ MemoryRegion
 =============
 
 本小节看看qemu的内存管理逻辑。对于VM来说，它有它视角中的内存，当这个内存被VM中
-的CPU或者设备访问，我们还需要Host中有backend去支撑这个访问。Qemu使用
-MemoryRegion描述这个视角的内存。它包含如下一些子概念：
+的CPU或者设备访问，我们还需要Host中有backend去支撑这个访问，所以，qemu有Host视
+角中的内存。Qemu使用MemoryRegion描述这个视角的内存。它包含如下一些子概念：
 
 MemoryRegion
         这表示一个面向VM的内存区，以下简称MR。请注意了，MR的VM的内存区的描述，
@@ -270,8 +273,15 @@ MemoryRegion
         （不是说mmio，是说x86的LPC的IO）也是一个MR。MR内部包含多个不同设备的
         mmio也是一个MR。所以MR是个层叠的概念。
 
+        但部分基础的内存层是真的分配和Host一侧用于支持前端的backend内存的，这个
+        这个真正的内存指针在MR->ram_block中。
+
         全系统的内存MR可以通过get_system_memory()拿到，IO MR可以通过
         get_system_io()拿到。
+
+RAMBlock
+        这是MR的ram_block的类型，表示一段真实的Host一侧的内存，它可以是创建的
+        时候就分配的，也可能是用Lazy算法动态一点点增加的。
 
 MemoryRegionSection
         MR中的一个分段，简称MRS。
@@ -279,15 +289,22 @@ MemoryRegionSection
 FlatView
         这表示看到的地址空间，本文简称FV。这个概念比较绕。我们这样说：AS是立体
         的，里面的MR是相互独立的，他们可以交叠，转义，动态开关等。但当你去访问
-        的时候，某个时刻，某个物理地址总是对应着某个MR中的地址，FlatView用来表
-        示层叠的结果。另外它也提供多个访问源互斥的锁。
+        的时候，某个时刻，某个物理地址总是对应着某个MR中（某段MRS）的地址，
+        FlatView用来表示层叠的结果。另外它也提供多个访问源互斥的锁。
 
 AddressSpace
         这表示一个地址空间，以下简称AS。一个地址空间可以包含多个不同属性的MR，
         AS是MR的地址表述，基于MR的信息把空间分段成多个MRS，然后组成FV。
 
+        全系统的get_system_memory()和get_system_io()对应的AS是
+        address_space_meory和address_space_io，也可以直接被其他驱动所访问。
+
         综合来说，MR是提供者角度的内存，AS是使用者角度的内存。MRS和FV是两者的
         关联。
+
+MemoryRegionCache
+        IO MR中访问过的数据可以放在Cache中，这个Cache简称MRC，现在主要就是给
+        virtio用。
 
 根据这个定义，MR是层叠的概念，上一层是本层的container，全系统的根container就是
 system_memory和system_io。这个空间的大小就是Guest的虚拟空间的大小。其他世界的内
@@ -327,7 +344,7 @@ Device Backend的访问则走这个路径：
 
 .. code-block: C
 
-   dma_memory_rw(&address_space_memory, pa, buf, size, directory)
+   dma_memory_rw(&address_space_memory, pa, buf, size, direction);
 
 这仍从AS开始，从AS得到FV，然后定位MRS，最终找到MR，之后作为RAM处理还是IO处理，
 就又MR的属性决定了。这个代码是这样的：
@@ -344,11 +361,44 @@ Device Backend的访问则走这个路径：
        ...
    }
 
-MR有很多类型，RAM，ROM，IO等，这个不在这里细究，我们只深入分析一下IOMMU类型。
+还有一种Device Backend的DMA访问路径是这样的：
+
+.. code-block: C
+
+        dma_memory_map(address_space, pa, len, direction);
+        dma_memory_unmap(address_space, buffer, len, direction, access_len);
+
+这有两种实现策略：如果这片MR背后有直接分配的内存，那最好办，直接把本地内存的指
+针拿过来就可以了，unmap的时候保证发起相关的通知即可。如果没有，那可以使用Bounce
+DMA Buffer机制。也就是说，直接另外分配一片内存，到时映射过来就是了。
+
+MR有很多类型，RAM，ROM，IO等：
+
+.. code-block: C
+
+   memory_region_init(mr, owner, name, size);
+   memory_region_init_alias(mr, owner, name, orig, offset, size);
+   memory_region_init_io(mr, owner, ops, opaque, name, size);
+   memory_region_init_iommu(_iommu_mr, instance_size, mrtypename, owner, name, size);
+   memory_region_init_ram_nomigrate(mr, owner, name, size, errp);
+   memory_region_init_ram_shared_nomigrate(mr, owner, name, size, share, errp);
+   memory_region_init_ram_shared_nomigrate(mr, owner, name, size, share, errp);
+   memory_region_init_ram(mr, owner, name, size, errp);
+   memory_region_init_ram_ptr(mr, owner, name, size, ptr);
+   memory_region_init_ram_device_ptr(mr, owner, name, size, ptr);
+   memory_region_init_ram_from_fd(mr, owner, name, size, share, fd, errp);
+   memory_region_init_ram_from_file(mr, owner, name, size, align, ram_flags, path, errp);
+   memory_region_init_rom(mr, owner, name, size, errp);
+   memory_region_init_rom_device(mr, owner, ops, opaque, name, size, errp);
+   memory_region_init_rom_device(mr, owner, ops, opaque, name, size, errp);
+   memory_region_init_rom_device_nomigrate(mr, owner, ops, opaque, name, size, errp);
+   memory_region_init_rom_device_nomigrate(mr, owner, ops, opaque, name, size, errp);
+
+这个不在这里一一细究，我们只深入分析一下IOMMU类型。
 
 IOMMU的作用是把设备发出的地址进行一次映射，再作为物理地址去访问。如果你仅仅是要
 给你自己的设备创建翻译，自己实现一套协议就可以了，最终访问物理地址的时候还是可
-以用上面的方法访问就行。
+以用上面的方法访问。
 
 但如果要实现通用的IOMMU驱动，则可以用IOMMU MR，比如下面这个是ARM SMMU实现：
 
@@ -410,6 +460,320 @@ translate和notifiy_flag_changed回调，决定地址作什么转换，剩下的
 了。如果你模拟的系统有中断控制器，实现你的回调，然后让你的设备关联它，想办法通过
 比如prop等手段把请求转过去，让中断控制器发qemu_set_irq()就可以了。
 
+virtio
+=======
+
+virtio是OASIS的标准，我没有调查它的背景，应该是Redhat和IBM等发起的组织吧，它的
+目标是定义一个标准的虚拟设备和Guest的接口。也就是说在设备一侧实现“半虚拟化”，让
+guest感知host的存在，让guest上的模拟变成一种guest和host通讯的行为。
+
+标准
+-----
+在本文写作的时候，最新的virtio版本是1.1，我们这里先看看这个版本的语义空间。
+
+virtio现在支持三种传输层，virtio的语义可以建立在任一种传输层上，只要传输层能满
+足这些语义的表达就可以了：
+
+PCI
+        这是较通用的方式，设备可以通过PCI协议自动发现，Host-Guest之间也可以直接
+        模拟成PCI/PCI接口进行相互访问。
+
+MMIO
+        这用于平台设备，需要通过devtree一类的方式进行设备枚举。Host-Guest间通过
+        一般的MMIO方式进行通讯。
+
+Channel I/O
+        这是IBM S/390的通用IO接口，我们有两种方式做分析就够了，这种忽略。
+
+不同的方式使用不同的传输层协议，但这些传输层协议维护一样的高层语义。下面重点讨
+论这些高层语义的概念空间。在下面的讨论中，比如我们说virtio支持Device Status，这
+个域具体呈现为PCI的配置空间还是MMIO中的一个域，是一个域还是多个域，我们不关心，
+我们关心的是必须存在这么一个概念，并且这个概念必须承载所定义的语义。
+
+
+控制域
+-------
+控制域相当于设备的MMIO空间，提供直接的IO控制。下面是一些典型的控制域：
+
+Device Status
+        设备状态。这个概念同时被Host和Guest维护，而被虚拟机管理员认知。它包含
+        多个状态位，比如ACKNOWLEDGE表示这个设备被Guest驱动认知了，而
+        DEVICE_NEED_RESET表示Host出了严重问题，没法工作下去了。
+
+Feature Bits
+        扩展特性位。这个域也是Host和Guest共同维护的。Host认，Guest不认，对应位
+        也不会设置，反之亦然。
+
+在MMIO传输层中，部分域甚至是复用的，比如配置第一个queue的时候，给queue id写0，
+后面的配置就是针对vq 0的；给queue id写1，后面的配置就是针对vq 1的。强调这一点，
+是要说明，控制域不大可能直接通过共享内存可以实现。
+
+通知
+`````
+通知用于主动激活另一端的行为。virtio支持三种通知：
+
+配置更改
+        Host到Guest，在配置空间发生更改的时候发出
+
+Available Buffer更改
+        Guest到Host，表示数据被写入virtio队列
+
+Used Buffer更改
+        Host到Guest，表述virtio处理了数据，返回数据到Guest。
+
+这些通知在不同的传输层协议会有不同的方式，比如Host到Guest常常会用Guest一侧的中
+断，但这个不是根本性的要求。
+
+virtqueue
+``````````
+virtqueue是Host和Guest的通道，目标是要建立一个两者间的共享内存通讯通道，后面把
+它简称为vq。和其他共享内存的通讯方式一样，vq通过环状队列协议来实现。队列的深度
+称为Queue Size，每个vq包括收发两个环，称为vring，其中Guest发方的叫Available
+ring，另一个方向称为Used ring，深度都是Queue Size。
+
+vq的报文描述符称为Descriptor，在本文中我们简称bd（Buffer Descriptor），它不包含
+实际的数据，实际的数据称为Buffer，由bd中的指针表达，指针是Guest一侧的物理地址。
+virtio允许bd分级，bd的指针可以指向另一个bd的数据，这可以扩展bd数量的不足。
+Buffer可以带多个Element，每个Element有自己的读写属性，新的Element需要使用另一个
+bd，通过前一个bd的next指向新的bd，把多个Element连成同一个Buffer。
+
+整个通讯的内存控制方都在Guest，是Guest分配了vq和Buffer的内存，然后传输到Host端
+，而Host端根据协议，对内存进行读写，响应Guest的请求。这一点和普通的真实设备是一
+样的。这也是为什么很多人希望把硬件接口直接统一成virtio接口。这样可以少写一个驱
+动，而虚拟设备管理说不定可以直接交给下一层的Hypervisor。
+
+前面描述的概念是virtio 1.0和之前支持的格式，称为split vq。1.1以后增加了一种
+packed vq，其原理是把Available和Used队列合并，Buffer下去一个处理一个，不需要不
+同步的Used队列来响应。除了这一点，概念空间完全是自恰的。
+
+Host
+-----
+理解了标准接口定义上的基本理念，现在看看Host一侧实现的概念空间。
+
+Host一层virtio设备的继承树一般是这样：::
+
+        TYPE_BUS -> TYPE_VIRTIO_BUS -> TYPE_VIRTIO_PCI_BUS
+        TYPE_DEVICE -> TYPE_VIRTIO_DEVICE -> TYPE_VIRTIO_XXXXX
+        TYPE_PCI_DEVICE -> TYPE_VIRTIO_PCI -> TYPE_VIRTIO_PCI_XXXX_BASE -> TYPE_VIRTIO_PCI_XXXX
+                                                                        -> TRANSITIONAL_DEV
+                                                                        -> NON_TRANSITIONAL_DEV
+
+总线类用于设备的总线注册，属于辅助性质的，重点的是设备本身。在设备中，PCI这里比
+较特别，分了两层，下面有多种设备的类型的变体，这涉及VIRTIO不同版本的兼容性问题
+，这里不深入讨论，我们下面的讨论聚焦在TYPE_VIRTIO_DEVICE的通用概念上，PCI设备可以
+类比。但我们还是给出这个概念的定义：
+
+TRANSITIONAL_DEV
+        这个概念现在仅针对PCI virtio设备，表示这个设备是否支持新旧接口的过渡。
+        NON_TRANSITIONAL_DEV就支持一种接口，TRANSITIONAL_DEV支持多个版本接口的
+        协商。
+
+TYPE_VIRTIO_XXXXX
+``````````````````
+TYPE_VIRTIO_XXXX实现一个具体的设备，这层实现主要通过virtio接口建立通讯通道，原
+理大致是：::
+
+        virtio_init(vdev, ...);
+        vq[i] = virtio_add_queue(vdev, callback);...
+        ...
+        virtio_delete_queue(vq[i]);
+        virtio_cleanup(vdev);
+
+这里的初始化主要是在vdev中创建基本的数据结构，然后挂入vm的管理系统中（比如挂入
+vm状态更新通知列表中等）。由于真正的queue的共享内存是Guest送下来的，所以这里仅
+仅是在创建相关的管理数据结构而已。
+
+callback的实现原理展示如下：::
+
+        element = virtqueue_pop(vq[i]);
+        处理element，这是一个sg接口，需要分段处理或者合并以后处理。
+        if (need_respose) {
+                virtqueue_push(vq[i], element);
+                virtio_notify(vdev, vq[i]);
+        } else {
+                virtqueue_detach_element(vq[i], element, ...);
+                g_free(element);
+        }
+
+virtqeue_push/pop()做了一次拷贝，理论上你是可以直接在原位处理的，但qemu现在没有
+提供这样的接口。
+
+TYPE_VIRTIO_DEVICE
+````````````````````
+然后我们看TYPE_VIRTIO_DEVICE一层的原理：TYPE_VIRTIO_DEVICE是一个总线为
+TYPE_VIRTIO_BUS的设备，这一层在设备实现上主要是创建vq（固定数量，现在是1024），
+处理标准配置，以及实现各种通知机制。比如vq内存被访问的时候进行对应的响应等。
+这主要通过跟踪事件通知机制实现，比如guest访问了设备配置空间，变成host端的
+io_writex()，host侧IO驱动（比如PCIE）发起memmory_region_transaction，在commit的
+时候触发virtio_memory_listener_commit()。
+
+所以，所有配置性的行为，其实走的都是io dma访问的路径。而virqueue_push/pop则走的
+是MemoryRegionCache的路径，后者通过dma_memory_map() 找到实际的host可见的内存位
+置，直接在原位访问。这一层对上一层的接口在分析上一层的使用接口时已经可以看到了。
+这里完整整理一下：::
+
+        virtio_instance_init_common(obj); //用于PCI的实现中子类instance_init的初始化
+
+        //设备级处理
+        virtio_init(vdev, ...);
+        virtio_cleanup(vdev, ...);
+        virtio_error(vdev, ...);
+        virtio_device_set_child_bus_name(vdev, bus_name);
+
+        //队列管理
+        virtio_add_queue(vdev, ...);
+        virtio_del_queue(vdev, ...);
+        virtio_delete_queue(vq);
+        virtqueue_push(vq, elem, ...);
+        virtqueue_flush(vq, ...);
+        virtqueue_detach_element(vq, elem, ...);
+        virtqueue_unpop(vq, elem, ...);
+        virtqueue_rewind(vq, ...);
+        virtqueue_fill(vq, elem, ...);
+        virtqueue_map(vdev, elem);
+        virtqueue_pop(vq, ...);
+        virtqueue_drop_all(vq);
+        qemu_get_virtqueue_element(vdev, file, ...); //用本地文件做backend
+        qemu_put_virtqueue_element(vdev, file, ...);
+        virtqueue_avail_bytes(vq, ...);
+        virtqueue_get_avail_bytes(vq, ...);
+
+        // 通知和状态类
+        virtio_notify_irqfd(vdev, vq);
+        virtio_notify(vdev, vq);
+        virtio_notify_config(vdev);
+        virtio_queue_get_notification(vq);
+        virtio_queue_set_notification(vq, ...);
+        virtio_queue_ready(vq);
+        virtio_queue_empty(vq);
+
+        // snapshot管理
+        virtio_save(vdev, file);
+        virtio_load(vdev, file, ...);
+
+这一层之后下面提供了Host的直接访问接口层：::
+
+        /*
+         * 注1：X是字长后缀
+         * 注2：modern修饰1.0以后的版本的协议
+         */
+        virtio_config_<modern>_readX(vdev, addr);
+        virtio_config_<modern>_writeX(vdev, addr, data);
+        virtio_queue_set_addr/num/max_num...(vdev, ...);
+        virtio_queue_get_addr/num/max_num...(vdev, ...);
+        int virtio_get_num_queues(vdev);
+        virtio_queue_set_rings(vdev, ...);
+        virtio_queue_update_rings(vdev, ...);
+        virtio_queue_set_align(vdev, ...);
+        virtio_queue_notify(vdev, ...);
+        virtio_queue_vector(vdev, ...); //MSI-X特性支持
+        virtio_queue_set_vector(vdev, ...);
+        virtio_queue_set_host_notifier_mr(vdev, mr, ...);
+        virtio_set_status(vdev, ...);
+        virtio_reset(vdev);
+        virtio_update_irq(vdev);
+        virtio_set_features(vdev, feature);
+
+Guest
+------
+再看看Guest一侧Linux的概念空间。Guest一侧包括两层，一层是virt，实现具体的设备，
+一层是ring，提供传输接口。Linux上只有PCI接口的virtio，因为也没有其他办法做设备
+发现了。
+
+virt
+`````
+virt层类似其他的设备驱动，基于::
+
+        register_virtio_driver(&driver);
+        unregister_virtio_driver(&driver);
+
+进行驱动注册，driver中给定id表进行设备匹配，在probe的时候，通过
+virtio_cread...()函数直接读配置。然后按如下Pattern进行通讯：::
+
+        probe(vdev) {
+                vqs = kalloc(...)
+
+                vdev->config->find_vqs(vdev, num_vqs, vqs, callbacks, names, 
+                        ctx, irq_affi);
+
+                // 发
+                在data中准备数据
+                virtqueue_add_outbuf(vq, sg, num, data, gfp);
+
+                // 收（可以放在callback中）
+                buf = virtqueue_get_buf(vq, ...);
+                处理buf的数据
+                free(buf);
+        }
+
+这个工作Pattern值得注意点有这么几个：
+
+1. vqs通过vdev提供，这要靠设备发现逻辑来配，比如PCI的配置逻辑就在
+   vp_modern_find_vqs()中，主体是ring一层的函数vp_find_vqs()。
+
+2. 接收一侧使用callback的方式做的，这个回调的上下文是中断。
+
+3. virtio驱动匹配的不是PCIE设备，而是virtio设备，所以一个virtio设备实际上有两个
+   驱动，一个是PCI驱动，通过虚拟的PCIE总线枚举发现virtio设备，然后用那个设备的
+   驱动创建virtio设备，从而匹配对应的驱动。
+
+ring
+`````
+现在来看完整的ring层对上层暴露的接口（vp是virtio_pci的缩写）：::
+
+        /* 设备管理 */
+        register_virtio_device(dev);
+        unregister_virtio_device(dev);
+        virtio_add_status(dev, ...);
+        virtio_break_device(dev);
+        virtio_config_changed(dev);
+        virtio_config_disable(dev);
+        virtio_config_enable(dev);
+        virtio_finalize_features(dev);
+        virtio_max_dma_size(vdev);
+        virtio_device_for_each_vq(vdev, vq)
+
+        /* 关联vqs ×/
+        vp_find_vqs(vdev, nvqs, vqs[], callbacks[], ...);
+        vp_del_vqs(vdev);
+
+        /* 通知 */
+        vp_synchronize_vectors(vdev);
+        vp_notify(vq);
+        vp_bus_name(vdev);
+
+        /* CPU affinity */
+        vp_set_vq_affinity(vq, cpu_mask);
+        vp_get_vq_affinity(vdev, index);
+
+        /* vq */
+        virtqueue_add_outbuf(vq, ...);
+        virtqueue_add_inbuf(vq, ...);
+        virtqueue_add_inbuf_ctx(vq);
+        virtqueue_add_sgs(vq, ...);
+        virtqueue_kick(vq);
+        virtqueue_kick_prepare(vq);
+        virtqueue_notify(vq);
+        virtqueue_get_buf(vq, ...);
+        virtqueue_get_buf_ctx(vq, ...);
+        virtqueue_enable/disable_cb(vq);
+        virtqueue_enable_cb_prepare(vq);
+        virtqueue_poll(vq, ...);
+        virtqueue_enable_cb_delayed(vq);
+        virtqueue_detach_unused_buf(vq);
+        virtqueue_get_vring_size(vq);
+        virtqueue_is_broken(vq);
+        virtqueue_get_vring/desc_addr/avail_addr/used_addr(vq);
+
+这是ring层自己内部的封装接口：::
+
+        /* vring建立 */
+        vring_create_virtqueue(...);
+        vring_new_virtqueue(...);
+        void vring_del_virtqueue(vq);
+        vring_transport_features(vdev);
+        vring_interrupt(irq, vq);
+
 
 其他小设施
 ===========
@@ -465,3 +829,12 @@ error_fatal
 调用一方把error_abort或者error_fatal传进去，出来的时候根据这个参数检查实际的错误
 是什么。
 
+事件通知
+--------
+Qemu的时间通知用于两个线程间进行事件通知，在Linux下主要是对eventfd(2)的封装，在
+Windows下是对CreateEvent()的封装。它主要是封装这样一对接口：::
+
+        event_notifier_set(EventNotifier);
+        event_notifier_test_and_clear(EventNotifier);
+
+前者发起通知，后者测试通知。
