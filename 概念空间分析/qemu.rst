@@ -97,7 +97,7 @@ QOM
 ====
 
 Qemu的代码主要是基于C的，不支持面向对象特性，但偏偏设备极为适合使用面向对象管理
-。所以Qemu写了一套用C模拟的面向对象接口，QOM，Qemu Object Model。Qemu机会所有被
+。所以Qemu写了一套用C模拟的面向对象接口，QOM，Qemu Object Model。Qemu几乎所有被
 模拟的对象，都通过这种对象管理。
 
 QOM是一个粗封装的面向对象模型，它包含这样一些子概念：
@@ -247,6 +247,25 @@ child的主要作用是可以枚举，比如：
 利用这个机制，比如你模拟一个SAS卡，上面有多个端口，端口就可以创建为SAS的一个
 child，而端口复位的时候就可以用这种方法找到所有的子端口进行通知。
 
+实际上，整个机器的对象machine就是根对象的一个child。下面是qemu控制台下运行
+qom-list的一个示例：::
+
+        (qemu) qom-list /
+        type (string)
+        objects (child<container>)
+        machine (child<virt-5.2-machine>)
+        chardevs (child<container>)
+
+        (qemu) qom-list /machine
+        type (string)
+        ...
+        virt.flash1 (child<cfi.pflash01>)
+        unattached (child<container>)
+        peripheral-anon (child<container>)
+        peripheral (child<container>)
+        virt.flash0 (child<cfi.pflash01>)
+        ...
+
 而link通常用来做简单的索引，比如：
 
 .. code-block:: C
@@ -300,7 +319,8 @@ AddressSpace
         address_space_meory和address_space_io，也可以直接被其他驱动所访问。
 
         综合来说，MR是提供者角度的内存，AS是使用者角度的内存。MRS和FV是两者的
-        关联。
+        关联。全系统可以有AS，从一个设备看这个系统，也可以有AS。全系统AS看到的
+        MR，从设备的AS上就不一定能看到。
 
 MemoryRegionCache
         IO MR中访问过的数据可以放在Cache中，这个Cache简称MRC，现在主要就是给
@@ -433,32 +453,98 @@ translate和notifiy_flag_changed回调，决定地址作什么转换，剩下的
 
 中断
 =====
-可能是历史原因，Qemu中的中断都认为是对CPU的一个gpio行为，每个中断源都可以实现为
-一个设备上的gpio pin，比如这样：
+在qemu中，中断本质是cpu_exec()过程中的一个定期判断（如果是KVM一类的真正执行就靠
+KVM本身的硬件机制了，那个原理可以自然想像）。
+
+qemu通过cpu_reset_interrupt/cpu_interrupt()把一个标记种入到CPU中，CPU执行中就
+可以检查这个标记，发现有中断的要求，就调用一个回调让中断控制器backend修改CPU状
+态，之后CPU就在新的状态上执行了。
+
+所以，最原始的方法是你强行吊cpu_reset_interrupt()和cpu_interrupt()。当然，很少
+硬件会这么简单，大部分CPU需要通过中断控制器来控制。中断控制器是个设备（比如
+qdev），具体怎么做完全是实现者的自由度。
+
+可能是历史原因，qemu统一把中断看作是CPU的gpio行为，变成一套完整的接口。比如
+RISCV就是这样的：
 
 .. code-block: C
 
    static void sifive_plic_irq_request(void *opaque, int irq, int level) {
-        dev = opaque;
+        plic_dev = opaque;
         ...
-        cpu_interrupt(); //给对应的CPU发中断，是哪个CPU看你的设计了
+        cpu_interrupt(); //给对应的CPU发中断，是哪个CPU看plic算法了
         ...
    }
-   qdev_init_gpio_in(dev, sifive_plic_irq_request, plic->num_sources);
+   qdev_init_gpio_in(plic_dev, sifive_plic_irq_request, plic->num_sources);
 
-这里的初始化，第一个参数是中断所属设备（用于回调的时候可以找到上下文而已），第
-二个参数是回调，第三个参数是中断的数量。而在回调中，cpu_interrupt()里面具体怎么
-做，就看cpu的backend怎么做的了，通过硬件调度进去也行，在TCG中找一个检查点也行。
+这样组织一下，给中断控制器加下级中断的方法就变成一套统一的函数：
 
-这个函数也可以直接封装成sysbus_init_irq()，这可以少些参数（比如n=1）。
+.. code-blokc: C
 
-除了有qdev_init_gpio_in，还有qdev_init_gpio_out。这里的in，out，就是指gpio的输
-入输出信号，在用于中断的时候，什么时候是in，什么时候是out，好像也没有什么影响，
-因为作为中断使用，根本就不管是in还是out的。
+   qdev_init_gpio_in_xxx(plic, callback, num_irqs);
+   qemu_irq qdev_get_gpio_in(plic, n);
+   qdev_connect_gpio_in_xxx(cpu, n, qemu_irq);
+   sysbus_connect_irq(dev, n, qemu_irq);
 
-有了这个设施以后，发起中断的时候对对应的irq做一个qemu_set_irq，中断就种到系统中
-了。如果你模拟的系统有中断控制器，实现你的回调，然后让你的设备关联它，想办法通过
-比如prop等手段把请求转过去，让中断控制器发qemu_set_irq()就可以了。
+这里的in可以换成out，是gpio的片信号标记，对于模拟来说我觉得关系不大，都用同一
+种就好了。qemu_irq是表示中断的控制结构，包含中断控制器的信息，n是中断控制器内
+的下标。sysbus_开头的接口是对qdev接口的封装，把处理中断的设备作为参数传递进去
+而已（会据此建立设备间的一些关联）。综合起来，这个概念是：
+
+1. 用init实现中断控制器
+
+2. 中断控制器用qev系列函数建立qemu_irq的管理，把plic本地中断号和qemu_irq对应起
+   来
+
+3. connect系列函数把qemu_irq和设备关联起来，和CPU或者全局中断号关联起来（具体
+   和谁关联看中断控制器的设计）。
+
+有了这个设施以后，其他后端发中断就不用去找对应的CPU和设备了，只要给定qemu_irq就
+可以了。这个核心函数是qemu_set_irq()，在实际使用的时候封装成这样一些更贴近使用
+名称空间的接口：
+
+.. code-block: C
+
+        void qemu_irq_raise(qemu_irq irq);
+        void qemu_irq_lower(qemu_irq irq);
+        void qemu_irq_pulse(qemu_irq irq);
+        void pci_irq_assert(PCIDevice *pci_dev);
+        void pci_irq_deassert(PCIDevice *pci_dev);
+        void pci_irq_pulse(PCIDevice *pci_dev);
+
+如果用的是PCI MSI/MSI-X，则中断触发通过msi_notify()来做。按MSI/MSI-X的原理，这
+个行为实际上就是根据MSX PCI配置，在对应的内存地址中写入要求的参数，这个内存地
+址写入的过程通过MR的翻译，最终会匹配到中断控制器的io写上，最后还是那组
+qemu_set_irq()调用。
+
+PCI/PCI-E
+==========
+PCI/PCI-E本质上就是一个代理了很多设备的设备。所以它才有那些BDF的复杂概念，好像
+很灵活，但如果我们从地址分配这个角度看，每个PCI/PCIE根桥就是一个平台设备，这个
+平台设备有自己的MMIO空间，它的所有动态协议，不过是对这个空间的重新分配（基于设
+备对应的Bus-Device-Function）。
+
+所以PCI/PCIE根桥的创建本质上分配一个MMIO空间，并用PCIE作为这个MR的管理设备而已
+。一般套路是：
+
+1. 创建一个PCI/PCIE设备作为Root Bridge，比如TYPE_GPEX_HOST（General PCI EXpress）。
+
+2. 创建ECAM空间（配置空间）
+   * mb = sysbus_mmio_get_region()
+   * mem_region_init_alias(alias...)
+   * memory_region_add_subregion(system_memory, addr, alias)
+
+3. 创建BAR空间
+   * 同2
+
+剩下的事情就是TYPE_GPEX_HOST驱动的问题了。
+
+TYPE_GPEX_HOST的继承树结构：::
+
+  DEVICE <- SYS_BUS_DEVICE <- PCI_HOST_BRIDAGE <- PCIE_HOST_BRIDGE <- GPEX_HOST 
+
+中断的行为类似，先为整个RP分配中断，然后用gpex_set_irq_num()建立PCIE局部irq和全
+局irq的关系即可。
 
 virtio
 =======
@@ -838,3 +924,5 @@ Windows下是对CreateEvent()的封装。它主要是封装这样一对接口：
         event_notifier_test_and_clear(EventNotifier);
 
 前者发起通知，后者测试通知。
+
+.. vim: set tw=78
