@@ -7,13 +7,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="84.547462mm"
-   height="51.182247mm"
-   viewBox="0 0 84.547456 51.182248"
+   width="110.64552mm"
+   height="84.504097mm"
+   viewBox="0 0 110.64551 84.504098"
    version="1.1"
    id="svg1043"
    inkscape:version="1.0.1 (0767f8302a, 2020-10-17)"
-   sodipodi:docname="一个协处理器上下文的例子4.svg">
+   sodipodi:docname="一个协处理器上下文的例子6.svg">
   <defs
      id="defs1037">
     <rect
@@ -320,21 +320,6 @@
          d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
          transform="scale(-0.6)" />
     </marker>
-    <marker
-       inkscape:stockid="Arrow1Mend"
-       orient="auto"
-       refY="0"
-       refX="0"
-       id="Arrow1Mend-8-7-7-6"
-       style="overflow:visible"
-       inkscape:isstock="true">
-      <path
-         inkscape:connector-curvature="0"
-         id="path1083-7-3-6-6"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
-         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
-    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -344,8 +329,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="129.39392"
-     inkscape:cy="85.638086"
+     inkscape:cx="266.3381"
+     inkscape:cy="157.06666"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -377,7 +362,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-25.932208,-6.952447)">
+     transform="translate(-18.047274,-6.952447)">
     <rect
        style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.238448;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect1394"
@@ -388,33 +373,48 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="57.803074"
-       y="31.95298"
+       x="54.708607"
+       y="30.94244"
        id="text1049-36"><tspan
          sodipodi:role="line"
          id="tspan1047-75"
-         x="57.803074"
-         y="31.95298"
-         style="font-size:3.175px;stroke-width:0.264583">CPU</tspan></text>
+         x="54.708607"
+         y="30.94244"
+         style="font-size:3.175px;stroke-width:0.264583">协处理器</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-8)"
+       d="M 36.136224,32.726506 51.699911,32.416655"
+       id="path1428" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:0.1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="33.925117"
+       y="35.557163"
+       id="text1049-36-5-9-7-6"><tspan
+         sodipodi:role="line"
+         x="33.925117"
+         y="35.557163"
+         style="font-size:2.11667px;stroke-width:0.264583"
+         id="tspan3981">协处理器控制指令</tspan></text>
     <text
        xml:space="preserve"
        id="text3991"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect3993);fill:#000000;fill-opacity:1;stroke:none;" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-8-1)"
-       d="M 35.934841,31.832947 51.498529,31.523096"
+       d="M 36.074811,30.064119 51.638499,29.754268"
        id="path1428-7" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:0.1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="40.228489"
-       y="30.440187"
+       x="36.580067"
+       y="28.63097"
        id="text1049-36-5-9-7-6-9"><tspan
          sodipodi:role="line"
-         x="40.228489"
-         y="30.440187"
+         x="36.580067"
+         y="28.63097"
          style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan3981-2">指令</tspan></text>
+         id="tspan3981-2">cpu内部控制</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-8-7-7)"
        d="m 60.794484,16.953488 -0.08206,10.427684"
@@ -431,75 +431,201 @@
          y="20.165236"
          style="font-size:2.11667px;stroke-width:0.264583"
          id="tspan3981-2-5-9-2-9">自身内部反馈：异常，内存访问等</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.4245px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.107015"
+       x="65.67308"
+       y="28.719383"
+       id="text1049-36-3"
+       transform="scale(0.86314343,1.158556)"><tspan
+         sodipodi:role="line"
+         id="tspan1047-75-7"
+         x="65.67308"
+         y="28.719383"
+         style="font-size:1.28419px;stroke-width:0.107015">CPU指令空间构造的</tspan></text>
+    <ellipse
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.353229;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path815-5"
+       cx="55.208466"
+       cy="53.454346"
+       rx="4.9368095"
+       ry="3.4471343" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.12177px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="46.67342"
+       y="61.745258"
+       id="text819-3"
+       transform="scale(1.1369108,0.87957649)"><tspan
+         sodipodi:role="line"
+         x="46.67342"
+         y="61.745258"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan821-5">Init</tspan></text>
+    <ellipse
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.353229;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path815-5-5"
+       cx="58.021572"
+       cy="70.591705"
+       rx="4.9368095"
+       ry="3.4471343" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.12177px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="47.320652"
+       y="81.225441"
+       id="text819-3-4"
+       transform="scale(1.1369108,0.87957649)"><tspan
+         sodipodi:role="line"
+         x="47.320652"
+         y="81.225441"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan821-5-7">loaded</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-8-7-7-6)"
-       d="M 60.817171,44.792272 60.735111,34.364588"
-       id="path1428-6-5-4"
+       style="fill:none;stroke:#000000;stroke-width:0.375828;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-1-3-4-8-1)"
+       d="m 57.564184,67.253363 c 1.89502,-5.914766 0.503812,-8.570039 -1.924647,-10.196497"
+       id="path867-4-5-3-8-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.375828;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-1-3-4-8-1-6)"
+       d="m 53.36894,56.34163 c -2.69912,3.266741 -2.851428,6.879621 2.677764,11.264692"
+       id="path867-4-5-3-8-9-9"
+       inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:0.1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="61.609356"
-       y="41.704887"
-       id="text1049-36-5-9-7-6-9-7-8-1-6-9"><tspan
-         sodipodi:role="line"
-         x="61.609356"
-         y="41.704887"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan3981-2-5-9-2-9-5">中断</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 70.170855,30.07988 c 0.440653,0.12937 3.210232,0 3.210232,0"
-       id="path12599" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 73.450855,28.488505 V 48.019637"
-       id="path12601" />
+       style="font-style:normal;font-weight:normal;font-size:4.85122px;line-height:0.3;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;inline-size:31.5052;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.121281"
+       x="102.23673"
+       y="60.568829"
+       id="text819-9-7-5-0-8-2-5"
+       transform="scale(0.88930984,1.1244675)"><tspan
+         x="102.23673"
+         y="60.568829"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">注：这里描述的是个简化的推演，一个真正</tspan></tspan><tspan
+         x="102.23673"
+         y="62.508682"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">的状态机推演很少可以这么简单的。所以不</tspan></tspan><tspan
+         x="102.23673"
+         y="64.448535"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">要尝试去分析这个例子的细节，它的逻辑本</tspan></tspan><tspan
+         x="102.23673"
+         y="66.388393"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">身是经不起推敲的。比如我可以质疑</tspan><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">running</tspan></tspan><tspan
+         x="102.23673"
+         y="68.32825"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">状态出了异常为什么不回到</tspan><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">loaded</tspan><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">状态？等</tspan></tspan><tspan
+         x="102.23673"
+         y="70.268108"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">等，这些判断要做，就会需要更多的细节分</tspan></tspan><tspan
+         x="102.23673"
+         y="72.207965"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.61708px;line-height:0.3;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';fill:#0000ff;stroke-width:0.121281">析，需求优先级的权衡等等要素了。</tspan></tspan></text>
+    <ellipse
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.353229;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path815-5-5-2"
+       cx="78.471283"
+       cy="74.596573"
+       rx="4.9368095"
+       ry="3.4471343" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:0.1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="74.461578"
-       y="31.718124"
-       id="text1049-36-5-9-7-6-9-7-8-1-6-0"><tspan
+       style="font-style:normal;font-weight:normal;font-size:4.12176px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="65.307739"
+       y="85.778618"
+       id="text819-3-4-5"
+       transform="scale(1.1369108,0.87957649)"><tspan
          sodipodi:role="line"
-         x="74.461578"
-         y="31.718124"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan3981-2-5-9-2-9-4">状态：</tspan><tspan
+         x="65.307739"
+         y="85.778618"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan821-5-7-4">running</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.375827;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-1-3-4-8-1-4)"
+       d="M 79.573471,71.081498 C 81.468491,65.166732 76.482749,50.491157 60.613169,53.829386"
+       id="path867-4-5-3-8-9-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.12176px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="24.585194"
+       y="71.12606"
+       id="text819-3-4-4"
+       transform="scale(1.1369108,0.87957649)"><tspan
          sodipodi:role="line"
-         x="74.461578"
-         y="34.151051"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12621">寄存器（通用/专用/系统...）</tspan><tspan
+         x="24.585194"
+         y="71.12606"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan10854">cpu_load(success)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.375827;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-1-3-4-8-1-6-0)"
+       d="m 51.993235,50.719828 c -4.765831,-3.39729 -9.203667,1.233071 -1.694321,3.683945"
+       id="path867-4-5-3-8-9-9-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.12176px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="29.857365"
+       y="54.579643"
+       id="text819-3-4-4-6"
+       transform="scale(1.1369108,0.87957649)"><tspan
          sodipodi:role="line"
-         x="74.461578"
-         y="36.583977"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12623">Cache</tspan><tspan
+         x="29.857365"
+         y="54.579643"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan10854-8">cpu_load(fail)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.375827;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-1-3-4-8-1-8)"
+       d="M 73.418379,73.762291 C 68.913073,69.487039 65.917097,69.587347 63.397521,71.068737"
+       id="path867-4-5-3-8-9-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.375827;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-1-3-4-8-1-6-3)"
+       d="m 61.767334,72.803575 c 1.770781,3.849829 4.959192,5.555739 11.310109,2.478942"
+       id="path867-4-5-3-8-9-9-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.12176px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="43.903526"
+       y="91.651009"
+       id="text819-3-4-4-2"
+       transform="scale(1.1369108,0.87957649)"><tspan
          sodipodi:role="line"
-         x="74.461578"
-         y="39.016903"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12627">工作队列（预测/执行/...）</tspan><tspan
+         x="43.903526"
+         y="91.651009"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan10854-0">cpu_call(success)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.94219px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0735547"
+       x="79.10527"
+       y="55.706085"
+       id="text819-3-4-4-2-6"
+       transform="scale(0.97745204,1.0230681)"><tspan
          sodipodi:role="line"
-         x="74.461578"
-         y="41.449833"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12631">特权级</tspan><tspan
+         x="79.10527"
+         y="55.706085"
+         style="font-size:1.76532px;stroke-width:0.0735547"
+         id="tspan10854-0-8">cpu控制异常或者内部异常</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.12176px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.103044"
+       x="52.621372"
+       y="72.002678"
+       id="text819-3-4-4-9"
+       transform="scale(1.1369108,0.87957649)"><tspan
          sodipodi:role="line"
-         x="74.461578"
-         y="43.882759"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12633">安全级</tspan><tspan
-         sodipodi:role="line"
-         x="74.461578"
-         y="46.315685"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12635">虚拟化状态</tspan><tspan
-         sodipodi:role="line"
-         x="74.461578"
-         y="48.748611"
-         style="font-size:2.11667px;stroke-width:0.264583"
-         id="tspan12637">……</tspan></text>
+         x="52.621372"
+         y="72.002678"
+         style="font-size:2.47307px;stroke-width:0.103044"
+         id="tspan10854-2">cpu_unload</tspan></text>
   </g>
 </svg>

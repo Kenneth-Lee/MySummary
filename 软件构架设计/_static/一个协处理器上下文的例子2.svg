@@ -135,6 +135,36 @@
          inkscape:transform-center-x="-2.9074309"
          inkscape:transform-center-y="0.044265248" />
     </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend-8-5-4"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1083-7-6-5"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend-8-5-4-1"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1083-7-6-5-0"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -145,7 +175,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
      inkscape:cx="128.11244"
-     inkscape:cy="102.06372"
+     inkscape:cy="66.349434"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -169,7 +199,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -188,14 +218,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="57.594543"
-       y="31.884335"
+       x="55.523022"
+       y="31.894825"
        id="text1049-36"><tspan
          sodipodi:role="line"
          id="tspan1047-75"
-         x="57.594543"
-         y="31.884335"
-         style="font-size:3.175px;stroke-width:0.264583">CPU</tspan></text>
+         x="55.523022"
+         y="31.894825"
+         style="font-size:3.175px;stroke-width:0.264583">CPU主控</tspan></text>
     <rect
        style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.238448;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect1394-3"
@@ -234,8 +264,8 @@
          y="29.181578"
          style="font-size:1.80543px;stroke-width:0.150453">协处理器寄存器组</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 36.273899,31.238914 51.837586,30.929063"
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-8-5)"
+       d="M 35.878909,31.759401 51.442596,31.44955"
        id="path1428" />
     <text
        xml:space="preserve"
@@ -313,5 +343,47 @@
          x="71.81118"
          y="29.35981"
          style="font-size:2.11667px;stroke-width:0.264583">CPU内部逻辑</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="72.510292"
+       y="56.156147"
+       id="text1049-36-5-9-7-3-7"><tspan
+         sodipodi:role="line"
+         id="tspan1047-75-6-1-0-5-8"
+         x="72.510292"
+         y="56.156147"
+         style="font-size:2.11667px;stroke-width:0.264583">硬件对象的组成图</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-8-5-4)"
+       d="M 35.697448,30.119884 51.261136,29.810033"
+       id="path1428-0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="35.728142"
+       y="28.609146"
+       id="text1049-36-5-9-7-6-3"><tspan
+         sodipodi:role="line"
+         id="tspan1047-75-6-1-0-7-6"
+         x="35.728142"
+         y="28.609146"
+         style="font-size:2.11667px;stroke-width:0.264583">其他CPU指令</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-8-5-4-1)"
+       d="m 58.994579,16.28634 0.07771,10.850966"
+       id="path1428-0-6"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="60.468033"
+       y="19.70746"
+       id="text1049-36-5-9-7-6-3-3"><tspan
+         sodipodi:role="line"
+         id="tspan1047-75-6-1-0-7-6-2"
+         x="60.468033"
+         y="19.70746"
+         style="font-size:2.11667px;stroke-width:0.264583">中断</tspan></text>
   </g>
 </svg>
