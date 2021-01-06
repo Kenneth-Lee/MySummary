@@ -37,7 +37,8 @@ Backend
         一个驱动，这个驱动我们称为这个e1000的backend，它是Qemu概念上的。
 
 Qemu使用glib作为基础设施，所以，读者如果需要和代码细节进行对应，最好对GLib的数
-据结构有基本的了解。但本文本身不会深入到这些概念上。
+据结构有基本的了解，Glib提供基本的内存，线程，链表，事件调度等基础设施的封装，
+本文本身不会深入到这些概念上。
 
 执行模型
 ========
@@ -63,14 +64,14 @@ Qemu使用glib作为基础设施，所以，读者如果需要和代码细节进
 Qemu是Host上的一个进程，它模拟了一个VM，这是我们理解Qemu的基础。
 
 一个VM是一组被模拟对象（Object）的组合体，Qemu的模拟过程就是模拟这些对象在时间
-的发展过程中的状态变化，以及它们之间的互相影响，从而模拟VM的行为。
+的发展过程中的状态变化，以及它们之间的互相影响，从而模拟整个VM的行为。
 
 Qemu的对象主要有两种：cpu和device。qemu为每个Guest的CPU对象创建一个线程，这些线
 程就可以利用Host CPU的算力，模拟VM CPU在遇到每条指令时的行为，更新VM CPU对象的
 状态，如果遇到VM CPU做了IO一类的影响其他对象的行为，这个线程就暂时离开VM CPU的
 模拟，跳出来，寻找对应的设备（或者其他CPU），去处理这个变化了。
 
-Device当然也可以创建自己的线程，但更多时候，是它被动被CPU的行为所控制。
+Device当然也可以创建自己的线程，但更多时候，是它被动地被CPU的行为所控制。
 
 .. note::
 
@@ -88,9 +89,9 @@ Device当然也可以创建自己的线程，但更多时候，是它被动被CP
 
 无论是哪种过程，我们在总体上都可以看作是一种黑盒，如果它用自己的逻辑可以一直执
 行下去，就在黑盒中一直占据Host上的这个线程，知道它碰到一个无法处理的事件，它就
-可以从cpu.run(vm)退出，Qemu就可以分析这个退出的原因，调用其他的对象去处理这个原
-因。比如cpu.run(vm)中有人访问了io，Qemu退出来后就可以根据这个io的地址看是哪个
-device backend提供的，让对应的backend完成自己的响应动作。
+可以从cpu.run(vm)退出，Qemu本身的代码可以根据退出的原因，调用其他的对象去响应这
+个原因。比如cpu.run(vm)中有人访问了io，Qemu退出来后就可以根据这个io的地址看是哪
+个device backend提供的，让对应的backend完成自己的响应动作。
 
 
 QOM
@@ -118,6 +119,9 @@ Class
         并保证这个数据结构的第一个成员等于父类的私有数据结构。这样的结果就是父
         类拿到这个指针也可以直接索引到自己的数据结构。
 
+        类有abstract这个概念，和其他语言的abstract的概念相识，表示这个对象不能
+        被实例化。
+
         Class的继承树的根是ClassObject。
         
 Object/Instance
@@ -125,11 +129,17 @@ Object/Instance
         质就是在创建实例。它的数据保存在instance_size的空间中，原理和Class一样，
         需要为父类留空间。
 
+        Object可以通过类型转换（使用类似OBJECT_CHECK这样的函数）转换为父类来使
+        用，这种转换的本质是把父类的Class指针找出来，放在Object的Cache中，然后
+        用这些指针来操作这个类的数据结构（如前所述，子类的数据结构本来就包含了
+        父类的数据结构）。
+
         Instance的继承树的根是Object。
 
 Interface
         一种特殊的类。不用于继承，用于实现。类不能有多个父类，但可以有多个
-        Interface。
+        Interface。它的基本原理和父类本质上是一样的，只是只有函数指针而没有数
+        据结构而已。
 
 State
         一个纯概念的东西，表示类或者类实例的数据。呈现为TypeInfo的class_size和
@@ -137,8 +147,16 @@ State
 
 props
         DeviceClass的一组属性，每个成员叫Property，包含一对set/get函数，从而可
-        以呈现为命令行的-device driver-name的参数（qemu -device
-        driver-name,help可以直接查询device的属性）
+        以呈现为命令行的-device driver-name的参数。
+
+        （qemu -device driver-name,help 可以直接查询device的属性）
+
+        一个非常重要的Property是realized，表示这个类创建以后真正被初始化。作为
+        属性，它的类型是Bool，可以通过object_property_set_bool()设置。对大部分
+        设备，我们都通过设置它的realize和unrealize函数来支持这个属性，从而让设
+        备被创建以后，可以统一进行初始化。这个初始化和instance_init的区别在于
+        ，前者初始化的时候，其他对象的数据结构可能还没有初始化，所以只适合用于
+        和别人没有关系的初始化，后者是在所有静态对象初始化后才被调用的。
 
 下面是一些常用的全局的类：
 
@@ -175,16 +193,26 @@ props
    typedef DeviceClass MyDeviceClass;
    typedef struct MyDeviceState { //这个定义类的实例的数据
           DeviceState parent; //包含父类的State数据，而且必须保证在第一个位置上
-          type my_own_data;...
+          int my_own_data;
+          ...
    } MyDevice;
+
+   static void mydevice_class_init(ObjectClass *oc, void *data) {
+        DeviceClass *dc = DEVICE_CLASS(oc);
+
+        dc->realize = mydevice_realize;
+        dc->unrealize = mydevice_unrealize;
+   }
+
    static const TypeInfo my_device_info = {
           .name = "mydevice",
           .parent = TYPE_DEVICE, // "device"
           .instance_size = SIZEOF(MyDevice);  //State数据的大小
+          .instance_init = mydevice_init,
+          .class_init    = mydevice_class_init,
           .interfaces = (InterfaceInfo[]) {  //一组接口
               { TYPE_HOTPLUG_HANDLER },
               { TYPE_ACPI_DEVICE_IF },
-              { INTERFACE_CONVENTIONAL_PCI_DEVICE },
               { }
             }
    };
@@ -198,43 +226,28 @@ props
 
 首先type_register_static注册了一个叫“mydevice”的TypeInfo，父类是“device”，没有
 定义class_size（表示这个类没有自己的静态数据），instance的私有数据由
-MyDviceState定义，这个数据结构的地一个成员是DeviceState，保存了自己的父类的
+MyDviceState定义，这个数据结构的第一个成员是DeviceState，保存了自己的父类的
 instance State。
 
-Instances列表中给定了一组类名称，表示一组没有State数据的类型，可以索引过去拿到
-对应的回调，但不能使用那一层的数据。
+.. note::
+   type_register_static()用的类似Linux Kernel中module_init()的技术，把一组函数
+   指针放到同一个数组中，让整个程序可以初始化的时候自动调用而已。
 
-静态定义的Type的class_init可以在系统初始化的时候完成调用，动态定义的通过Lazy算
-法在创建类的时候完成。这个回调的作用是让你有机会替换父类的回调函数。以便让你调
-用父类实现的方法的时候，可以换用一个新的函数。比如你的父类是A，子类是B，父类实
-现一个relealize函数，里面调用ClassA->config()，你要换掉这个函数，只要在B的
-class_init中换一个函数就可以了。
+然后我们提供了两个初始化函数mydevice_init和mydevice_class_init，分别对实例和类
+对象进行初始化。
 
-对象通过object_new("object_name")来创建，这可能会是在machine初始化的时候调用
-qdev_create()创建，也可能会是在处理命令行参数device的时候用qdev_device_add()创
-建。创建的时候会从类树上创建这个对象自己和所有父类和接口的State，并分别调用它们
-的instance_init()。
+在这个class的init里面我们用OBJECT_CLASS_CHECK把父类转换为子类，然后设置了
+Device这个子类的realize和unrealize函数。这样，整个类的初始化逻辑框架就撑起来了。
 
-这样你得到这个对象的指针的时候，它可以用OBJECT_GET_CLASS(class, obj, name)转化
-任何类型了。
-
-对象可以附加属性，静态通过提供属性表实现，动态通过object_property_add_xxx()添加
-。这些属性可以在运行前和运行中修改（qemu console中的qom-set/get命令可以设置）。
-不同的类可以定义自己的属性，本质是一对读写函数。属性也用字符串管理。
-
-属性的管理是Device和Bus管理重要的组成部分，比如DeviceClass有realized属性，设备
-管理通过把这个属性设置为true去调用它的
-
-设备被创建后，这个设备的realized属性被设置为true，对应的函数就会被调用，这里一
-般用于实现和backend的关联。
-
-整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关联。这种关联有两
-种类型：composition和link，分别用object_property_add_child/link()建立。最后在
-qemu console中使用Info qom-tree命令看到的树状结构就是这个属性建立的关联。
+在实际实现中，整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关
+联。这种关联有两种类型：composition和link，分别用
+object_property_add_child/link()建立。最后在qemu console中使用Info qom-tree命
+令看到的树状结构就是这个属性建立的关联。
 
 child和link关联
 ----------------
-child和link是通过对象props建立的关联。本质上就是给一个对象增加一个prop，名字叫
+除了一般用于设置对象参数的Property，qemu内部会经常使用child和link的概念。child
+和link是通过对象props建立的关联。本质上就是给一个对象增加一个prop，名字叫
 child<...>或者link<...>，和手工创建一个这样的属性也没有什么区别。
 
 child的主要作用是可以枚举，比如：
@@ -460,12 +473,12 @@ qemu通过cpu_reset_interrupt/cpu_interrupt()把一个标记种入到CPU中，CP
 可以检查这个标记，发现有中断的要求，就调用一个回调让中断控制器backend修改CPU状
 态，之后CPU就在新的状态上执行了。
 
-所以，最原始的方法是你强行吊cpu_reset_interrupt()和cpu_interrupt()。当然，很少
-硬件会这么简单，大部分CPU需要通过中断控制器来控制。中断控制器是个设备（比如
+所以，最原始的方法是你强行调用cpu_reset_interrupt()和cpu_interrupt()。当然，很
+少硬件会这么简单，大部分CPU需要通过中断控制器来控制。中断控制器是个设备（比如
 qdev），具体怎么做完全是实现者的自由度。
 
-可能是历史原因，qemu统一把中断看作是CPU的gpio行为，变成一套完整的接口。比如
-RISCV就是这样的：
+可能是历史原因，qemu各种实现都把中断看作是CPU的gpio行为，变成一套完整的接口。
+比如RISCV就是这样的：
 
 .. code-block: C
 
@@ -546,16 +559,50 @@ TYPE_GPEX_HOST的继承树结构：::
 中断的行为类似，先为整个RP分配中断，然后用gpex_set_irq_num()建立PCIE局部irq和全
 局irq的关系即可。
 
+PCI/PCI-E驱动
+--------------
+
+前面是全系统的PCI桥的概念，我们用一个PCI设备的backend来看具体的backend的写法：
+
+.. code-block: C
+
+   static void my_class_init(ObjectClass *oc, void *data) {
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(oc);
+     k->realize = my_realize;
+     k->vendor_id = MY_VENDOR_ID;
+     k->device_id = MY_DEVICE_ID;
+     k->revision = MY_REVISION;
+     k->class_id = PCI_CLASS_XXXX;
+   }
+
+   static const TypeInfo my_pci_device_info = {
+     .name          = "my-pci-device"
+     .parent        = TYPE_PCI_DEVICE,
+     .class_init    = my_class_init,
+     .interfaces    = {
+       { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+       { },
+     };
+   };
+
+这个和其他类没有什么区别，只是父类设置成了TYPE_PCI_DEVICE，在类初始化的时候把
+父类的基本属性都设置类（vendor id等），realize中可以调用pci模块提供的比如
+    pci_config_set_interrupt_pin()/msi_init(),
+    pci_register_bar()
+这些函数，创建相应的pci资源，剩下的工作，留给父类去做就可以了。
+
+
 virtio
 =======
 
 virtio是OASIS的标准，我没有调查它的背景，应该是Redhat和IBM等发起的组织吧，它的
-目标是定义一个标准的虚拟设备和Guest的接口。也就是说在设备一侧实现“半虚拟化”，让
+目标是定义一个标准的虚拟设备和Guest的接口。也就是说在设备上实现“半虚拟化”，让
 guest感知host的存在，让guest上的模拟变成一种guest和host通讯的行为。
 
-标准
------
-在本文写作的时候，最新的virtio版本是1.1，我们这里先看看这个版本的语义空间。
+virtio标准
+------------
+
+在本文写作的时候，最新的virtio标准的版本是1.1，我们这里先看看这个版本的语义空间。
 
 virtio现在支持三种传输层，virtio的语义可以建立在任一种传输层上，只要传输层能满
 足这些语义的表达就可以了：
@@ -571,14 +618,22 @@ MMIO
 Channel I/O
         这是IBM S/390的通用IO接口，我们有两种方式做分析就够了，这种忽略。
 
-不同的方式使用不同的传输层协议，但这些传输层协议维护一样的高层语义。下面重点讨
-论这些高层语义的概念空间。在下面的讨论中，比如我们说virtio支持Device Status，这
-个域具体呈现为PCI的配置空间还是MMIO中的一个域，是一个域还是多个域，我们不关心，
-我们关心的是必须存在这么一个概念，并且这个概念必须承载所定义的语义。
+所谓传输层，本质是用什么语义来提供guest一侧的接口。我们前面已经看到了，host有
+办法访问guest的所有内存，但Guest还得做出一副“我是个正经的系统”的样子，表明什么
+数据是打算让Host去访问的，把这个仪式封装成一个协议，就是virtio的传输层。比如说
+，PCI传输层，就是guest认为自己是在访问一个PCI设备，它访问bar空间的时候，就会转
+换为host一侧的IO MR的读写，它对内存做DMA，要求Host访问，Host就要打开对应的AS，
+从AS上访问这片内存。它不做这个DMA，Host其实也能访问这些内存，只是不知道应该访
+问哪里而已。所以传输层，更多是Guest的接口概念。Host只是在配合。
 
+我们这里的建模主要关注传输层以上的语义，传输层怎么实现，总是可以做到的，我们看
+做是细节。
+
+下面是一组virtio标准中定义的关键概念：
 
 控制域
--------
+`````````
+
 控制域相当于设备的MMIO空间，提供直接的IO控制。下面是一些典型的控制域：
 
 Device Status
@@ -590,9 +645,11 @@ Feature Bits
         扩展特性位。这个域也是Host和Guest共同维护的。Host认，Guest不认，对应位
         也不会设置，反之亦然。
 
-在MMIO传输层中，部分域甚至是复用的，比如配置第一个queue的时候，给queue id写0，
-后面的配置就是针对vq 0的；给queue id写1，后面的配置就是针对vq 1的。强调这一点，
-是要说明，控制域不大可能直接通过共享内存可以实现。
+在MMIO传输层中，部分控制域甚至是复用的，比如配置第一个queue的时候，给queue id
+这个控制域写0，后面写其他控制域进行配置就是针对vq 0的；给queue id控制域写1，后
+面的配置就是针对vq 1的。
+
+强调这一点，是要说明，标准的制定者并不指望用共享内存来实现控制域。
 
 通知
 `````
@@ -612,16 +669,16 @@ Used Buffer更改
 
 virtqueue
 ``````````
-virtqueue是Host和Guest的通道，目标是要建立一个两者间的共享内存通讯通道，后面把
-它简称为vq。和其他共享内存的通讯方式一样，vq通过环状队列协议来实现。队列的深度
-称为Queue Size，每个vq包括收发两个环，称为vring，其中Guest发方的叫Available
-ring，另一个方向称为Used ring，深度都是Queue Size。
+virtqueue是Host和Guest的通道，目标是要建立一个两者间的基于共享内存的通讯通道，
+后面把它简称为vq。和其他共享内存的通讯方式一样，vq通过环状队列协议来实现。队列
+的深度称为Queue Size，每个vq包括收发两个环，称为vring，其中Guest发方的叫
+Available ring，另一个方向称为Used ring，深度都是Queue Size。
 
-vq的报文描述符称为Descriptor，在本文中我们简称bd（Buffer Descriptor），它不包含
-实际的数据，实际的数据称为Buffer，由bd中的指针表达，指针是Guest一侧的物理地址。
-virtio允许bd分级，bd的指针可以指向另一个bd的数据，这可以扩展bd数量的不足。
-Buffer可以带多个Element，每个Element有自己的读写属性，新的Element需要使用另一个
-bd，通过前一个bd的next指向新的bd，把多个Element连成同一个Buffer。
+vq的报文描述符称为Descriptor，在本文中我们简称bd（Buffer Descriptor）或者desc，
+它不包含实际的数据，实际的数据称为Buffer，由bd中的指针表达，指针是Guest一侧的物
+理地址。virtio允许bd分级，bd的指针可以指向另一个bd的数据，这可以扩展bd数量的不
+足。Buffer可以带多个Element，每个Element有自己的读写属性，新的Element需要使用另
+一个bd，通过前一个bd的next指向新的bd，把多个Element连成同一个Buffer。
 
 整个通讯的内存控制方都在Guest，是Guest分配了vq和Buffer的内存，然后传输到Host端
 ，而Host端根据协议，对内存进行读写，响应Guest的请求。这一点和普通的真实设备是一
@@ -632,8 +689,9 @@ bd，通过前一个bd的next指向新的bd，把多个Element连成同一个Buf
 packed vq，其原理是把Available和Used队列合并，Buffer下去一个处理一个，不需要不
 同步的Used队列来响应。除了这一点，概念空间完全是自恰的。
 
-Host
------
+Host侧的实现
+----------------
+
 理解了标准接口定义上的基本理念，现在看看Host一侧实现的概念空间。
 
 Host一层virtio设备的继承树一般是这样：::
@@ -657,46 +715,80 @@ TRANSITIONAL_DEV
 TYPE_VIRTIO_XXXXX
 ``````````````````
 TYPE_VIRTIO_XXXX实现一个具体的设备，这层实现主要通过virtio接口建立通讯通道，原
-理大致是：::
+理大致是：
 
-        virtio_init(vdev, ...);
-        vq[i] = virtio_add_queue(vdev, callback);...
-        ...
-        virtio_delete_queue(vq[i]);
-        virtio_cleanup(vdev);
+.. code:: c
+
+   virtio_init(vdev, ...); //设备初始化
+   vq[i] = virtio_add_queue(vdev, callback);... //创建q，可多个
+   ...
+   virtio_delete_queue(vq[i]);
+   virtio_cleanup(vdev);
 
 这里的初始化主要是在vdev中创建基本的数据结构，然后挂入vm的管理系统中（比如挂入
 vm状态更新通知列表中等）。由于真正的queue的共享内存是Guest送下来的，所以这里仅
 仅是在创建相关的管理数据结构而已。
 
-callback的实现原理展示如下：::
+callback用于响应guest发过来的消息，可以这样收：
 
-        element = virtqueue_pop(vq[i]);
-        处理element，这是一个sg接口，需要分段处理或者合并以后处理。
-        if (need_respose) {
-                virtqueue_push(vq[i], element);
-                virtio_notify(vdev, vq[i]);
-        } else {
-                virtqueue_detach_element(vq[i], element, ...);
-                g_free(element);
-        }
+.. code:: c
 
-virtqeue_push/pop()做了一次拷贝，理论上你是可以直接在原位处理的，但qemu现在没有
-提供这样的接口。
+   element = virtqueue_pop(vq[i], sz);
+   my_handle_element(element);
+   if (need_respose) {
+       virtqueue_push(vq[i], element);
+       virtio_notify(vdev, vq[i]);
+   } else {
+       virtqueue_detach_element(vq[i], element, ...);
+       g_free(element);
+   }
+
+内存由pop函数负责分配，如果不复用这个内存（push回去），由调用方自己负责用glib标
+准方法释放。这个内存的大小至少是sz，但根据实际有多少个sg，实际大小是不同的，如果
+数据在push进来的时候就是scatter-gather的，host收到也是一样的，数据就在原地（
+guest和host共享），如果你不用iov_to_buf()这种方法强行把它们拷贝在一起，你完全
+可以直接一段段进行处理。所以virtio的通讯效率还是很高的。
+
+virtio_init()等初始化行为可以在类的realize/unrealize回调中做，这些回调可以在
+class_init中初始化，类似这样：
+
+.. code:: c
+
+   static void my_class_init(ObjectClass *oc, void *data) {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+     VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(oc);
+
+     vdc->realize = my_realize;
+     vdc->unrealize = my_unrealize;
+     vdc->get_features = my_get_features;
+     vdc->get_config = my_get_config;
+     vdc->set_status = my_set_status;
+     vdc->reset = my_reset;
+   }
+
+注意了，这里的realize设置的不是DeviceClass的realize，而是子类VirtioDeviceClass
+的realize（其他回调类似）。因为这是VirtioDeviceClass要靠父类DeviceClass的
+realize来进行自己的初始化，在用子类提供的realize进行子类的初始化。
+
+get_features()用于提供一个设备定制的结构，里面的信息可以从guest一端完整拿到。
+get_config()用于给guest提供过来的内存写配置信息，用途很类似可以根据你要给guest
+什么信息来决定提供什么。
+
+而set_status()用于host和guest交换Device Status控制域用的，一般一个设备启动会逐
+步把下面这些位都置上，设备才是可用的：::
+
+        VIRTIO_CONFIG_S_ACKNOWLEDGE     1
+        VIRTIO_CONFIG_S_DRIVER          2
+        VIRTIO_CONFIG_S_DRIVER_OK       4
+        VIRTIO_CONFIG_S_FEATURES_OK	8
+
+最后reset()用于设备复位到原始状态。
 
 TYPE_VIRTIO_DEVICE
 ````````````````````
-然后我们看TYPE_VIRTIO_DEVICE一层的原理：TYPE_VIRTIO_DEVICE是一个总线为
-TYPE_VIRTIO_BUS的设备，这一层在设备实现上主要是创建vq（固定数量，现在是1024），
-处理标准配置，以及实现各种通知机制。比如vq内存被访问的时候进行对应的响应等。
-这主要通过跟踪事件通知机制实现，比如guest访问了设备配置空间，变成host端的
-io_writex()，host侧IO驱动（比如PCIE）发起memmory_region_transaction，在commit的
-时候触发virtio_memory_listener_commit()。
-
-所以，所有配置性的行为，其实走的都是io dma访问的路径。而virqueue_push/pop则走的
-是MemoryRegionCache的路径，后者通过dma_memory_map() 找到实际的host可见的内存位
-置，直接在原位访问。这一层对上一层的接口在分析上一层的使用接口时已经可以看到了。
-这里完整整理一下：::
+TYPE_VIRTIO_DEVICE一层提供基本的virtio功能（由TYPE_VIRTIO_XXXX继承），并对外部
+提供公共的操作接口，这一层对上一层的接口在分析上一层的使用接口时已经可以看到了。
+这里完整整理一下。这一层又分成两层，对上可见的一层包括这样一些接口::
 
         virtio_instance_init_common(obj); //用于PCI的实现中子类instance_init的初始化
 
@@ -760,105 +852,119 @@ io_writex()，host侧IO驱动（比如PCIE）发起memmory_region_transaction，
         virtio_update_irq(vdev);
         virtio_set_features(vdev, feature);
 
+PCI传输层
+----------
+TYPE_VIRTIO_DEVICE只封装了virtio核心接口，但没有包含传输层的封装，我们用一种传
+输层(PCI)来感知加上传输层的概念。
+
+前面的继承树可看到，PCI传输层继承TYPE_PCI_DEVICE，和TYPE_VIRTIO_DEVICE不兼容，
+而QoM是单继承的，所以PCI的virtio设备被实现成了TYPE_VIRTIO_DEVICE的一个代理，实
+现起来是这样的：
+
+.. code:: c
+
+   static VirtioPCIDeviceTypeInfo my_virtio_pci_proxy_info = {
+     .base_name     = MY_PROXY_TYPE_NAME "-base",
+     .generic_name  = MY_PROXY_TYPE_NAME,
+     .transitional_name      = MY_PROXY_TYPE_NAME "-transitional",
+     .non_transitional_name  = MY_PROXY_TYPE_NAME "-non-transitional",
+     .instance_size = sizeof(struct BBoxProxyState),
+     .instance_init = my_proxy_init,
+     .class_init    = my_proxy_class_init,
+   };
+
+   static void my_register_types(void)
+   {
+     virtio_pci_types_register(&my_virtio_pci_proxy_info);
+   }
+   type_init(my_register_types)
+
+virtio_pci_types_register()是register_type_static的封装，同时注册了多个相互继
+承的对象，但基本可以认为主要名字是.gnereric_name的类的封装，下面的那些回调函数
+这是针对这个类的，我们这里不深入细节。
+
+PCIE的BAR空间，中断等设计都代理给这个类，从而实现整个PCI之上的传输层。而真正的
+驱动要做的是把这个PCI设备的行为代理到一个真正的TYPE_VIRTIO_DEVICE设备，像这样
+：
+
+.. code-block:: c
+
+   static void my_proxy_realize(VirtIOPCIProxy *vpci_dev, Error **errp) {
+     MyProxyState *dev = BBOX_PROXY(vpci_dev);
+     DeviceState *vdev = DEVICE(&dev->the_real_virtio_device);
+
+     qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
+   }
+
+   static void my_proxy_init(Object *obj)
+   {
+      MyProxyState *s = MY_PROXY(obj);
+
+      virtio_instance_init_common(obj, &s->impl, sizeof(s->impl), BBOX_TYPE_NAME);
+    }
+
+   static void my_proxy_class_init(ObjectClass *klass, void *data)
+   {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+     VirtioPCIClass *vpci_k = VIRTIO_PCI_CLASS(klass);
+
+     pcidev_k->vendor_id = ...;
+     pcidev_k->device_id = ...;
+     pcidev_k->revision = ...;
+     pcidev_k->class_id = ...;
+     vpci_k->realize = my_proxy_realize;
+   }
+
+在这个proxy的class_init中，我们原样设置pci的vendor_id等信息，但如果你的Guest中
+需要用Linux的virtio-pci驱动，你这里的vendor_id就需要匹配redhat的PCI驱动，
+device_id也必须落在这个驱动支持的范围内，否则你只能整个协议自己写了。
+
+但realize要注意了，要用PCIDeviceClass的realize，不能覆盖DeviceClass的realize，
+否则proxy自己就没法初始化了。
+
+而在instance_init中，除了做一般你自己希望做的初始化，最终要的是要用
+virtio_instance_init_common()创建真正的virtio设备，这样proxy的传输层才这个设备
+关联起来，当PCI Proxy被guest访问的时候，才转化为virtio的上层语义。
+
+而在realize的时候，还要一个关键问题需要做：你要主动调用qdev_realize()把那个真virtio
+设备的bus实例化了，否则这个真virtio设备会没有总线。
+
 Guest
 ------
-再看看Guest一侧Linux的概念空间。Guest一侧包括两层，一层是virt，实现具体的设备，
-一层是ring，提供传输接口。Linux上只有PCI接口的virtio，因为也没有其他办法做设备
-发现了。
+再看看Guest一侧Linux的概念空间。Guest一侧包括两层，传输层和协议层。传输层对应virtio标准
+中定义的三种传输层，呈现为PCI，Platform，CCW等设备。比如PCI传输层就呈现为一个
+pci的驱动，它用通用的PCI方法发现virtio设备，匹配到Redhat的VendorID，然后就直接
+用传输层协议找到设备，用register_virtio_device()创建virtio设备。
 
-virt
-`````
-virt层类似其他的设备驱动，基于::
+另一层是协议层，这一层的驱动匹配register_virtio_device()创建的设备，根据
+类似PCI device_id表一样的virtio_device_id表来匹配具体的设备，其他行为基本上就
+和其他设备驱动一样了。
 
-        register_virtio_driver(&driver);
-        unregister_virtio_driver(&driver);
+这个驱动主要包含这些回调：
 
-进行驱动注册，driver中给定id表进行设备匹配，在probe的时候，通过
-virtio_cread...()函数直接读配置。然后按如下Pattern进行通讯：::
+.. code-block:: c
 
-        probe(vdev) {
-                vqs = kalloc(...)
+   static struct virtio_driver kenny_bbox_drv = {
+       ...
+       .id_table = id_table,
+       .validate = my_validate,
+       .probe = my_probe,
+       .remove = my_remove,
+       .config_changed = my_config_changed,
+   };
 
-                vdev->config->find_vqs(vdev, num_vqs, vqs, callbacks, names, 
-                        ctx, irq_affi);
+其中validate是给驱动一个机会判断是否支持这个设备，config_changed用于对端通知配
+置更改，而关键的probe主要就是用virtio_cread()读配置，创建vq，并在初始化成功后
+，通过virtio_device_read()把这个设备的status设置到DRIVER_OK的状态，两端的状态
+对齐成功后，就可以发消息了。
 
-                // 发
-                在data中准备数据
-                virtqueue_add_outbuf(vq, sg, num, data, gfp);
+发消息一般分两步，一步是用virtqueue_add_...()系列函数把数据写入两者的bd队列，
+第一步是用virtqueue_kick()通知对端取取。
 
-                // 收（可以放在callback中）
-                buf = virtqueue_get_buf(vq, ...);
-                处理buf的数据
-                free(buf);
-        }
-
-这个工作Pattern值得注意点有这么几个：
-
-1. vqs通过vdev提供，这要靠设备发现逻辑来配，比如PCI的配置逻辑就在
-   vp_modern_find_vqs()中，主体是ring一层的函数vp_find_vqs()。
-
-2. 接收一侧使用callback的方式做的，这个回调的上下文是中断。
-
-3. virtio驱动匹配的不是PCIE设备，而是virtio设备，所以一个virtio设备实际上有两个
-   驱动，一个是PCI驱动，通过虚拟的PCIE总线枚举发现virtio设备，然后用那个设备的
-   驱动创建virtio设备，从而匹配对应的驱动。
-
-ring
-`````
-现在来看完整的ring层对上层暴露的接口（vp是virtio_pci的缩写）：::
-
-        /* 设备管理 */
-        register_virtio_device(dev);
-        unregister_virtio_device(dev);
-        virtio_add_status(dev, ...);
-        virtio_break_device(dev);
-        virtio_config_changed(dev);
-        virtio_config_disable(dev);
-        virtio_config_enable(dev);
-        virtio_finalize_features(dev);
-        virtio_max_dma_size(vdev);
-        virtio_device_for_each_vq(vdev, vq)
-
-        /* 关联vqs ×/
-        vp_find_vqs(vdev, nvqs, vqs[], callbacks[], ...);
-        vp_del_vqs(vdev);
-
-        /* 通知 */
-        vp_synchronize_vectors(vdev);
-        vp_notify(vq);
-        vp_bus_name(vdev);
-
-        /* CPU affinity */
-        vp_set_vq_affinity(vq, cpu_mask);
-        vp_get_vq_affinity(vdev, index);
-
-        /* vq */
-        virtqueue_add_outbuf(vq, ...);
-        virtqueue_add_inbuf(vq, ...);
-        virtqueue_add_inbuf_ctx(vq);
-        virtqueue_add_sgs(vq, ...);
-        virtqueue_kick(vq);
-        virtqueue_kick_prepare(vq);
-        virtqueue_notify(vq);
-        virtqueue_get_buf(vq, ...);
-        virtqueue_get_buf_ctx(vq, ...);
-        virtqueue_enable/disable_cb(vq);
-        virtqueue_enable_cb_prepare(vq);
-        virtqueue_poll(vq, ...);
-        virtqueue_enable_cb_delayed(vq);
-        virtqueue_detach_unused_buf(vq);
-        virtqueue_get_vring_size(vq);
-        virtqueue_is_broken(vq);
-        virtqueue_get_vring/desc_addr/avail_addr/used_addr(vq);
-
-这是ring层自己内部的封装接口：::
-
-        /* vring建立 */
-        vring_create_virtqueue(...);
-        vring_new_virtqueue(...);
-        void vring_del_virtqueue(vq);
-        vring_transport_features(vdev);
-        vring_interrupt(irq, vq);
+收消息通过创建virtqueue时指定的函数回调，这个有可能在中断上下文中（取决与传输
+层的实现），里面用virtqueue_get_buf()读，当然你也可以想其他驱动那样，raise一个
+softirq来读。
 
 
 其他小设施
