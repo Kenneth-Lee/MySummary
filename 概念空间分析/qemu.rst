@@ -230,6 +230,7 @@ MyDviceState定义，这个数据结构的第一个成员是DeviceState，保存
 instance State。
 
 .. note::
+
    type_register_static()用的类似Linux Kernel中module_init()的技术，把一组函数
    指针放到同一个数组中，让整个程序可以初始化的时候自动调用而已。
 
@@ -770,9 +771,16 @@ class_init中初始化，类似这样：
 的realize（其他回调类似）。因为这是VirtioDeviceClass要靠父类DeviceClass的
 realize来进行自己的初始化，在用子类提供的realize进行子类的初始化。
 
-get_features()用于提供一个设备定制的结构，里面的信息可以从guest一端完整拿到。
-get_config()用于给guest提供过来的内存写配置信息，用途很类似可以根据你要给guest
-什么信息来决定提供什么。
+get_features()用于guest和host协商协议，当这个函数被调用的时候是guest问host能否
+提供对应的feature，host可以修改相关的项，返回回去，告知自己想要支持的属性，双方
+可以多次协商取一个双方认可的子集。get_config用于guest向host要配置参数，具体是什
+么格式，是这种自己的定义。
+
+.. note::
+
+   feature是跨层使用的，比如如果你在get_feature中给对方返回了
+   VIRTIO_F_RING_PACKED特性，应用层不需要做任何事情，协议层会根据这个属性把
+   vring的格式修改成pack的。
 
 而set_status()用于host和guest交换Device Status控制域用的，一般一个设备启动会逐
 步把下面这些位都置上，设备才是可用的：::
@@ -781,6 +789,8 @@ get_config()用于给guest提供过来的内存写配置信息，用途很类似
         VIRTIO_CONFIG_S_DRIVER          2
         VIRTIO_CONFIG_S_DRIVER_OK       4
         VIRTIO_CONFIG_S_FEATURES_OK	8
+
+特定的设备可以有更多的Status位。
 
 最后reset()用于设备复位到原始状态。
 
@@ -855,7 +865,7 @@ TYPE_VIRTIO_DEVICE一层提供基本的virtio功能（由TYPE_VIRTIO_XXXX继承�
 PCI传输层
 ----------
 TYPE_VIRTIO_DEVICE只封装了virtio核心接口，但没有包含传输层的封装，我们用一种传
-输层(PCI)来感知加上传输层的概念。
+输层(PCI)来感知加上传输层后的概念空间。
 
 前面的继承树可看到，PCI传输层继承TYPE_PCI_DEVICE，和TYPE_VIRTIO_DEVICE不兼容，
 而QoM是单继承的，所以PCI的virtio设备被实现成了TYPE_VIRTIO_DEVICE的一个代理，实
@@ -927,19 +937,19 @@ device_id也必须落在这个驱动支持的范围内，否则你只能整个�
 virtio_instance_init_common()创建真正的virtio设备，这样proxy的传输层才这个设备
 关联起来，当PCI Proxy被guest访问的时候，才转化为virtio的上层语义。
 
-而在realize的时候，还要一个关键问题需要做：你要主动调用qdev_realize()把那个真virtio
-设备的bus实例化了，否则这个真virtio设备会没有总线。
+而在realize的时候，还要一个关键问题需要做：你要主动调用qdev_realize()把那个真
+virtio设备的bus实例化了，否则这个真virtio设备会没有总线。
 
 Guest
 ------
-再看看Guest一侧Linux的概念空间。Guest一侧包括两层，传输层和协议层。传输层对应virtio标准
-中定义的三种传输层，呈现为PCI，Platform，CCW等设备。比如PCI传输层就呈现为一个
-pci的驱动，它用通用的PCI方法发现virtio设备，匹配到Redhat的VendorID，然后就直接
-用传输层协议找到设备，用register_virtio_device()创建virtio设备。
+再看看Guest一侧Linux的概念空间。Guest一侧包括两层，传输层和协议层。传输层对应
+virtio标准中定义的三种传输层，呈现为PCI，Platform，CCW等设备。比如PCI传输层就呈
+现为一个pci的驱动，它用通用的PCI方法发现virtio设备，匹配到Redhat的VendorID，然
+后就直接用传输层协议找到设备，用register_virtio_device()创建virtio设备。
 
-另一层是协议层，这一层的驱动匹配register_virtio_device()创建的设备，根据
-类似PCI device_id表一样的virtio_device_id表来匹配具体的设备，其他行为基本上就
-和其他设备驱动一样了。
+另一层是协议层，这一层的驱动匹配register_virtio_device()创建的设备，根据类似PCI
+device_id表一样的virtio_device_id表来匹配具体的设备，其他行为基本上就和其他设备
+驱动一样了。
 
 这个驱动主要包含这些回调：
 
@@ -960,10 +970,10 @@ pci的驱动，它用通用的PCI方法发现virtio设备，匹配到Redhat的Ve
 对齐成功后，就可以发消息了。
 
 发消息一般分两步，一步是用virtqueue_add_...()系列函数把数据写入两者的bd队列，
-第一步是用virtqueue_kick()通知对端取取。
+第二步是用virtqueue_kick()通知对端取取。
 
 收消息通过创建virtqueue时指定的函数回调，这个有可能在中断上下文中（取决与传输
-层的实现），里面用virtqueue_get_buf()读，当然你也可以想其他驱动那样，raise一个
+层的实现），里面用virtqueue_get_buf()读，当然你也可以像其他驱动那样，raise一个
 softirq来读。
 
 
