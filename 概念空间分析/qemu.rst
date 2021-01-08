@@ -587,9 +587,11 @@ PCI/PCI-E驱动
    };
 
 这个和其他类没有什么区别，只是父类设置成了TYPE_PCI_DEVICE，在类初始化的时候把
-父类的基本属性都设置类（vendor id等），realize中可以调用pci模块提供的比如
+父类的基本属性都设置类（vendor id等），realize中可以调用pci模块提供的比如::
+
     pci_config_set_interrupt_pin()/msi_init(),
     pci_register_bar()
+
 这些函数，创建相应的pci资源，剩下的工作，留给父类去做就可以了。
 
 
@@ -969,8 +971,8 @@ device_id表一样的virtio_device_id表来匹配具体的设备，其他行为�
 ，通过virtio_device_read()把这个设备的status设置到DRIVER_OK的状态，两端的状态
 对齐成功后，就可以发消息了。
 
-发消息一般分两步，一步是用virtqueue_add_...()系列函数把数据写入两者的bd队列，
-第二步是用virtqueue_kick()通知对端取取。
+发消息一般分两步，一步是用virtqueue_add_xxx()系列函数把数据写入两者的bd队列，第
+二步是用virtqueue_kick()通知对端取取。
 
 收消息通过创建virtqueue时指定的函数回调，这个有可能在中断上下文中（取决与传输
 层的实现），里面用virtqueue_get_buf()读，当然你也可以像其他驱动那样，raise一个
