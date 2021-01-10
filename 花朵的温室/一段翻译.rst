@@ -1,0 +1,155 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+一段引言的翻译
+***************
+
+这两天和一家人讨论到哈利波特7前面的一引言的翻译，里面有不少有趣的主题，我把讨论
+在这里记录一下。
+
+引言的内容是这样的：
+
+        | Death is but crossing the world,as friends do the seas;
+        | they live in one another still.
+        | For they must needs be present,that love and live
+        | in that which is omnipresent.
+        | In this divine glass,they see face to face;
+        | and their converse is free, as well as pure.
+        | This is the comfort of friends, that though they may be said to die,
+        | yet their friendship and society are, in the best sense,
+        | ever present,because immortal.
+        |
+        |                               --William Penn,More Fruits of Solitude.
+
+
+这段文字在豆瓣上有一个翻译，内容是这样的：
+
+        | 死亡只是穿越世界，如同朋友远渡重洋。
+        | 他们仍活在彼此的心中。因为他们必须存在，那份爱与生活无处不在。
+        | 在这面神圣的镜子里，他们面对面对视，自由地交谈，坦诚而纯真。
+        | 这就是朋友的安慰，尽管据说他们都要走向死亡，
+        | 但他们的友谊和陪伴将因为不朽而存在。
+
+我完全不能接受这个翻译，因为它根本不……怎么说呢？用英文说就是不Make Sense。用中
+文说，我就只能直接给指出问题：这里第一句把死亡比作死亡，然后就谈朋友友谊？如果
+这是作者原来的意思，那我只能认为这个作者的东西完全不值得看——根本就没有逻辑嘛。
+
+但我认为这是不可能的，罗琳故事中三兄弟的故事和这首诗是强烈对应的，我们可以看看
+这个故事：
+
+        | Three brothers, travelling along a lonely, winding road at twilight
+        | reached a deep treacherous river where anyone who attempted to swim
+        | or wade would drown. Learned in the magical arts, the brothers 
+        | conjured a bridge with their wands and proceed to cross.
+        |
+        | Halfway through the bridge, a hooded figure stood before them. The
+        | figure was the enraged spirit of Death, cheated of his due. Death
+        | cunningly pretended to congratulate them and proceeds to award them
+        | with gifts of their own choosing.
+        |
+        | The eldest brother, a combative man, asked for a wand more powerful
+        | than any in existence. Death granted his wish by fashioning the Elder
+        | Wand from a branch of a nearby elder tree standing on the banks of
+        | the river.
+        |
+        | The second brother, an arrogant man, chose to further humiliate death,
+        | and asked for the power to recall the deceased from the grave. Death
+        | granted his wish by crafting the Resurrection Stone from a stone 
+        | picked from the riverbank.
+        |
+        | The third and youngest brother, who was the most humble and wise, did
+        | not trust Death and asked for something to enable him to go forth
+        | without Death being able to follow. A reluctant Death, most unwillingly,
+        | handed over a part his own Invisibility cloak.
+        |
+        | The three brothers took their prizes and soon went on their separate
+        | ways.
+        |
+        | The eldest brother travelled to a village where a wizard whom he had
+        | quarrelled lived. He sought out a duel and fought the wizard using the
+        | wand, instantly killing the latter.
+        |
+        | Leaving his enemy dead upon the floor, the eldest brother walked to an
+        | inn not far from the duelling site and spent the night there. Taken by
+        | his conscience and lust of the Elder Wand's power, the eldest brother
+        | boasted of this wand gifted by Death and his own invincibility.
+        |
+        | That very night, a murderous wizard killed the eldest brother. The 
+        | unknown murderous wizard crept to the inn as the eldest brother slept,
+        | drunk from wine. The wizard slit the oldest brother’s throat for good
+        | measure and stole the wand. That was when Death took the first brother.
+        |
+        | The second brother returned to his home where he lived alone. Turning
+        | the stone thrice in his hand the figure of the girl he had once hoped
+        | to marry, before her untimely death, appeared at once before him, much
+        | to his delight. Yet she was sad and cold, separated from him as by a
+        | veil. Though she had returned to the mortal world, she did not truly
+        | belong there and suffered. Finally, the second brother, driven mad
+        | with hopeless longing, committed suicide by hanging from his house'
+        | balcony so as truly to join her. That was when Death took the second
+        | brother for his own.
+        |
+        | Death searched for the youngest brother as years passed but never
+        | succeeded. It was only when the third brother reached a great age,
+        | he took off the Cloak of Invisibility and gave it to his son. Greeting
+        | Death as an old friend, they departed this life as equals.
+
+看见了吧，The third brother greets Death as an old friend, they departed this
+life as equals. 死亡伴随你的一生，并在必须的时候和你像老朋友一样重逢。
+
+所以，我也认为William Penn的描述中，同样是用Friend形容死亡的，这个Friend是死亡
+和你，而不是你和你的朋友。
+
+原文前两句的结构是这样的：
+
+        死亡 （插入：只是穿过这个世界），就好像不同的朋友穿过不同的海洋（注意复数）。
+
+        他们静静地互相依存。
+
+因为有你（的生存），所以有死亡。因为只因为有了死亡，所以我们的爱，生存才有了意
+义（omnipresent）。我们逃避死亡，是因为爱，而不是为了不死，而放弃爱。
+
+在三兄弟的故事中，大哥只想着对抗死亡，最终用完了一生，没有拿到任何生的成果。二
+哥一心想着拥有死亡，最后是死亡拥有了他。只有三弟，才是用一生是享受死亡的友谊，
+而这个友谊的本身，就是生命和生命中的爱。
+
+我不知道William的文化背景，但至少可以认为罗琳和他的文化背景是接近的。所以，后面
+一句的表达是：
+
+        它们必须都存在，所以，爱和活在它们中间的生命才能无处不在。
+
+这样就构成了一间镜子，死亡和生存面面相视。
+
+而converse的意思是 [1]_ ：
+
+        | to exchange thoughts and opinions in speech
+
+生存和死亡对话，自由而纯粹。这个对话，是朋友的comfort（也许可以理解为“慰藉”）。
+这种comfort，别人说这是die，但这种友谊和关系，从最好的角度来说，曾经存在过，因
+为（这种友谊和关系本身）是Immortal的。
+
+其中Die的意思是：
+
+        | to pass from physical life
+        | 或者：
+        | to pass out of existence
+
+Immortal呢，很多人很多人译作“不朽的，不死的”，但这个词语应该包含了更多的意思，
+Mortal这个词语字典解释是：
+
+        | Causing or having caused death
+        | 或者：
+        | Subject to death
+
+所以Mortal是一种属性，表示这是可以死亡的。所以，这里的Immortal应该强调的是：
+Death和Mortal是双生子，是朋友，是镜子的两面，而镜子本身，友谊本身，爱本身，是
+Immortal的，因为它不是Mortal的一部分。
+
+这个翻译过程，让我们（一家）学习到一组新的语法。但从我个人写这个总结的角度来说
+，这个例子，也让我们看到，如果我们不去考虑逻辑链，总从恍惚的感觉上理解别人的意
+思，很容易，就把别人一两个词，直接用自己的价值体系去解释，而导致整个交流失效了
+。
+
+.. [1] 本文中的所有字典含义，都来自https://www.merriam-webster.com/dictionary/
