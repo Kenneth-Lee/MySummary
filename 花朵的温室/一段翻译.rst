@@ -6,22 +6,22 @@
 一段引言的翻译
 ***************
 
-这两天和一家人讨论到哈利波特7前面的一引言的翻译，里面有不少有趣的主题，我把讨论
-在这里记录一下。
+这两天我们家一家人在讨论哈利波特7前面的一引言的翻译，里面有不少有趣的主题，我把
+讨论在这里记录一下。
 
 引言的内容是这样的：
 
-        | Death is but crossing the world,as friends do the seas;
+        | Death is but crossing the world, as friends do the seas;
         | they live in one another still.
-        | For they must needs be present,that love and live
+        | For they must needs be present, that love and live
         | in that which is omnipresent.
         | In this divine glass,they see face to face;
         | and their converse is free, as well as pure.
         | This is the comfort of friends, that though they may be said to die,
         | yet their friendship and society are, in the best sense,
-        | ever present,because immortal.
+        | ever present, because immortal.
         |
-        |                               --William Penn,More Fruits of Solitude.
+        |                               --William Penn, More Fruits of Solitude.
 
 
 这段文字在豆瓣上有一个翻译，内容是这样的：
@@ -33,7 +33,7 @@
         | 但他们的友谊和陪伴将因为不朽而存在。
 
 我完全不能接受这个翻译，因为它根本不……怎么说呢？用英文说就是不Make Sense。用中
-文说，我就只能直接给指出问题：这里第一句把死亡比作死亡，然后就谈朋友友谊？如果
+文说，我就只能直接给指出问题：这里第一句把死亡比作朋友，然后就谈朋友友谊？如果
 这是作者原来的意思，那我只能认为这个作者的东西完全不值得看——根本就没有逻辑嘛。
 
 但我认为这是不可能的，罗琳故事中三兄弟的故事和这首诗是强烈对应的，我们可以看看
@@ -104,7 +104,8 @@ life as equals. 死亡伴随你的一生，并在必须的时候和你像老朋�
 
 原文前两句的结构是这样的：
 
-        死亡 （插入：只是穿过这个世界），就好像不同的朋友穿过不同的海洋（注意复数）。
+        死亡 （插入：只是穿过这个世界），就好像不同的朋友穿过不同的海洋（注意复
+        数）。
 
         他们静静地互相依存。
 
@@ -151,5 +152,23 @@ Immortal的，因为它不是Mortal的一部分。
 ，这个例子，也让我们看到，如果我们不去考虑逻辑链，总从恍惚的感觉上理解别人的意
 思，很容易，就把别人一两个词，直接用自己的价值体系去解释，而导致整个交流失效了
 。
+
+补充1：我把本文的观点请一位做翻译的博士看，她和教文学的教授讨论后不认可我的总结。
+理由如下：
+
+这段文字来自Willain Penn的\ *More Fruits of Solitude*\ ，之前他还写过\ *Some
+Fruits of Solitude*\ ，都是《菜根谭》式的单句或者少数几句的总结。先\ *Some*\ 的
+时候他因为叛国罪在逃亡，后来恢复以后又陷入财政方面的问题，最终入狱，身无分文地
+死去。（我查了一下百度百科，似乎和这个表述不太对得上，但可能两方看问题的重点不
+同），\ *More*\ 是在后一次麻烦中写的。这段引文的标题是：Union of Friends。所以，
+作者应该更强调的是朋友，和对死亡的不惧怕。
+
+其他还有一些文化方面的讨论我暂时没有建出逻辑链，这里不描述了。
+
+反正她们总体上认为，罗琳只是借了这段文字来表达自己的意思，原来的问题并没有这个
+意思。
+
+供参考。
+
 
 .. [1] 本文中的所有字典含义，都来自https://www.merriam-webster.com/dictionary/
