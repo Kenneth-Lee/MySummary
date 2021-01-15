@@ -1,0 +1,163 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+5.10
+******
+
+[1]_ 2020年12月13日发布。LTS版本。
+
+大特性
+======
+
+1. ext4文件系统支持fast commit特性，可以加快fsync()的速度，需要在mkfs就加入特性
+   ，也就是说，它要修改格式（从代码上看，主要在修改Jounal）。
+
+   作者用了一个gmail地址，不知道是什么背景的。
+
+2. 新的系统调用：process_madvise()。功能类似madvise()，用来对特定的内存段进行内
+   存管理算法建议（Hint）。后者只能作用与当前进程，新的调用支持指定pid（多带一
+   个pidfd参数）
+
+   这是process_xxxx系列系统调用的一部分，除了这个，之前还加过process_vm_readv()，
+   process_vm_writev()。还有一个process_vm_mmap()也在尝试上传，但还没有成功。
+
+   从名字看，作者是个韩国人。
+
+3. virtiofs增加对DAX的支持，virtiofs在5.4引入，属于FUSE子系统，允许你在虚拟机中
+   直接mount -t virtiofs myfs_tag /mnt来mount host中的目录。在host一侧需要安装一
+   个virtiofsd来提供目录共享服务，运行qemu的时候则通过
+   -device vhost-user-fs-pci,tag=myfs_id来增加这个设备。这次的修改允许跳过guest的
+   page cache系统，直接映射host的page cache，这样可以少一层cache系统，提高性能。
+
+   Redhat的修改。
+
+4. AMD SEV系统支持寄存器加密。SEV在4.15开始加入，原理是在DDRC后面加一个AES-128
+   引擎，对指定的Page进行加解密访问，key由guest提供，避免host或者其他vm对物理内
+   存直接攻击。这个方法最难的是秘钥如何传递的问题，现在的方案看\ [2]_\ 起来是在
+   目标设备上安排一个SEV Firmware，里面包含AMD和平台提供商共同提供的私钥。部署
+   者把Image给SEVF后，SEVF把签名返回回去，部署者用公钥判断签名正确后，再和自己
+   的Guest通讯，从而建立SEVF和Guest的钥匙对，具体的过程语焉不详，我没有深入去看
+   了，觉得还是很多漏洞的。
+
+   这个版本增加对虚拟机切换是保存的寄存器状态的内容加密。
+
+5. 静态调用。老实说，我个人非常讨厌这类特性。我们先来看看它长什么样：::
+
+        DEFINE_STATIC_CALL_NULL(x86_pmu_handle_irq,  *x86_pmu.handle_irq);
+        int x86_pmu_handle_irq(struct pt_regs *regs) {
+        }
+        xxxx() {
+	        static_call_update(x86_pmu_handle_irq, x86_pmu.handle_irq);
+        }
+        xxxx() {
+                ret = static_call(x86_pmu_handle_irq)(regs);
+        }
+
+   你大概可以猜到它的意思：就是你的函数指针变成用这种特殊方法定义，修改函数指针
+   不再简单赋值，而是用static_call_update()更新一堆数据结构，这样到调用的时候，
+   就不在是一个Indirect的调用了，变成一个静态的调用。
+
+   这是让软件去考虑硬件的难处，增加负担，换取性能的提升。代码逻辑越来越不指向目
+   标逻辑，而指向硬件的特殊情况。
+
+   .. note::
+
+      但人家说在UDP的GRO场景中，可以拿到10%的性能收益；PMU场景也可以拿到4.2%。
+      真是这样，就只能跟了。
+
+   修改来自Peter Zijlstra <peterz@infradead.org>
+
+6. ARM Memory Tag特性支持。包含29个Patch，接口主要做在mmap和mprotect等调用上。
+
+7. Printk换用无锁算法。这么Cool的修改居然没被LinuxNewbie认为是Coolest特性？——也
+   对，用户不感知。
+
+   修改来自John Ogness <john.ogness@linutronix.de>，linuxtronix.de好像是一家搞
+   工业Linux服务和培训的公司。
+
+
+有趣的东西
+===========
+
+1. io_uring继续在补全功能，这个版本增加共享特性限制，当把io_uring分享出去的时候
+   ，可以控制被分享一方可以做的动作，功能通过io_uring系统调用新的opcode来提供，
+   比如IORING_RESTRICTION_REGISTER_OP。
+
+   Redhat做的修改。
+
+2. CONFIG_FAULT_INJECTION_USERCOPY。在copy_from_user和copy_to_user的过程中加入
+   种入故障的可能性。通过debugfs种入。我个人觉得这种特性不该进主线，自己测试的
+   时候加一下好了，多了这东西影响性能（不过是可配置的就是了）。我关注这个特性被
+   合入，主要是关注一下现在主线的maintainer的合入态度。
+
+   Google的工作。
+
+3. CFS参数微调，修改的东西很少，来自Linaro，应该是做ARM业务优化的时候对具体情况
+   的一个调整。
+
+4. bootconfig。允许把部分内核命令参数设置在initrd中，还提供了一个命令（在
+   tools/bootconfig目录下，用法是bootconfig -a config initrd）进行这种设置。提供
+   了比命令行更灵活的配置语法。我觉得这个也很烦，你要不全部都放过去，否则以后看
+   命令行参数还得两边找。而且这个设计还把initrd变成了必选了。以后要知道启动参数
+   要同时看/proc/bootconfig和/proc/cmdline。
+
+5. IOMMU API进一步增强，修改来自Intel。加了文档，修改了一些小细节。
+
+   IOMMU UAPI是用于在虚拟机里模拟IOMMU而访问Host的IOMMU的，根据内核文档，它的功
+   能是：::
+
+        1. Bind/Unbind guest PASID (e.g. Intel VT-d)
+        2. Bind/Unbind guest PASID table (e.g. ARM SMMU)
+        3. Invalidate IOMMU caches upon guest requests
+        4. Report errors to the guest and serve page requests
+
+   看来和uacce没有什么冲突。
+
+6. DAX进行了很多微调，说明Intel在这个上面的开发一直没有停止。
+
+7. Alibaba在crypto里面加了国密SM2/3，EC等存储专用算法的支持，并使用和修改了
+   lib/mpi库提供支持。我一直以为国密是不会上主线的，没想到可以上，而且，那些
+   有什么密码出口限制的国家不知道打算拿这算法怎么办？：）
+
+8. Multi-path TCP又加入了更多的修改，MPTCP是IETF RFC8684的标准协议，用多个TCP连
+   接合并成一个TCP Socket。主要用来解决比如你手机同时连wifi和5G两个端口，又需要
+   TCP连接这样的问题的。
+
+   提交的中坚力量还是Redhat。Redhat果然不是浪得虚名的。
+
+9. 支持Wifi 6G连接。Patch说这个Patch主要支持Scan，我猜还会有更多的Patch来支持其
+   他参数设置一类的功能？
+
+10. RISCV增加了UEFI支持，包含7个补丁，包括使能了内核对UEFI共享空间的映射和
+    Runtime Service等功能的使能，修改来自西部数字。
+
+    RISCV的内核发展还是有限的，这次除了这个补丁，只有Sifive简单加入的一个暴露
+    cache信息到用户态的一个小修改。
+
+华为和海思的相关特性
+====================
+1. 宋老师合入了一个关闭SMMU MSI polling的特性，把鲲鹏920的HNS单线程TX发送能力从
+   7G提升到7.7G。
+
+2. Linaro JPB的SVA特性好像已经完成上传了？我看到需要的特性这次都能看见了，晚点
+   去确认一下，我们使用SVA是不是没有障碍了。
+
+3. 海思SD5203 SoC支持，包含13个补丁，是一次上传大部分基础驱动。这是一个用于网络
+   设备的32位处理器。
+
+4. HNS3（Hisilicon Network Subsystem V3）开始提供对鲲鹏930的支持，最高网络速度
+   提升到200G，HNS3同时支持920和930，RoCE的相关参数也相应调整，以响应更高的带宽
+   。
+
+5. 鲲鹏PCIe错误处理驱动，ETM（Coresight）驱动，Sas驱动等都有一定的升级和修改。
+
+6. Hikey970 USB驱动上传
+
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
+
+.. [2] http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2013/12/AMD_Memory_Encryption_Whitepaper_v7-Public.pdf
