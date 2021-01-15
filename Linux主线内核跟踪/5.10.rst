@@ -1,7 +1,7 @@
 .. Kenneth Lee 版权所有 2021
 
 :Authors: Kenneth Lee
-:Version: 1.0
+:Version: 1.1
 
 5.10
 ******
@@ -28,7 +28,10 @@
 3. virtiofs增加对DAX的支持，virtiofs在5.4引入，属于FUSE子系统，允许你在虚拟机中
    直接mount -t virtiofs myfs_tag /mnt来mount host中的目录。在host一侧需要安装一
    个virtiofsd来提供目录共享服务，运行qemu的时候则通过
-   -device vhost-user-fs-pci,tag=myfs_id来增加这个设备。这次的修改允许跳过guest的
+
+        -device vhost-user-fs-pci,tag=myfs_id
+
+   来增加这个设备。这次的修改允许跳过guest的
    page cache系统，直接映射host的page cache，这样可以少一层cache系统，提高性能。
 
    Redhat的修改。
@@ -57,7 +60,7 @@
 
    你大概可以猜到它的意思：就是你的函数指针变成用这种特殊方法定义，修改函数指针
    不再简单赋值，而是用static_call_update()更新一堆数据结构，这样到调用的时候，
-   就不在是一个Indirect的调用了，变成一个静态的调用。
+   就不在是一个Indirect的调用了，变成一个静态的直接跳转。
 
    这是让软件去考虑硬件的难处，增加负担，换取性能的提升。代码逻辑越来越不指向目
    标逻辑，而指向硬件的特殊情况。
@@ -141,8 +144,8 @@
 1. 宋老师合入了一个关闭SMMU MSI polling的特性，把鲲鹏920的HNS单线程TX发送能力从
    7G提升到7.7G。
 
-2. Linaro JPB的SVA特性好像已经完成上传了？我看到需要的特性这次都能看见了，晚点
-   去确认一下，我们使用SVA是不是没有障碍了。
+2. Linaro JPB的SVA特性上传了基本功能，但仍缺page fault from device特性：
+   https://www.spinics.net/lists/arm-kernel/msg866715.html
 
 3. 海思SD5203 SoC支持，包含13个补丁，是一次上传大部分基础驱动。这是一个用于网络
    设备的32位处理器。
@@ -154,7 +157,6 @@
 5. 鲲鹏PCIe错误处理驱动，ETM（Coresight）驱动，Sas驱动等都有一定的升级和修改。
 
 6. Hikey970 USB驱动上传
-
 
 参考
 ====
