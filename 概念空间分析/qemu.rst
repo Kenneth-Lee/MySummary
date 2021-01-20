@@ -978,6 +978,85 @@ device_id表一样的virtio_device_id表来匹配具体的设备，其他行为�
 层的实现），里面用virtqueue_get_buf()读，当然你也可以像其他驱动那样，raise一个
 softirq来读。
 
+CPU
+===
+
+TCG
+----
+为了理解CPU，我们先理解一种最基本的CPU模拟引擎：TCG，Translation Code Generator
+。这个引擎是纯软件模拟器，可以在任何qemu支持的平台上，模拟任何其他硬件平台。
+
+TCG的原理是先给每条指令定义一个translate函数，模拟CPU的执行的时候，就先根据当前
+PC的位置，每次取一条指令，让translate函数生成一段修改被模拟的CPU的状态的代码，
+填到一片翻译内存中（称为TB，Translate Block）。一直到TB填满，或者遇到一个会跳转
+等行为的指令，就TB的构建，对TB中的代码进行一次重定位（相当于动态链接这个TB中临
+时拼凑的代码），然后跳到TB中直接执行。这样一次次填充和执行TB，就模拟了被模拟TB
+的行为了。Qemu之所以叫"Quick" EMUlator，就是因为这个算法。因为过去很多模拟器是
+直接解释指令的行为，然后用动态逻辑去更新被模拟CPU的状态的，而Qemu是用写好的静态
+C代码去更新这些状态，然后用编译器的优化能力去更新被模拟CPU状态，这个效率更高，
+所以就Quick了。
+
+KVM等执行用另外的执行引擎，利用硬件直接执行需要模拟的代码，这个当然效率更高，但
+只能是同Arch模拟。所以从通用性来说，TCG是最好的，我们主要用TCG来理解CPU的执行架
+构。
+
+CPU
+----
+
+CPU也是一种QoM，继承树是：::
+
+        TYPE_DEVICE <- TYPE_CPU <- TYPE_MY_CPU
+
+CPU有自己的as，mr，如果是全系统模拟，这当然就是system_as这些东西了。
+
+定义一种新的CPU，关键是class_init的时候设置CPUClass的回调，比如
+cpu_exec_interrupt，dump_state, synchronized_from_tb（对齐tb的状态和cpu的状态，
+比如pc的位置）。如果支持TCG（指令模拟，不使用KVM等硬件加速技术），关键要支持：
+
+1. tcg_initialize：主要用tcg_global_mem_new()分配被模拟CPU的状态空间
+
+2. tlb_fill：这个主要是搞定TCG才需要的访存处理
+
+此外，要实现一个全局函数，：::
+
+    gen_intermediate_code(cpu, tb, max_insns) {
+        translator_loop(&xxxx_tr_ops, &ctx.base, cs, tb, max_insns);
+    }
+
+让tcg引擎来调用。ops包括这些回调：
+
+.init_disas_context 
+        总初始化，但也是反复调用的
+
+.tb_start
+        一个TB初始化
+
+.insn_start/.translate_insn
+        指令翻译loop，分了两步，后者调用decode_opc，进而调用decode_insn32，而这
+        个函数由decode文件自动生成，被包含到一个翻译文件中，那个翻译文件再实现
+        对应的trans_xxx函数，让这个翻译文件调用。剩下的事情就是怎么翻译的问题了
+        。
+
+.tb_stop
+        翻译完一个TB
+
+.breakpoint_check
+        检查有没有发生断点
+
+Qemu写了一个Python程序基于定义文件自动生成decode程序，输入是一个.decode文件，格
+式在这里有介绍：docs/devel/decodetree.rst。在meson.build中调用decode_tree，可以
+生成一个.inc文件，里面包含一个decode函数，你包含这个inc文件，就可以直接调用这个
+函数直接进行解码。解码后，inc文件会主动调用对应代码的trans_函数，向TB中填充代码
+。所以，一般来说，你只需要写一个translate文件，包含decode产生的decode函数，并在
+里面定义所有的trans_函数，就可以支持这个Arch的TCG了。
+
+TCG和CPU的支持代码需要特别处理，一般都放在target/<arch>目录中。
+
+Machine
+=======
+Machine代表一个整机，它本质就是个后端驱动，可以定义在比如hw/xxxx/board.c里面。
+实现为一个QoM，父类是TYPE_MACHINE，class_init设一些父类的基本回调，关键应该是
+init，里面创建内存映射，增加基本设备这些东西。没有多少新东西。
 
 其他小设施
 ===========
@@ -1042,5 +1121,16 @@ Windows下是对CreateEvent()的封装。它主要是封装这样一对接口：
         event_notifier_test_and_clear(EventNotifier);
 
 前者发起通知，后者测试通知。
+
+编译系统
+---------
+Qemu使用\ `meson`_\ 作为基础的编译系统，但它也提供一个基础的./configure文件作为
+配置命令入口，只是这个配置命令不靠auto-tool工具生成。
+
+meson的主配置文件是根目录下的meson.build，qemu的这个基本文件定义了所有下属子目
+录用的子meson.build，在这些meson.build文件中，你只需要把你的文件加到对应的
+xxx_ss文件集中，就可以参与编译。所以每个子目录的行为还是很简单的。
+
+.. _meson: https://mesonbuild.com
 
 .. vim: set tw=78
