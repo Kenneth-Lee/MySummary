@@ -38,20 +38,20 @@ Qemu要解决具体问题，相对当然复杂得多，但得益于良好的封�
 模拟设备，需要知道的原理并不多。它的代码模型大概就是这样的（我用Python当做伪码
 来表述这个逻辑）：
 
-  .. code-block:: python
+.. code-block:: python
 
-  def run_a_guest():
-    vm = create_vm()
-    vm.create_cpu_object()
-    vm.create_device_object()
-    for cpu in cpus: create_thread(cpu_thread, cpu)
+   def run_a_guest():
+     vm = create_vm()
+     vm.create_cpu_object()
+     vm.create_device_object()
+     for cpu in cpus: create_thread(cpu_thread, cpu)
 
-  def cpu_thread(cpu):
-    while true:
-      try:
-        cpu.run(vm)
-      except EIO eio:
-        find_device(eio.io_address).handle_io();
+   def cpu_thread(cpu):
+     while true:
+       try:
+         cpu.run(vm)
+       except EIO eio:
+         find_device(eio.io_address).handle_io();
 
 对很多人来说，那个cpu.run()是最难理解的，在Qemu中有各种各样的实现方式，比如基于
 qemu.ko的，基于TCG（翻译执行），或者基于KVM的。但对于做设备的人来说，这些统统不
