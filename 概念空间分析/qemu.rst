@@ -983,22 +983,48 @@ CPU
 
 TCG
 ----
-为了理解CPU，我们先理解一种最基本的CPU模拟引擎：TCG，Translation Code Generator
-。这个引擎是纯软件模拟器，可以在任何qemu支持的平台上，模拟任何其他硬件平台。
+为了理解CPU，我们先理解一种最基本的CPU模拟引擎：TCG，Tiny Code Generator。这个
+引擎是纯软件模拟器，可以在任何qemu支持的平台上，模拟任何其他硬件平台。
+
+在TCG的概念空间中，Target是指运行TCG引擎的平台（也就是qemu的host），Guest是指它
+模拟的平台。比如你在x86上模拟RISCV，那么x86就是Target，而RISCV是Guest。
 
 TCG的原理是先给每条指令定义一个translate函数，模拟CPU的执行的时候，就先根据当前
 PC的位置，每次取一条指令，让translate函数生成一段修改被模拟的CPU的状态的代码，
-填到一片翻译内存中（称为TB，Translate Block）。一直到TB填满，或者遇到一个会跳转
-等行为的指令，就TB的构建，对TB中的代码进行一次重定位（相当于动态链接这个TB中临
-时拼凑的代码），然后跳到TB中直接执行。这样一次次填充和执行TB，就模拟了被模拟TB
-的行为了。Qemu之所以叫"Quick" EMUlator，就是因为这个算法。因为过去很多模拟器是
-直接解释指令的行为，然后用动态逻辑去更新被模拟CPU的状态的，而Qemu是用写好的静态
-C代码去更新这些状态，然后用编译器的优化能力去更新被模拟CPU状态，这个效率更高，
-所以就Quick了。
+填到一片翻译内存中（称为TB，Translated Block）。直到遇到一个会跳转等行为的指令
+，就停止TB的构建，对TB中的代码进行一次重定位（相当于动态链接这个TB中临时拼凑的
+代码），然后跳到TB中直接执行。这样一次次填充和执行TB，就模拟了被模拟TB的行为了
+。Qemu之所以叫"Quick" EMUlator，就是因为这个算法。因为过去很多模拟器是直接解释
+指令的行为，然后用动态逻辑去更新被模拟CPU的状态的，而Qemu是用写好的静态C代码去
+更新这些状态，然后用编译器的优化能力去更新被模拟CPU状态，这个效率更高，所以就
+Quick了。
 
 KVM等执行用另外的执行引擎，利用硬件直接执行需要模拟的代码，这个当然效率更高，但
 只能是同Arch模拟。所以从通用性来说，TCG是最好的，我们主要用TCG来理解CPU的执行架
 构。
+
+TCG的实现包含如下概念：
+
+TB
+        Translated Block，这是一个连续的翻译块。
+
+BB
+        Basic Block，这是连续使用的多个TB，直到遇到一个跳转类的指令。
+
+Function
+        用于重定位的一段代码，看做一个C的函数，对应一个TB。
+
+Temporary
+        BB范围中的变量
+
+Local temporary
+        TB范围的变量
+
+Global temporary
+        全局范围的变量
+        
+
+
 
 CPU
 ----
