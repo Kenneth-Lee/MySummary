@@ -29,3 +29,4 @@
    vfio-mdev
    qemu
    Sail
+   虚拟化特权级

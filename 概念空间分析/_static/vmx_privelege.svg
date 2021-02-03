@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="231.10767mm"
+   height="117.60509mm"
+   viewBox="0 0 231.10766 117.6051"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (0767f8302a, 2020-10-17)"
+   sodipodi:docname="vmx_privelege.svg">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.648641"
+     inkscape:cx="377.45563"
+     inkscape:cy="187.52021"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="3830"
+     inkscape:window-height="2065"
+     inkscape:window-x="0"
+     inkscape:window-y="40"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-15.00591,-15.883541)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="42.24184"
+       y="39.637657"
+       id="text1226"><tspan
+         sodipodi:role="line"
+         id="tspan1224"
+         x="42.24184"
+         y="39.637657"
+         style="font-size:4.93889px;stroke-width:0.264583">ring0</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.346327px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 26.497838,51.725216 H 234.05018"
+       id="path1228"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="42.171982"
+       y="58.499325"
+       id="text1226-3"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6"
+         x="42.171982"
+         y="58.499325"
+         style="font-size:4.9389px;stroke-width:0.264583">ring1</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.346327px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 26.131523,64.362845 H 236.11357"
+       id="path1228-9"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="42.989231"
+       y="71.850075"
+       id="text1226-6"><tspan
+         sodipodi:role="line"
+         id="tspan1224-1"
+         x="42.989231"
+         y="71.850075"
+         style="font-size:4.9389px;stroke-width:0.264583">ring2</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.346327px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 25.00591,78.651412 H 233.56857"
+       id="path1228-8"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="41.914448"
+       y="88.937859"
+       id="text1226-3-79"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2"
+         x="41.914448"
+         y="88.937859"
+         style="font-size:4.9389px;stroke-width:0.264583">ring3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="150.73083"
+       y="74.519218"
+       id="text1226-3-8-0-15-6-2-4"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-3-5-9-5-7"
+         x="150.73083"
+         y="74.519218"
+         style="font-size:4.9389px;stroke-width:0.264583">......</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stop-color:#000000"
+       id="rect3128-6"
+       width="42.631496"
+       height="19.248106"
+       x="81.351196"
+       y="103.81992" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="83.583809"
+       y="114.93072"
+       id="text1226-3-8-6"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-4"
+         x="83.583809"
+         y="114.93072"
+         style="font-size:4.9389px;stroke-width:0.264583">Type1 Hypervisor</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stop-color:#000000"
+       id="rect3128-6-9"
+       width="28.96373"
+       height="71.217384"
+       x="81.925797"
+       y="26.325897" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="88.765671"
+       y="33.584751"
+       id="text1226-3-8-6-5"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-4-0"
+         x="88.765671"
+         y="33.584751"
+         style="font-size:4.9389px;stroke-width:0.264583">GuestX</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stop-color:#000000"
+       id="rect3128-6-9-4"
+       width="29.972082"
+       height="70.98336"
+       x="113.38012"
+       y="26.586872" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="120.07955"
+       y="33.927776"
+       id="text1226-3-8-6-5-8"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-4-0-7"
+         x="120.07955"
+         y="33.927776"
+         style="font-size:4.9389px;stroke-width:0.264583">GuestX</tspan></text>
+    <path
+       id="rect3128-6-3"
+       style="opacity:0.745525;fill:#ffffff;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stop-color:#000000"
+       d="m 156.63948,84.44906 -0.32527,20.23404 -28.10621,-0.31095 0.0941,18.84087 78.09284,0.0929 0.83944,-38.8569 z"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="143.78844"
+       y="115.91783"
+       id="text1226-3-8-6-6"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-4-7"
+         x="143.78844"
+         y="115.91783"
+         style="font-size:4.9389px;stroke-width:0.264583">Type2 Hypervisor(Kernel)</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stop-color:#000000"
+       id="rect3128-6-9-4-5"
+       width="15.709523"
+       height="23.266684"
+       x="166.51688"
+       y="26.066042" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:6.15261px;line-height:1;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.192269"
+       x="177.20705"
+       y="36.84832"
+       id="text1226-3-8-6-5-8-3"
+       transform="scale(0.98361174,1.0166613)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-4-0-7-5"
+         x="177.20705"
+         y="36.84832"
+         style="font-size:3.58903px;text-align:center;text-anchor:middle;stroke-width:0.192269">UserAppX</tspan><tspan
+         sodipodi:role="line"
+         x="177.20705"
+         y="43.000931"
+         style="font-size:3.58903px;text-align:center;text-anchor:middle;stroke-width:0.192269"
+         id="tspan949">(Host)</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stop-color:#000000"
+       id="rect3128-6-9-4-5-7"
+       width="15.709523"
+       height="23.266684"
+       x="186.06575"
+       y="26.130383" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:6.15262px;line-height:1;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.192269"
+       x="197.08162"
+       y="36.911606"
+       id="text1226-3-8-6-5-8-3-9"
+       transform="scale(0.98361175,1.0166613)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-4-0-7-5-8"
+         x="197.08162"
+         y="36.911606"
+         style="font-size:3.58902px;text-align:center;text-anchor:middle;stroke-width:0.192269">UserAppX</tspan><tspan
+         sodipodi:role="line"
+         x="197.08162"
+         y="43.064224"
+         style="font-size:3.58902px;text-align:center;text-anchor:middle;stroke-width:0.192269"
+         id="tspan949-6">(Host)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="207.47491"
+       y="38.797817"
+       id="text1226-3-8-0-15-6-2-4-7"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-9-3-5-9-5-7-0"
+         x="207.47491"
+         y="38.797817"
+         style="font-size:4.9389px;stroke-width:0.264583">......</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.346326px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 25.336979,100.67815 H 233.79386"
+       id="path1228-8-3"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="39.446007"
+       y="113.68722"
+       id="text1226-3-79-2"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1"
+         x="39.446007"
+         y="113.68722"
+         style="font-size:4.9389px;stroke-width:0.264583">VM Monitor</tspan></text>
+  </g>
+</svg>
