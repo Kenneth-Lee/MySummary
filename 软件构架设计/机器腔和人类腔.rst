@@ -1,0 +1,70 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+机器腔和人类腔
+===============
+
+这个文档我们来讨论一个技术标准本文写作中很容易犯的错误。
+
+比如，我们会说：
+
+        | XXX特性可以计算数据报文的校验和。
+
+这是人类腔，或者更确切一点，这是“人类总结腔”，这个东西可以形成一个“恍惚”，我们
+大概可以知道它是什么，但要说基于这句话写程序，那是不可能的。这只是一种总结，总
+结可以写，但认为写了总结，你就定义了一个标准，这就不对了。
+
+要能写程序，你需要的是“机器腔”，或者更确切一点说，应该叫“机器定义腔”：
+
+        | 当get_capa() & CAPA_XXX为真的时候，XXX特性被使能。当XXX特性被使能的时候，
+        | get_xxx_checksum()函数结果有效。get_xxx_checksum()结果有效时，它的功能
+        | 如下……
+
+这是可以用于写出程序的。
+
+这是“名可名，非常名”这个游戏的有趣之处。前面这个定义，总结起来，也是“说明XXX特
+性的功能”，后面这个总结起来，也是“说明XXX特性的功能”，你和别人交流，要总结性地
+说这两件事，说出来的“总结”都是一样的，但你说的不是同一件事。所以，“名”确实“可名
+”，但确实也“非常名”。后面这个叫“坐进此道”。拿着扫把的人才是扫地，总结“扫地”的人
+不在扫地。但这个事情本身是个层层递进的关心，后面做这个定义的人，也不是在实现
+get_capa这个函数。
+
+但如果我们要“定义”XXX特性的规范，后面这个机器腔，才是我们需要定义的。
+
+        | The basis for the Sv32 family' translation is 4KB base pages.
+        | To trun on this feature....
+
+这是一个总结性的定义，是人类腔。我们大概可以猜出4KB base pages是什么意思，但它
+并不严格。不能用于层层递进。
+
+        | Sv32 implementation support a 32-bit virtual address space,
+        | divide into 4KiB pages. An Sv32 virtual address is partitioned
+        | into a virtual page number (VPN)...
+
+这是机器腔，一层层过去的：虚拟地址是32位的，虚拟地址分成VPN，VPN又是巴拉巴拉的
+。这严格限定了范围。
+
+还有这样的：
+
+        | 全局变量GLOBAL_XXX_CFG必须设置成非零值。
+
+“必须”，这是人的思维，不“必须”咋地？你打我？
+
+机器不是这样的，机器的思维是：
+
+        | 系统复位后，GLOBAL_XXX_CFG为0。系统预期，在调用任何xxx_前缀的函数前，
+        | GLOBAL_XXX_CFG会被设置为非零值，否则这些函数都会抛出异常
+        | EXCEPTION_CFG_NOT_SET。
+
+还有这样的：
+
+        | Sv32 is a 3-Level page table.
+
+这是总结，就算它是3级页表又怎么样呢？我程序该怎么写？我程序想知道的是：
+
+        | In Sv32 mode, the virtual address is defined as follow...
+
+里面有两个VPN加一个offset，这就是3级页表，但3级页表是总结，不能用于支持写程序，
+你还是要告诉我VA是什么样的。
