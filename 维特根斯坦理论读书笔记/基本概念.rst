@@ -1,0 +1,22 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+基本概念
+=========
+
+我们先总结一下LW定义的基本概念。
+
+World
+        World就是道德经中的“天地”。是意识感知的东西，它不是“道”，它是“道”对人作
+        为的结果，是这些作用的全集。
+
+Fact和Case
+        Fact和Case是World的单元，是人对道认知的结果。“天上正在下雨”可以是一个Fact，
+        这时，“天上正在下雨” is the case，“天上不在下雨” is not the case。
+
+Thing
+        Thing才是“道”，引起意识的那些东西，但“道”不细分一个个独立的Thing。LW认
+        为Thing在“设计”或者说“逻辑”上包含了所有的可能性。如果逻辑上这个事情不会
+        发生，那么Thing里面也没有包含这种可能性。
