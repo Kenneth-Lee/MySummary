@@ -44,6 +44,7 @@ Linux主线内核跟踪
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
    :caption: Contents:
 
    道德经直译/README

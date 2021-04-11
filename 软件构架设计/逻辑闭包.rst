@@ -253,30 +253,28 @@ virtio实现虚拟设备（guest）和模拟后端（Host）的通讯，对于gu
 
 你看，我换一个方法来描述上面的逻辑：
 
-.. code-block:: python
+.. code-block: python
 
-   send_process(queue_id) {
-        ptr = alloc_communiction_memory(queue_id, size)
-        fill_data(ptr)
-        ret = false
-        i = 0
-        while !ret && i<10:
-                ret = enqueue(queue_id, ptr)
-                assert_unaccessable(ptr)
-                i+=1
-        if (i>=0)
-                handle_timeout()
-   }
+   def send_process(queue_id):
+     ptr = alloc_communiction_memory(queue_id, size)
+     fill_data(ptr)
+     ret = false
+     i = 0
+     while !ret && i<10:
+       ret = enqueue(queue_id, ptr)
+       assert_unaccessable(ptr)
+       i+=1
+       if i>=0:
+         handle_timeout()
 
-   receive_process(queue_id) {
-        while true:
-                ptr = dequeue(qeueue_id, &size)
-                if ptr:
-                        ret = read_data(ptr)
-                        free_communication_memory(queue_id, ptr)
-                        if ret != STOP
-                                break;
-   }
+   def receive_process(queue_id):
+     while true:
+       ptr = dequeue(qeueue_id, &size)
+       if ptr:
+         ret = read_data(ptr)
+         free_communication_memory(queue_id, ptr)
+         if ret != STOP:
+           break;
 
 这里我确切定义了发送方和接收方是两个process，同时声明queue_id是双方约定的。同
 时，我对内存分配的概念就是指用户进程可以直接访问的内存的分配。它怎么分配的我不
