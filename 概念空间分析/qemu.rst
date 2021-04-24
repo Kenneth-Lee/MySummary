@@ -113,7 +113,7 @@ Type
 Class
         类。这个才是类本身，这个概念类似Java中的class和object的关系：class的静
         态数据全局唯一，被所有同一类型共享，而object是实例，每个class可以创建
-        很多实力（比如在Java中通过New创建的对象）。类自己的数据（类似Java中类的
+        很多实例（比如在Java中通过New创建的对象）。类自己的数据（类似Java中类的
         静态数据），保存在class_size的空间中，这个size必须包含父类的空间。在操
         作上，通常是在定义TypeInfo.class_size的时候，让它等于你的私有数据结构，
         并保证这个数据结构的第一个成员等于父类的私有数据结构。这样的结果就是父
@@ -274,11 +274,23 @@ qom-list的一个示例：::
         type (string)
         ...
         virt.flash1 (child<cfi.pflash01>)
-        unattached (child<container>)
+        unattached (child<container>)   <--- 没有指定parent的对象都挂在这下面
         peripheral-anon (child<container>)
         peripheral (child<container>)
         virt.flash0 (child<cfi.pflash01>)
         ...
+
+.. note::
+
+   我们简单解释一下这个list的含义：
+
+   1. /是整个被实例化的而对象的根，下面是它的所有属性。
+
+   2. 属性的表述成“name (type)”这种模式，name是属性的名字，type是它的类型。
+
+   3. 如果属性是child<type>，后面的type是它被链接的子对象的类型
+
+   qom-list只能列出单个节点的属性，要列出整个对象树，可以用info qom-tree。
 
 而link通常用来做简单的索引，比如：
 
@@ -287,7 +299,10 @@ qom-list的一个示例：::
    object_link_get_targetp();
 
 这可以用于找关联设备，比如IO设备的IOMMU或者GIC控制器，或者一个网卡关联的PHY设备
-等。
+等。这个属性在命令行查询的时候看不见。
+
+Link可以直接在先通过device_class_set_props()创建，具体的instance通过
+object_property_set_link()去设置。Link是有类型的，不能把不同类型的对象挂到Link上。
 
 这不算什么特别的功能，只是简单的数据结构控制而已。用户自己用其他方法建立索引
 去找到其他设备，也无不可。
@@ -300,24 +315,31 @@ MemoryRegion
 角中的内存。Qemu使用MemoryRegion描述这个视角的内存。它包含如下一些子概念：
 
 MemoryRegion
-        这表示一个面向VM的内存区，以下简称MR。请注意了，MR的VM的内存区的描述，
+        这表示一个面向VM的内存区，以下简称MR。请注意了，MR是一片内存区的描述，
         而不是那片内存本身。MR的要素是base_address, size这些信息，而不是void
         \*ptr这样的内存本身。整个系统的所有内存就是一个MR，整个系统的所有IO空间
         （不是说mmio，是说x86的LPC的IO）也是一个MR。MR内部包含多个不同设备的
-        mmio也是一个MR。所以MR是个层叠的概念。
+        mmio也是一个MR。
 
         但部分基础的内存层是真的分配和Host一侧用于支持前端的backend内存的，这个
         这个真正的内存指针在MR->ram_block中。
-
-        全系统的内存MR可以通过get_system_memory()拿到，IO MR可以通过
-        get_system_io()拿到。
 
 RAMBlock
         这是MR的ram_block的类型，表示一段真实的Host一侧的内存，它可以是创建的
         时候就分配的，也可能是用Lazy算法动态一点点增加的。
 
 MemoryRegionSection
-        MR中的一个分段，简称MRS。
+        MR中的一个分段，简称MRS。当多个MR叠在一起的时候，MR会被隔离成一段一段，
+        每段就是一个MRS。MRS的行为决定于它所在的MR。
+
+Container
+        包含其他MR的MR叫Container。没有RAM或者IO属性的Container叫纯Container，
+        不影响理解的时候也可以简单叫Container。纯Container是透明的，要判断一段
+        MRS的行为，如果它属于纯Container，就要看它父MR的定义了。
+
+AddressSpace
+        这表示一个地址空间，以下简称AS。一个地址空间可以包含多个不同属性的MR，
+        MR可以包含其他MR，这些MR互相覆盖，最终层叠在一起，所以AS是MR的层叠表述。
 
 FlatView
         这表示看到的地址空间，本文简称FV。这个概念比较绕。我们这样说：AS是立体
@@ -325,26 +347,25 @@ FlatView
         的时候，某个时刻，某个物理地址总是对应着某个MR中（某段MRS）的地址，
         FlatView用来表示层叠的结果。另外它也提供多个访问源互斥的锁。
 
-AddressSpace
-        这表示一个地址空间，以下简称AS。一个地址空间可以包含多个不同属性的MR，
-        AS是MR的地址表述，基于MR的信息把空间分段成多个MRS，然后组成FV。
-
-        全系统的get_system_memory()和get_system_io()对应的AS是
-        address_space_meory和address_space_io，也可以直接被其他驱动所访问。
-
-        综合来说，MR是提供者角度的内存，AS是使用者角度的内存。MRS和FV是两者的
-        关联。全系统可以有AS，从一个设备看这个系统，也可以有AS。全系统AS看到的
-        MR，从设备的AS上就不一定能看到。
-
 MemoryRegionCache
         IO MR中访问过的数据可以放在Cache中，这个Cache简称MRC，现在主要就是给
         virtio用。
 
-根据这个定义，MR是层叠的概念，上一层是本层的container，全系统的根container就是
-system_memory和system_io。这个空间的大小就是Guest的虚拟空间的大小。其他世界的内
-存，无论是ram还是mmio空间，都是这个空间的一个子空间。
+综合来说，我们用MR定义一个有特定属性的内存区（比如RAM或者IO），然后把它们叠起来
+构成一个AS，backend用这个AS去访问内存，首先压平为一个FV，然后匹配到一个MRS，最终
+用这个MRS所在MR决定如何访问。
 
-我们通过例子看看从MR的创建方法。
+全系统的根container是对所有backend可见的，它包括system_memory和system_io两个，分别
+代表内存空间和IO空间。两者合起来就是Guest的虚拟空间。其他MR，都是这两者的子MR。
+
+system_memory和system_io可以通过get_system_memory()和get_system_io()获得。对应的AS
+可以直接用全局变量address_space_meory和address_space_io访问。
+
+整个概念可以用下图展示：
+
+.. figure:: _static/memory_region.svg
+
+我们通过例子看看MR的创建方法。
 
 RISCV的系统RAM是这样创建的：
 
@@ -355,6 +376,7 @@ RISCV的系统RAM是这样创建的：
    memory_region_add_subregion(system_memory, memmap[VIRT_DRAM].base,
         main_mem);
    
+原理是：你创建一个RAM的MR，然后根据位置，加到全系统的MR（system_memory）中。
 MMIO空间的MR一般由设备创建，通常长这样：
 
 .. code-block: C
@@ -363,25 +385,25 @@ MMIO空间的MR一般由设备创建，通常长这样：
                          &acpi_pm_evt_ops, ar, "acpi-evt", 4);
    memory_region_add_subregion(parent, 0, &ar->pm1.evt.io);
 
-再看看使用者的角度。使用者手中拿到的是物理地址和CPU的AS，需要做的是用AS翻译
-物理地址到MR。
+同样是创建MR，然后作为一个子region加到上一级的MR中。这样最后在系统的AS中，看到
+的就是一个叠起来的AS了。
 
-Guest的CPU指令执行的时候一般不会直接去访问这些内存，而是先通过缺页填TLB。有了
-这样一个过程，CPU模拟程序可以直接判断对应地址的类型，如果是RAM类型的，直接访问
-过去就可以了，如果是IO类型的，就走调用这个MR的回调函数的路线。
+Guest访问的时候有两种可能，一种是Guest的CPU直接做地址访问，这会变成一个缺页以后
+填TLB的过程，在这个过程中，CPU模拟程序把系统的AS压平为FV，然后找到对应的MR，
+最后根据MR的属性去回调IO或者直接访问RAM（RAM MR中有ram_block的地址）。
 
-CPU的TLB流程通过每种CPU的fill_tlb回调填TLB，每种CPU在实现这个回调的时候用
-address_space_translate()就可以完成这个翻译，如果是RAM，直接引用MR里的ram_block
-就可以支持自己的backend工作。
-
-Device Backend的访问则走这个路径：
+另一种是backend的设备直接调函数去访问地址了，这样的调用：
 
 .. code-block: C
 
    dma_memory_rw(&address_space_memory, pa, buf, size, direction);
+   pci_dma_rw(pdev, addr, buffer, len, direction);
 
-这仍从AS开始，从AS得到FV，然后定位MRS，最终找到MR，之后作为RAM处理还是IO处理，
-就又MR的属性决定了。这个代码是这样的：
+pci的调用本质还是对dma_memory_rw的封装，只是有可能用比如iommu这样的手段做一个地
+址转换而已。
+
+这个实现和前面CPU的访问没有什么区别，仍从AS开始，从AS得到FV，然后定位MRS，最终
+找到MR。之后作为RAM处理还是IO处理，就由MR的属性决定了。这个代码是这样的：
 
 .. code-block: C
 
@@ -406,7 +428,7 @@ Device Backend的访问则走这个路径：
 针拿过来就可以了，unmap的时候保证发起相关的通知即可。如果没有，那可以使用Bounce
 DMA Buffer机制。也就是说，直接另外分配一片内存，到时映射过来就是了。
 
-MR有很多类型，RAM，ROM，IO等：
+MR有很多类型，比如RAM，ROM，IO等，本质都是io，ram和container的变体：
 
 .. code-block: C
 
@@ -428,27 +450,29 @@ MR有很多类型，RAM，ROM，IO等：
    memory_region_init_rom_device_nomigrate(mr, owner, ops, opaque, name, size, errp);
    memory_region_init_rom_device_nomigrate(mr, owner, ops, opaque, name, size, errp);
 
-这个不在这里一一细究，我们只深入分析一下IOMMU类型。
+其中，iommu是最特别的一种MR，它一般用于实现IOMMU，而不放在系统MR和AS中。
 
-IOMMU的作用是把设备发出的地址进行一次映射，再作为物理地址去访问。如果你仅仅是要
-给你自己的设备创建翻译，自己实现一套协议就可以了，最终访问物理地址的时候还是可
-以用上面的方法访问。
+IOMMU MR
+---------
 
-但如果要实现通用的IOMMU驱动，则可以用IOMMU MR，比如下面这个是ARM SMMU实现：
+IOMMU MR不放入系统MR和AS空间中，因为CPU不经过IOMMU访问内存。IOMMU是针对每个具体
+的设备的。下面是这种MR的一个应用实例：
 
 .. code-block: C
 
+   // 创建一个设备的iommu
    memory_region_init_iommu(&sdev->iommu, sizeof(sdev->iommu),
                             TYPE_SMMUV3_IOMMU_MEMORY_REGION,
                             OBJECT(s), name, 1ULL << SMMU_MAX_VA_BITS);
+   // 创建这个设备的地址空间，用于设备进行地址访问
    address_space_init(&sdev->as, MEMORY_REGION(&sdev->iommu), name);
 
-其中这里的s->mrtypename是要实现的IOMMU对象的名字。这个对象的实现是这样的：
+其中的TYPE_SMMUV3_IOMMU_MEMORY_REGION是要实现的IOMMU对象的名字。这个对象的实现
+是这样的：
 
 .. code-block: C
 
-   static void smmuv3_iommu_memory_region_class_init(ObjectClass *klass,
-                                                  void *data)
+   static void smmuv3_iommu_memory_region_class_init(ObjectClass *klass, void *data)
    {
        ...
        imrc->translate = smmuv3_translate;
@@ -461,9 +485,24 @@ IOMMU的作用是把设备发出的地址进行一次映射，再作为物理地
       .class_init = smmuv3_iommu_memory_region_class_init,
    };
 
-简单说，你需要为这个MR创建一个TYPE_IOMMU_MEMORY_REGION类型的对象，然后为它创建
-translate和notifiy_flag_changed回调，决定地址作什么转换，剩下的地址翻译就可以留
-给AS-MR的翻译体系了。
+读者可以注意到，iommu MR的AS属于每个设备，而且和系统AS没有关系。所以，如果这个设备
+要使用IOMMU，就必须调用那个IOMMU的接口的DMA访问接口。但在qemu的实现中，大部分IOMMU
+都是直接把自己作为PCI接口的一部分，用在封装pci_dma_rw()的场合。PCI总线在挂载设备的
+时候，为每个设备创建一个IOMMU单元，到访问这个设备的dma的时候，就可以直接得到这个设
+备的IOMMU MR，从而调用translate回调，翻译目标地址，最后还是用dma_memory_rw()这类的
+代码访问系统AS，得到真正的访问结果。
+
+.. note::
+
+   为了保证设备和对应的IOMMU解耦，qemu中通常通过link来链接设备和对应IOMMU设备的
+   关系，这需要在创建machine的时候建立这种关联。如果是基于PCI接口创建关联，也
+   需要让IOMMU设备链接到PCI的接口（比如pci_setup_iommu()），实现对应的关联。
+
+   在PCI中，dma访问用的AS是PCIDevice->bus_master_as，对应的MR是bus master
+   container，PCIDevice->bus_master_container_region。如果有iommu，对应的iommu
+   region作为一个称为bus master的alias加入到bus master container中。bus master
+   的作用是用来使能和关闭iommu翻译，这个domain仅在PCI配置空间中中允许了
+   PCI_COMMAND_BUS_MASTER位（允许设备访问内存）才会生效。
 
 中断
 =====
@@ -538,8 +577,8 @@ PCI/PCI-E本质上就是一个代理了很多设备的设备。所以它才有�
 平台设备有自己的MMIO空间，它的所有动态协议，不过是对这个空间的重新分配（基于设
 备对应的Bus-Device-Function）。
 
-所以PCI/PCIE根桥的创建本质上分配一个MMIO空间，并用PCIE作为这个MR的管理设备而已
-。一般套路是：
+所以PCI/PCIE根桥的创建本质上分配一个MMIO空间，并用PCI/PCIE作为这个MR的管理设备
+而已。一般套路是：
 
 1. 创建一个PCI/PCIE设备作为Root Bridge，比如TYPE_GPEX_HOST（General PCI EXpress）。
 
@@ -552,6 +591,14 @@ PCI/PCI-E本质上就是一个代理了很多设备的设备。所以它才有�
    * 同2
 
 剩下的事情就是TYPE_GPEX_HOST驱动的问题了。
+
+.. note::
+
+   我们这里快速补充一下PCI/PCIE上的基本概念：
+
+   在谈PCI/PCIE的时候，Host表示CPU子系统，Host Bridge表示把CPU和PCI/PCIE总线连
+   起来的那个IP。这个IP包括三个功能：Bus Master，Bus Target，以及Configure
+   Access Generation。
 
 TYPE_GPEX_HOST的继承树结构：::
 
