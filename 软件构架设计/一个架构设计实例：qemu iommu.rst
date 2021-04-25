@@ -22,7 +22,7 @@ IOMMU是一种升级的DMA设备，它的作用是对设备发出的地址进行
 qemu在实现这个特性的时候，还停留在这样的认识上，所以，它对这个功能的抽象，是提供
 一个这样的回调函数：
 
-.. code-block: C
+.. code-block:: C
 
    static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
                                          IOMMUAccessFlags flag, int iommu_idx)

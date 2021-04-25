@@ -494,8 +494,7 @@ IOMMU MR不放入系统MR和AS空间中，因为系统MR和AS相当于物理地�
 这样创建出来的dev->bus_master_as就是可以用于dma_memory_rw()访问的AS了。有人可能
 奇怪，为什么这个AS中没有包含system MR。答案在translate的实现中可以找到：
 
-.. code-block: C
-
+.. code-block:: C
 
    static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
                                          IOMMUAccessFlags flag, int iommu_idx)
@@ -560,7 +559,7 @@ qdev），具体怎么做完全是实现者的自由度。
 可能是历史原因，qemu各种实现都把中断看作是CPU的gpio行为，变成一套完整的接口。
 比如RISCV就是这样的：
 
-.. code-block: C
+.. code-block:: C
 
    static void sifive_plic_irq_request(void *opaque, int irq, int level) {
         plic_dev = opaque;
@@ -572,7 +571,7 @@ qdev），具体怎么做完全是实现者的自由度。
 
 这样组织一下，给中断控制器加下级中断的方法就变成一套统一的函数：
 
-.. code-blokc: C
+.. code-block:: C
 
    qdev_init_gpio_in_xxx(plic, callback, num_irqs);
    qemu_irq qdev_get_gpio_in(plic, n);
@@ -596,7 +595,7 @@ qdev），具体怎么做完全是实现者的自由度。
 可以了。这个核心函数是qemu_set_irq()，在实际使用的时候封装成这样一些更贴近使用
 名称空间的接口：
 
-.. code-block: C
+.. code-block:: C
 
         void qemu_irq_raise(qemu_irq irq);
         void qemu_irq_lower(qemu_irq irq);
@@ -652,7 +651,7 @@ PCI/PCI-E驱动
 
 前面是全系统的PCI桥的概念，我们用一个PCI设备的backend来看具体的backend的写法：
 
-.. code-block: C
+.. code-block:: C
 
    static void my_class_init(ObjectClass *oc, void *data) {
      PCIDeviceClass *k = PCI_DEVICE_CLASS(oc);
