@@ -1,7 +1,7 @@
-.. Kenneth Lee 版权所有 2020
+.. Kenneth Lee 版权所有 2020-2021
 
 :Authors: Kenneth Lee
-:Version: 0.2
+:Version: 0.3
 
 qemu概念空间分析
 ****************
@@ -15,7 +15,7 @@ qemu概念空间分析
         :doc:`../软件构架设计/在qemu中模拟设备`
 
 这个文档当前的版本还在不断更新中，后面根据需要会慢慢补充更多的内容。等我觉得补充
-的内容足够多了，我会把版本和升级到1.0以上。
+的内容足够多了，我会把版本升级到1.0以上。
 
 基础名称空间
 ============
@@ -88,7 +88,7 @@ Device当然也可以创建自己的线程，但更多时候，是它被动地�
 的一部分。
 
 无论是哪种过程，我们在总体上都可以看作是一种黑盒，如果它用自己的逻辑可以一直执
-行下去，就在黑盒中一直占据Host上的这个线程，知道它碰到一个无法处理的事件，它就
+行下去，就在黑盒中一直占据Host上的这个线程，直到它碰到一个无法处理的事件，它就
 可以从cpu.run(vm)退出，Qemu本身的代码可以根据退出的原因，调用其他的对象去响应这
 个原因。比如cpu.run(vm)中有人访问了io，Qemu退出来后就可以根据这个io的地址看是哪
 个device backend提供的，让对应的backend完成自己的响应动作。
@@ -155,7 +155,7 @@ props
         属性，它的类型是Bool，可以通过object_property_set_bool()设置。对大部分
         设备，我们都通过设置它的realize和unrealize函数来支持这个属性，从而让设
         备被创建以后，可以统一进行初始化。这个初始化和instance_init的区别在于
-        ，前者初始化的时候，其他对象的数据结构可能还没有初始化，所以只适合用于
+        ：前者初始化的时候，其他对象的数据结构可能还没有初始化，所以只适合用于
         和别人没有关系的初始化，后者是在所有静态对象初始化后才被调用的。
 
 下面是一些常用的全局的类：
@@ -224,10 +224,10 @@ props
    //这一段可以通过提供一个TypeInfo的数组这样定义:
    //DEFINE_TYPES((devinfo_array)
 
-首先type_register_static注册了一个叫“mydevice”的TypeInfo，父类是“device”，没有
-定义class_size（表示这个类没有自己的静态数据），instance的私有数据由
-MyDviceState定义，这个数据结构的第一个成员是DeviceState，保存了自己的父类的
-instance State。
+在这个例子中，我们首先用type_register_static注册了一个叫“mydevice”的TypeInfo，
+父类是“device”，没有定义class_size（表示这个类没有自己的静态数据），instance的
+私有数据由MyDviceState定义，这个数据结构的第一个成员是DeviceState，保存了自己的
+父类的instance的State。
 
 .. note::
 
@@ -240,10 +240,12 @@ instance State。
 在这个class的init里面我们用OBJECT_CLASS_CHECK把父类转换为子类，然后设置了
 Device这个子类的realize和unrealize函数。这样，整个类的初始化逻辑框架就撑起来了。
 
-在实际实现中，整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关
-联。这种关联有两种类型：composition和link，分别用
-object_property_add_child/link()建立。最后在qemu console中使用Info qom-tree命
-令看到的树状结构就是这个属性建立的关联。
+在实际实现中，整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关联
+。这种关联有两种类型：composition和link，分别用object_property_add_child/link()
+建立。比如你在创建machine的时候，可以在machine中创建一个bus，然后把它作为
+machine的child连到machine上，之后你还可以创建bus上的设备，作为bus的child，连到
+bus上，你还可以创建一个iommu，作为一个link连到这个bus的每个设备上。这种关联接口
+，可以在qemu console中用Info qom-tree命令查看（但只有child没有link）。
 
 child和link关联
 ----------------
@@ -262,7 +264,7 @@ child的主要作用是可以枚举，比如：
 child，而端口复位的时候就可以用这种方法找到所有的子端口进行通知。
 
 实际上，整个机器的对象machine就是根对象的一个child。下面是qemu控制台下运行
-qom-list的一个示例：::
+qom-list的一个实例：::
 
         (qemu) qom-list /
         type (string)
@@ -280,32 +282,32 @@ qom-list的一个示例：::
         virt.flash0 (child<cfi.pflash01>)
         ...
 
-.. note::
+我们简单解释一下这个list的含义：
 
-   我们简单解释一下这个list的含义：
+1. /是整个被实例化的而对象的根，下面是它的所有属性。
 
-   1. /是整个被实例化的而对象的根，下面是它的所有属性。
+2. 属性的表述成“name (type)”这种模式，name是属性的名字，type是它的类型。
 
-   2. 属性的表述成“name (type)”这种模式，name是属性的名字，type是它的类型。
+3. 如果属性是child<type>，后面的type是它被链接的子对象的类型
 
-   3. 如果属性是child<type>，后面的type是它被链接的子对象的类型
-
-   qom-list只能列出单个节点的属性，要列出整个对象树，可以用info qom-tree。
-
-而link通常用来做简单的索引，比如：
+和Child不同，link通常用来做简单的索引，你可以这样找到这个关联的对象：
 
 .. code-block:: C
 
    object_link_get_targetp();
 
-这可以用于找关联设备，比如IO设备的IOMMU或者GIC控制器，或者一个网卡关联的PHY设备
-等。这个属性在命令行查询的时候看不见。
+link用info qom-tree看不到，只能用qom-list一个节点一个节点看。它通常用于建立非包
+含关系的对象间索引。比如你的网卡和IOMMU都挂在总线上，但网络需要请求IOMMU去翻译
+它的地址，这之间就可以是一个link。
 
 Link可以直接在先通过device_class_set_props()创建，具体的instance通过
-object_property_set_link()去设置。Link是有类型的，不能把不同类型的对象挂到Link上。
+object_property_set_link()去设置。这两个步骤相当于在一个接口中定义一个指针和给
+这个指针赋值的两个动作。前者一般实现在索引多方的那个对象的初始化，后者一般实现
+在建立系统关联关系的代码中，比如创建machine的时候，把IOMMU和网卡关联起来的时候
+。Link是有类型的，不能把不同类型的对象挂到Link上。
 
 这不算什么特别的功能，只是简单的数据结构控制而已。用户自己用其他方法建立索引
-去找到其他设备，也无不可。
+去找到其他设备，也无不可。但qemu的惯例是用child和link。
 
 MemoryRegion
 =============
@@ -335,7 +337,7 @@ MemoryRegionSection
 Container
         包含其他MR的MR叫Container。没有RAM或者IO属性的Container叫纯Container，
         不影响理解的时候也可以简单叫Container。纯Container是透明的，要判断一段
-        MRS的行为，如果它属于纯Container，就要看它父MR的定义了。
+        MRS的行为，如果它属于纯Container，就要看它上一层MR的定义了。
 
 AddressSpace
         这表示一个地址空间，以下简称AS。一个地址空间可以包含多个不同属性的MR，
@@ -355,11 +357,13 @@ MemoryRegionCache
 构成一个AS，backend用这个AS去访问内存，首先压平为一个FV，然后匹配到一个MRS，最终
 用这个MRS所在MR决定如何访问。
 
-全系统的根container是对所有backend可见的，它包括system_memory和system_io两个，分别
-代表内存空间和IO空间。两者合起来就是Guest的虚拟空间。其他MR，都是这两者的子MR。
+全系统的根container是对所有backend可见的，它包括system_memory和system_io两个，
+分别代表内存空间和IO空间（像ARM或者RISCV这些没有IO总线的系统，后者完全没有意义
+）。两者合起来就是Guest的虚拟空间。其他MR，都是这两者的子MR。
 
-system_memory和system_io可以通过get_system_memory()和get_system_io()获得。对应的AS
-可以直接用全局变量address_space_meory和address_space_io访问。
+system_memory和system_io可以通过get_system_memory()和get_system_io()获得。对应
+的AS可以直接用全局变量address_space_meory和address_space_io访问。所以，其实对所
+有backend驱动来说，系统内存是直接敞开的。
 
 整个概念可以用下图展示：
 
@@ -455,22 +459,58 @@ MR有很多类型，比如RAM，ROM，IO等，本质都是io，ram和container�
 IOMMU MR
 ---------
 
-IOMMU MR不放入系统MR和AS空间中，因为CPU不经过IOMMU访问内存。IOMMU是针对每个具体
-的设备的。下面是这种MR的一个应用实例：
+IOMMU MR不放入系统MR和AS空间中，因为系统MR和AS相当于物理地址空间，但加了IOMMU，
+设备访问的就不是物理地址了，它必须是针对每个设备的虚拟地址。
+
+下面是这种MR的一个应用实例（这个例子是ARM SMMU的，但由于ARM的SMMU在qemu中是专门
+为PCI子系统定制的，我们在例子中把两个模块中的流程进行了组合和化简，突出关键逻辑）：
 
 .. code-block: C
 
-   // 创建一个设备的iommu
-   memory_region_init_iommu(&sdev->iommu, sizeof(sdev->iommu),
+   // 为设备创建设备自己的AS，包含一个代表物理空间的container
+   memory_region_init(&dev->bus_master_container_region, OBJECT(dev),
+                       "bus master container", UINT64_MAX);
+   address_space_init(&dev->bus_master_as,
+                       &dev->bus_master_container_region, dev->name);
+
+   // 创建一个设备的iommu，TYPE_SMMUV3_IOMMU_MEMORY_REGION是iommu的类型名称
+   memory_region_init_iommu(&dev->iommu_mr, sizeof(dev->iommu_mr),
                             TYPE_SMMUV3_IOMMU_MEMORY_REGION,
                             OBJECT(s), name, 1ULL << SMMU_MAX_VA_BITS);
-   // 创建这个设备的地址空间，用于设备进行地址访问
-   address_space_init(&sdev->as, MEMORY_REGION(&sdev->iommu), name);
 
-其中的TYPE_SMMUV3_IOMMU_MEMORY_REGION是要实现的IOMMU对象的名字。这个对象的实现
-是这样的：
+   // 创建iommu MR的别名，以便可以动态开启和关闭
+   memory_region_init_alias(&dev->bus_master_enable_region,
+                            OBJECT(dev), "bus master",
+                            dev->iommu_mr, 0, memory_region_size(dev->iommu_mr));
+
+   // 初始化的时候先关掉iommu，等设备启动的时候再让它生效
+   // 对于PCI设备来说，通常是设备被下了PCI_COMMAND_BUS_MASTER命令的时候，才会开启
+   memory_region_set_enabled(&dev->bus_master_enable_region, false);
+
+   // 加到设备的container MR中
+   memory_region_add_subregion(&dev->bus_master_container_region, 0,
+                               &dev->bus_master_enable_region);
+
+这样创建出来的dev->bus_master_as就是可以用于dma_memory_rw()访问的AS了。有人可能
+奇怪，为什么这个AS中没有包含system MR。答案在translate的实现中可以找到：
 
 .. code-block: C
+
+
+   static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+                                         IOMMUAccessFlags flag, int iommu_idx)
+   {
+       ..
+       IOMMUTLBEntry entry = {
+           .target_as = &address_space_memory,
+           .iova = addr,
+           .translated_addr = addr,
+           .addr_mask = ~(hwaddr)0,
+           .perm = IOMMU_NONE,
+       };
+       ...
+       return entry;
+   }
 
    static void smmuv3_iommu_memory_region_class_init(ObjectClass *klass, void *data)
    {
@@ -485,24 +525,24 @@ IOMMU MR不放入系统MR和AS空间中，因为CPU不经过IOMMU访问内存。
       .class_init = smmuv3_iommu_memory_region_class_init,
    };
 
-读者可以注意到，iommu MR的AS属于每个设备，而且和系统AS没有关系。所以，如果这个设备
-要使用IOMMU，就必须调用那个IOMMU的接口的DMA访问接口。但在qemu的实现中，大部分IOMMU
-都是直接把自己作为PCI接口的一部分，用在封装pci_dma_rw()的场合。PCI总线在挂载设备的
-时候，为每个设备创建一个IOMMU单元，到访问这个设备的dma的时候，就可以直接得到这个设
-备的IOMMU MR，从而调用translate回调，翻译目标地址，最后还是用dma_memory_rw()这类的
-代码访问系统AS，得到真正的访问结果。
+所以答案是，iommu自己提供目标AS是什么（这个例子中就是address_space_memory）。
 
-.. note::
+在qemu的当前实现中，大部分iommu都作为PCI的总线属性的一部分来设计，当你创建一个
+iommu设备的时候，通过primary_master属性（一个link）指定所述的PCI总线，从而调用
+pci_setup_iommu()设置回调，之后每个EP注册到这个总线上，就会创建一个针对这个设备
+的IOMMU设备（以及相应的IOMMU MR）。
 
-   为了保证设备和对应的IOMMU解耦，qemu中通常通过link来链接设备和对应IOMMU设备的
-   关系，这需要在创建machine的时候建立这种关联。如果是基于PCI接口创建关联，也
-   需要让IOMMU设备链接到PCI的接口（比如pci_setup_iommu()），实现对应的关联。
+但这个设计其实是有毛病的。主要有两个问题：
 
-   在PCI中，dma访问用的AS是PCIDevice->bus_master_as，对应的MR是bus master
-   container，PCIDevice->bus_master_container_region。如果有iommu，对应的iommu
-   region作为一个称为bus master的alias加入到bus master container中。bus master
-   的作用是用来使能和关闭iommu翻译，这个domain仅在PCI配置空间中中允许了
-   PCI_COMMAND_BUS_MASTER位（允许设备访问内存）才会生效。
+1. 这个是人为限定了虚拟设备的硬件结构：真实的硬件可不是每个设备都有一个IOMMU设
+   备的，按现在的实际，保证功能是没有问题的，但要模拟一个真实硬件的行为，这是不
+   够的。
+
+2. translate函数只有VA和属性作为输入。但现代IOMMU设备支持多页表（ASID Index），
+   这个接口参数不足。
+
+这个架构的深入分析，我单独写在这里：
+:doc:`../软件构架设计/一个架构设计实例：qemu iommu`\ 。
 
 中断
 =====
