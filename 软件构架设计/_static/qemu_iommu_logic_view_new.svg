@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="225.57484mm"
-   height="110.03453mm"
-   viewBox="0 0 225.57486 110.03453"
+   width="273.36685mm"
+   height="110.03436mm"
+   viewBox="0 0 273.36687 110.03435"
    version="1.1"
    id="svg1043"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
@@ -256,8 +256,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="310.38717"
-     inkscape:cy="228.95612"
+     inkscape:cx="538.95861"
+     inkscape:cy="228.95548"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -274,7 +274,7 @@
      fit-margin-right="10"
      fit-margin-bottom="10">
     <sodipodi:guide
-       position="34.006537,51.329402"
+       position="34.006538,51.329232"
        orientation="1,0"
        id="guide1966"
        inkscape:locked="false" />
@@ -295,7 +295,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-27.367347,-123.95186)">
+     transform="translate(-27.367345,-123.95187)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
@@ -318,501 +318,512 @@
            height="50.535713"
            x="39.82143"
            y="26.673668" /></flowRegion><flowPara
-         id="flowPara2717"></flowPara></flowRoot>    <g
-       id="g4922"
-       transform="matrix(2.0041157,0,0,2.0088416,-37.52114,-135.1362)">
-      <rect
-         y="137.98506"
-         x="60.224247"
-         height="5.918005"
-         width="18.042551"
-         id="rect1921-2-1"
-         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.14399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8"
-         y="150.22351"
-         x="65.540184"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="150.22351"
-           x="65.540184"
-           sodipodi:role="line">IOMMU_X</tspan></text>
-      <text
-         id="text2132-3-2"
-         y="150.51625"
-         x="118.0423"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="150.51625"
-           x="118.0423"
-           id="tspan2130-6-0"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         transform="scale(1.0782096,0.92746345)"
-         id="text1049-6-7-6-3-2-7-6-7"
-         y="145.7453"
-         x="55.573238"
-         style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
-         xml:space="preserve"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.04502182"
-           id="tspan1592"
-           y="147.186"
-           x="55.573238">物理上的一种IOMMU设备</tspan></text>
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-3"
-         y="146.76958"
-         x="87.846718"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-6"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="146.76958"
-           x="87.846718"
-           sodipodi:role="line">primary_bus</tspan></text>
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-7"
-         y="147.06065"
-         x="65.641434"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-5"
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.41111112px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="147.06065"
-           x="65.641434"
-           sodipodi:role="line">&lt;&lt;device/pic_device&gt;&gt;</tspan></text>
-      <rect
-         y="136.6873"
-         x="109.71295"
-         height="5.1161962"
-         width="13.699426"
-         id="rect1921-2-1-3"
-         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.144471;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-5"
-         y="148.19"
-         x="110.76147"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-62"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="148.19"
-           x="110.76147"
-           sodipodi:role="line">Bus_X</tspan></text>
-      <text
-         transform="scale(1.0782096,0.92746346)"
-         id="text1049-6-7-6-3-2-7-6-7-9"
-         y="144.20198"
-         x="94.407555"
-         style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
-         xml:space="preserve"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.04502182"
-           id="tspan1592-1"
-           y="145.64268"
-           x="94.407555">当前实现都是PCI Bus，所以其实已经绑定总线类型了</tspan></text>
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-7-2"
-         y="145.55447"
-         x="110.64048"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-5-7"
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.41111112px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="145.55447"
-           x="110.64048"
-           sodipodi:role="line">&lt;&lt;bus&gt;&gt;</tspan></text>
+         id="flowPara2717" /></flowRoot>    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.28893271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1921-2-1"
+       width="36.159359"
+       height="11.888334"
+       x="83.175217"
+       y="142.05392" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="95.805092"
+       y="159.38945"
+       id="text1049-6-7-6-3-7-8"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="95.805092"
+         y="159.38945"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874">IOMMU_X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="199.28383"
+       y="167.03029"
+       id="text2132-3-2"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0"
+         x="199.28383"
+         y="167.03029"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="76.665947"
+       y="146.90097"
+       id="text1049-6-7-6-3-2-7-6-7"
+       transform="scale(1.0769406,0.92855634)"><tspan
+         x="76.665947"
+         y="149.79172"
+         id="tspan1592"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">物理上的一种IOMMU设备</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="140.56264"
+       y="152.45921"
+       id="text1049-6-7-6-3-7-8-3"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="140.56264"
+         y="152.45921"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-6">primary_bus</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="96.008247"
+       y="153.04324"
+       id="text1049-6-7-6-3-7-8-7"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="96.008247"
+         y="153.04324"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.83136249px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-5">&lt;&lt;device/pic_device&gt;&gt;</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.28987777;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1921-2-1-3"
+       width="27.455235"
+       height="10.277628"
+       x="182.35631"
+       y="139.44695" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="186.54057"
+       y="155.30927"
+       id="text1049-6-7-6-3-7-8-5"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="186.54057"
+         y="155.30927"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-62">Bus_X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="154.58612"
+       y="143.80434"
+       id="text1049-6-7-6-3-2-7-6-7-9"
+       transform="scale(1.0769406,0.92855634)"><tspan
+         x="154.58612"
+         y="146.69508"
+         id="tspan1592-1"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">当前实现都是PCI Bus，所以其实已经绑定总线类型了</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="186.29781"
+       y="150.02113"
+       id="text1049-6-7-6-3-7-8-7-2"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="186.29781"
+         y="150.02113"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.83136249px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-5-7">&lt;&lt;bus&gt;&gt;</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.28893271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825)"
+       d="m 119.29311,149.73976 62.59792,-4.39987"
+       id="path4661"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.28987777;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1921-2-1-3-6"
+       width="25.915255"
+       height="10.34473"
+       x="186.84225"
+       y="168.61967" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="190.04437"
+       y="186.39355"
+       id="text1049-6-7-6-3-7-8-5-1"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="190.04437"
+         y="186.39355"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-62-8">Device</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="189.67418"
+       y="181.17593"
+       id="text1049-6-7-6-3-7-8-7-2-7"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="189.67418"
+         y="181.17593"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.83136249px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-5-7-9">&lt;&lt;PCIDevice&gt;&gt;</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#000000;stroke-width:0.28893271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2066-2)"
+       d="m 197.88844,168.37524 c -0.24472,0.51748 -2.30347,-15.33389 -2.30347,-15.33389"
+       id="path1713-3-23"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="198.37225"
+       y="153.89645"
+       id="text2132-3-2-7"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-5"
+         x="198.37225"
+         y="153.89645"
+         style="font-size:4.24704313px;stroke-width:0.53087974">*</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1921-2-1-8"
+       width="36.159359"
+       height="11.888334"
+       x="112.9119"
+       y="178.3707" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="124.0983"
+       y="197.55902"
+       id="text1049-6-7-6-3-7-8-97"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="124.0983"
+         y="197.55902"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-36">IOMMU<tspan
+   style="fill:#ff0000"
+   id="tspan1901">_handle</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="64.728882"
+       y="201.06245"
+       id="text1049-6-7-6-3-2-7-6-7-1"
+       transform="scale(1.0769406,0.92855634)"><tspan
+         x="64.728882"
+         y="203.9532"
+         id="tspan1592-29"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">抽象的，针对总线设备的实例</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="124.30145"
+       y="191.21283"
+       id="text1049-6-7-6-3-7-8-7-3"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="124.30145"
+         y="191.21283"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.83136249px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-5-1">&lt;&lt;none&gt;&gt;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="181.3998"
+       y="209.37711"
+       id="text2132-3-2-9"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-4"
+         x="181.3998"
+         y="209.37711"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="183.1124"
+       y="181.22525"
+       id="text2132-3-2-78"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-45"
+         x="183.1124"
+         y="181.22525"
+         style="font-size:4.24704313px;fill:#ff0000;stroke-width:0.53087974">1</tspan></text>
+    <g
+       id="g3519"
+       transform="matrix(0,-0.35209997,0.40160553,0,-185.30309,236.9326)">
       <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path4661"
-         d="m 78.246106,141.81106 31.234684,-2.19025"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.14399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825)" />
-      <rect
-         y="151.20947"
-         x="111.95132"
-         height="5.1496"
-         width="12.931017"
-         id="rect1921-2-1-3-6"
-         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.144471;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-5-1"
-         y="163.68198"
-         x="112.50771"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-62-8"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="163.68198"
-           x="112.50771"
-           sodipodi:role="line">Device</tspan></text>
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-7-2-7"
-         y="161.08159"
-         x="112.32321"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-5-7-9"
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.41111112px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="161.08159"
-           x="112.32321"
-           sodipodi:role="line">&lt;&lt;device&gt;&gt;</tspan></text>
-      <path
-         sodipodi:nodetypes="cc"
-         id="path1713-3-23"
-         d="m 117.46307,151.08779 c -0.12211,0.2576 -1.14937,-7.6332 -1.14937,-7.6332"
-         style="fill:none;stroke:#000000;stroke-width:0.14399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2066-2)"
+         style="opacity:1;fill:#000000;stroke:#000000;stroke-width:0.80074656;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         d="m 260.69916,631.58295 a 8.6794462,7.8961477 0 0 1 -8.67945,7.89614 8.6794462,7.8961477 0 0 1 -8.67944,-7.89614 8.6794462,7.8961477 0 0 1 8.67944,-7.89615 8.6794462,7.8961477 0 0 1 8.67945,7.89615 z"
+         id="path3480"
          inkscape:connector-curvature="0" />
-      <text
-         id="text2132-3-2-7"
-         y="143.97054"
-         x="117.58798"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="143.97054"
-           x="117.58798"
-           id="tspan2130-6-0-5"
-           sodipodi:role="line">*</tspan></text>
-      <rect
-         y="156.06352"
-         x="75.06205"
-         height="5.918005"
-         width="18.042551"
-         id="rect1921-2-1-8"
-         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-97"
-         y="169.24669"
-         x="79.641121"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-36"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="169.24669"
-           x="79.641121"
-           sodipodi:role="line">IOMMU_X_dev</tspan></text>
-      <text
-         transform="scale(1.0782096,0.92746346)"
-         id="text1049-6-7-6-3-2-7-6-7-1"
-         y="172.73862"
-         x="49.623974"
-         style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
-         xml:space="preserve"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.04502182"
-           id="tspan1592-29"
-           y="174.17932"
-           x="49.623974">抽象的，针对总线设备的实例</tspan></text>
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-7-3"
-         y="166.08383"
-         x="79.742371"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-5-1"
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.41111112px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="166.08383"
-           x="79.742371"
-           sodipodi:role="line">&lt;&lt;none&gt;&gt;</tspan></text>
-      <text
-         id="text2132-3-2-9"
-         y="171.62131"
-         x="109.12914"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="171.62131"
-           x="109.12914"
-           id="tspan2130-6-0-4"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         id="text2132-3-2-78"
-         y="157.59082"
-         x="109.98268"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;fill:#ff0000;stroke-width:0.26458299"
-           y="157.59082"
-           x="109.98268"
-           id="tspan2130-6-0-45"
-           sodipodi:role="line">1</tspan></text>
-      <g
-         transform="matrix(0,-0.17527513,0.20039039,0,-73.739229,185.2156)"
-         id="g3519">
-        <path
-           inkscape:connector-curvature="0"
-           id="path3480"
-           d="m 260.69916,631.58295 a 8.6794462,7.8961477 0 0 1 -8.67945,7.89614 8.6794462,7.8961477 0 0 1 -8.67944,-7.89614 8.6794462,7.8961477 0 0 1 8.67944,-7.89615 8.6794462,7.8961477 0 0 1 8.67945,7.89615 z"
-           style="opacity:1;fill:#000000;stroke:#000000;stroke-width:0.80074656;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
-        <path
-           style="opacity:1;fill:none;stroke:#000000;stroke-width:1.62625861;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-           d="m 240.49983,631.52377 c -0.0397,2.89757 1.05823,5.71909 3.66928,7.62197 6.44794,6.09325 19.18437,1.32066 19.60341,-7.57679"
-           id="path3480-0"
-           inkscape:connector-curvature="0" />
-      </g>
       <path
          inkscape:connector-curvature="0"
-         id="path3543"
-         d="m 55.12639,141.17524 c 0.188988,0 4.913691,-0.0472 4.913691,-0.0472"
-         style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3543-3"
-         d="m 46.290535,141.19883 c 0.188988,0 4.913691,-0.0472 4.913691,-0.0472"
-         style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-3-6"
-         y="146.96756"
-         x="41.293034"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-6-1"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="146.96756"
-           x="41.293034"
-           sodipodi:role="line">MMIO控制接口</tspan></text>
-      <rect
-         y="172.6723"
-         x="65.841248"
-         height="2.6107075"
-         width="18.042549"
-         id="rect1921-2-1-8-0"
-         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-97-6"
-         y="183.75574"
-         x="71.251686"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-36-3"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="183.75574"
-           x="71.251686"
-           sodipodi:role="line">IOMMU_MR</tspan></text>
-      <rect
-         y="172.37645"
-         x="91.59935"
-         height="2.6107075"
-         width="18.042549"
-         id="rect1921-2-1-8-0-2"
-         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <text
-         transform="scale(1.0522567,0.95033845)"
-         id="text1049-6-7-6-3-7-8-97-6-0"
-         y="183.3947"
-         x="95.6408"
-         style="font-style:normal;font-weight:normal;font-size:4.77384996px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14918301"
-         xml:space="preserve"><tspan
-           id="tspan1874-36-3-6"
-           style="font-size:1.79018998px;text-align:center;text-anchor:middle;stroke-width:0.14918301"
-           y="183.3947"
-           x="95.6408"
-           sodipodi:role="line">IOMMU_AS</tspan></text>
-      <text
-         id="text2132-3-2-5"
-         y="155.15514"
-         x="82.082764"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="155.15514"
-           x="82.082764"
-           id="tspan2130-6-0-47"
-           sodipodi:role="line">1</tspan></text>
-      <path
-         sodipodi:nodetypes="cc"
-         id="path1713-3-23-6"
-         d="m 81.078316,155.72667 c -0.12211,0.2576 -10.457034,-10.60976 -10.457034,-10.60976"
-         style="fill:none;stroke:#000000;stroke-width:0.14399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2066-2-1)"
-         inkscape:connector-curvature="0" />
-      <text
-         id="text2132-3-2-7-5"
-         y="146.10533"
-         x="71.328598"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="146.10533"
-           x="71.328598"
-           id="tspan2130-6-0-5-6"
-           sodipodi:role="line">*</tspan></text>
-      <text
-         transform="scale(1.0743062,0.93083332)"
-         id="text1049-6-7-6-3-7-8-97-6-0-4"
-         y="170.84033"
-         x="119.59803"
-         style="font-style:normal;font-weight:normal;font-size:3.93392277px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12293525"
-         xml:space="preserve"><tspan
-           id="tspan1874-36-3-6-7"
-           style="font-size:1.47521794px;text-align:center;text-anchor:middle;stroke-width:0.12293525"
-           y="170.84033"
-           x="119.59803"
-           sodipodi:role="line">bus_master_as</tspan></text>
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path4661-3"
-         d="m 119.44062,156.37811 11.18769,13.45558"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825-4)" />
-      <text
-         transform="scale(1.0782096,0.92746346)"
-         id="text1049-6-7-6-3-2-7-6-7-1-0"
-         y="166.52213"
-         x="116.76147"
-         style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
-         xml:space="preserve"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.04502182"
-           id="tspan1592-29-7"
-           y="167.96283"
-           x="116.76147">总线上的物理设备</tspan></text>
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path4661-3-8"
-         d="m 94.280153,175.07026 c -2.33749,3.62413 -7.675302,5.80901 -13.247469,0.25758"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825-4-8)" />
-      <text
-         id="text2132-3-2-5-8"
-         y="140.79671"
-         x="79.435257"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="140.79671"
-           x="79.435257"
-           id="tspan2130-6-0-47-4"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         id="text2132-3-2-5-3"
-         y="138.99263"
-         x="106.06198"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="138.99263"
-           x="106.06198"
-           id="tspan2130-6-0-47-1"
-           sodipodi:role="line">1</tspan></text>
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path4857"
-         d="m 97.135673,172.38788 -6.659309,-9.31817"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.14399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4643)" />
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path4857-2"
-         d="m 77.502673,172.63852 4.265333,-9.38499"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4643-4)" />
-      <text
-         id="text2132-3-2-5-0"
-         y="164.34642"
-         x="79.307503"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="164.34642"
-           x="79.307503"
-           id="tspan2130-6-0-47-6"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         id="text2132-3-2-5-89"
-         y="172.19746"
-         x="76.033447"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;fill:#ff0000;stroke-width:0.26458299"
-           y="172.19746"
-           x="76.033447"
-           id="tspan2130-6-0-47-2"
-           sodipodi:role="line">*</tspan></text>
-      <text
-         id="text2132-3-2-5-6"
-         y="164.41324"
-         x="92.604156"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;stroke-width:0.26458299"
-           y="164.41324"
-           x="92.604156"
-           id="tspan2130-6-0-47-64"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         id="text2132-3-2-5-9"
-         y="171.59612"
-         x="97.415009"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;fill:#ff0000;stroke-width:0.26458299"
-           y="171.59612"
-           x="97.415009"
-           id="tspan2130-6-0-47-5"
-           sodipodi:role="line">*</tspan></text>
-      <text
-         transform="scale(1.0782096,0.92746346)"
-         id="text1049-6-7-6-3-2-7-6-7-1-0-0"
-         y="183.99402"
-         x="119.60838"
-         style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
-         xml:space="preserve"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.04502182"
-           id="tspan1592-29-7-4"
-           y="185.43472"
-           x="119.60838">旧模式数据结构</tspan></text>
-      <text
-         transform="scale(1.0782096,0.92746346)"
-         id="text1049-6-7-6-3-2-7-6-7-1-8"
-         y="189.94908"
-         x="40.843166"
-         style="font-style:normal;font-weight:normal;font-size:1.44069707px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.04502182"
-         xml:space="preserve"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.04502182"
-           id="tspan1592-29-71"
-           y="191.38979"
-           x="40.843166">translate(mr, addr, flag, iommu_idx)</tspan></text>
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path4661-3-7"
-         d="m 111.94976,153.69739 -18.719676,5.61257"
-         style="fill:#ff0000;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.14400001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825-4-7)" />
-      <text
-         id="text2132-3-2-78-2"
-         y="157.71213"
-         x="94.885826"
-         style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
-         xml:space="preserve"><tspan
-           style="font-size:2.11666656px;fill:#ff0000;stroke-width:0.26458299"
-           y="157.71213"
-           x="94.885826"
-           id="tspan2130-6-0-45-2"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         transform="scale(1.0743062,0.93083332)"
-         id="text1049-6-7-6-3-7-8-97-6-0-4-0"
-         y="164.7153"
-         x="99.801804"
-         style="font-style:normal;font-weight:normal;font-size:3.93392301px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.12293525"
-         xml:space="preserve"><tspan
-           id="tspan1874-36-3-6-7-6"
-           style="font-size:1.47521794px;text-align:center;text-anchor:middle;fill:#ff0000;stroke-width:0.12293525"
-           y="164.7153"
-           x="99.801804"
-           sodipodi:role="line">iommu</tspan></text>
+         id="path3480-0"
+         d="m 240.49983,631.52377 c -0.0397,2.89757 1.05823,5.71909 3.66928,7.62197 6.44794,6.09325 19.18437,1.32066 19.60341,-7.57679"
+         style="opacity:1;fill:none;stroke:#000000;stroke-width:1.62625861;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
     </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.53088039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 72.958524,148.4625 c 0.378754,0 9.847605,-0.0948 9.847605,-0.0948"
+       id="path3543"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.53088039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 55.250448,148.50988 c 0.378754,0 9.847605,-0.0948 9.847605,-0.0948"
+       id="path3543-3"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="47.153732"
+       y="152.85646"
+       id="text1049-6-7-6-3-7-8-3-6"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="47.153732"
+         y="152.85646"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-6-1">MMIO控制接口</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1921-2-1-8-0"
+       width="36.159355"
+       height="5.2444978"
+       x="94.432335"
+       y="211.73511" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="107.26509"
+       y="226.6711"
+       id="text1049-6-7-6-3-7-8-97-6"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="107.26509"
+         y="226.6711"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-36-3">IOMMU_MR</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1921-2-1-8-0-2"
+       width="36.159355"
+       height="5.2444978"
+       x="146.05455"
+       y="211.14078" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:9.57862186px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29933232"
+       x="156.20129"
+       y="225.94669"
+       id="text1049-6-7-6-3-7-8-97-6-0"
+       transform="scale(1.0510182,0.95145828)"><tspan
+         sodipodi:role="line"
+         x="156.20129"
+         y="225.94669"
+         style="font-size:3.59197545px;text-align:center;text-anchor:middle;stroke-width:0.29933232"
+         id="tspan1874-36-3-6">IOMMU_AS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="127.13184"
+       y="176.3381"
+       id="text2132-3-2-5"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47"
+         x="127.13184"
+         y="176.3381"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#000000;stroke-width:0.28893271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2066-2-1)"
+       d="m 124.96919,177.69401 c -0.24473,0.51748 -20.95711,-21.31332 -20.95711,-21.31332"
+       id="path1713-3-23-6"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="105.55386"
+       y="158.17987"
+       id="text2132-3-2-7-5"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-5-6"
+         x="105.55386"
+         y="158.17987"
+         style="font-size:4.24704313px;stroke-width:0.53087974">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.89332676px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24666679"
+       x="205.00365"
+       y="197.78046"
+       id="text1049-6-7-6-3-7-8-97-6-0-4"
+       transform="scale(1.0730418,0.93193017)"><tspan
+         sodipodi:role="line"
+         x="205.00365"
+         y="197.78046"
+         style="font-size:2.95999122px;text-align:center;text-anchor:middle;stroke-width:0.24666679"
+         id="tspan1874-36-3-6-7">bus_master_as</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825-4)"
+       d="m 201.85168,179.00265 22.42143,27.03013"
+       id="path4661-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="199.17551"
+       y="182.99216"
+       id="text1049-6-7-6-3-2-7-6-7-1-0"
+       transform="scale(1.0769406,0.92855633)"><tspan
+         x="199.17551"
+         y="185.8829"
+         id="tspan1592-29-7"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">总线上的物理设备</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825-4-8)"
+       d="m 151.42719,216.55222 c -4.6846,7.2803 -15.38219,11.66938 -26.54946,0.51744"
+       id="path4661-3-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="121.81969"
+       y="147.52824"
+       id="text2132-3-2-5-8"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47-4"
+         x="121.81969"
+         y="147.52824"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="175.24561"
+       y="143.9084"
+       id="text2132-3-2-5-3"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47-1"
+         x="175.24561"
+         y="143.9084"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.28893271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4643)"
+       d="M 157.14999,211.16374 143.80396,192.44502"
+       id="path4857"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4643-4)"
+       d="m 117.80318,211.66724 8.54822,-18.85296"
+       id="path4857-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="121.56335"
+       y="194.78021"
+       id="text2132-3-2-5-0"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47-6"
+         x="121.56335"
+         y="194.78021"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="114.99403"
+       y="210.53314"
+       id="text2132-3-2-5-89"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47-2"
+         x="114.99403"
+         y="210.53314"
+         style="font-size:4.24704313px;fill:#ff0000;stroke-width:0.53087974">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="148.24278"
+       y="194.91428"
+       id="text2132-3-2-5-6"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47-64"
+         x="148.24278"
+         y="194.91428"
+         style="font-size:4.24704313px;stroke-width:0.53087974">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="157.89565"
+       y="209.32655"
+       id="text2132-3-2-5-9"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-47-5"
+         x="157.89565"
+         y="209.32655"
+         style="font-size:4.24704313px;fill:#ff0000;stroke-width:0.53087974">*</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="205.15102"
+       y="223.64616"
+       id="text1049-6-7-6-3-2-7-6-7-1-0-0"
+       transform="scale(1.0769406,0.92855634)"><tspan
+         x="205.15102"
+         y="226.5369"
+         id="tspan1592-29-7-4"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">旧模式数据结构</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="47.110394"
+       y="235.59486"
+       id="text1049-6-7-6-3-2-7-6-7-1-8"
+       transform="scale(1.0769406,0.92855634)"><tspan
+         x="47.110394"
+         y="238.4856"
+         id="tspan1592-29-71"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">translate(mr, addr, flag, iommu_idx)</tspan></text>
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.28893274;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4825-4-7)"
+       d="m 186.83913,173.61751 -37.51639,11.27476"
+       id="path4661-3-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.98818016px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.53087974"
+       x="152.82089"
+       y="181.46864"
+       id="text2132-3-2-78-2"
+       transform="scale(0.99882303,1.0011784)"><tspan
+         sodipodi:role="line"
+         id="tspan2130-6-0-45-2"
+         x="152.82089"
+         y="181.46864"
+         style="font-size:4.24704313px;fill:#ff0000;stroke-width:0.53087974">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.89332724px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.24666679"
+       x="165.28297"
+       y="185.49072"
+       id="text1049-6-7-6-3-7-8-97-6-0-4-0"
+       transform="scale(1.0730418,0.93193017)"><tspan
+         sodipodi:role="line"
+         x="165.28297"
+         y="185.49072"
+         style="font-size:2.95999122px;text-align:center;text-anchor:middle;fill:#ff0000;stroke-width:0.24666679"
+         id="tspan1874-36-3-6-7-6">iommu</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46666622px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -823,6 +834,21 @@
          id="tspan4833"
          x="27.981558"
          y="170.71709"
-         style="stroke-width:0.26458332"></tspan></text>
+         style="stroke-width:0.26458332" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="200.24353"
+       y="187.81699"
+       id="text1049-6-7-6-3-2-7-6-7-1-0-3"
+       transform="scale(1.0769406,0.92855632)"><tspan
+         x="200.24353"
+         y="190.70773"
+         id="tspan1592-29-7-6"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">pci_dma_rw<tspan
+   style="fill:#ff0000"
+   id="tspan1897">_ex</tspan>(dev, addr, buf, len, directory<tspan
+   style="fill:#ff0000"
+   id="tspan1899">, pasid</tspan>)</tspan></text>
   </g>
 </svg>

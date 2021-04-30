@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="228.03285mm"
+   width="248.89693mm"
    height="107.05632mm"
-   viewBox="0 0 228.03287 107.05632"
+   viewBox="0 0 248.89695 107.05632"
    version="1.1"
    id="svg1043"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
@@ -243,8 +243,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="306.00525"
-     inkscape:cy="289.28131"
+     inkscape:cx="439.21953"
+     inkscape:cy="160.7099"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -261,7 +261,7 @@
      fit-margin-right="10"
      fit-margin-bottom="10">
     <sodipodi:guide
-       position="34.006539,48.351181"
+       position="34.006539,48.351186"
        orientation="1,0"
        id="guide1966"
        inkscape:locked="false" />
@@ -659,12 +659,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.76552796px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.08642282"
-       x="192.67552"
-       y="185.14001"
+       x="192.49815"
+       y="178.89751"
        id="text1049-6-7-6-3-2-7-6-7-1-0"
-       transform="scale(1.0655246,0.93850486)"><tspan
-         x="192.67552"
-         y="187.90556"
+       transform="scale(1.0655246,0.93850485)"><tspan
+         x="192.49815"
+         y="181.66306"
          id="tspan1592-29-7"
          style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.08642282">总线上的物理设备</tspan></text>
     <path
@@ -779,5 +779,16 @@
          y="232.77759"
          id="tspan1592-29-71"
          style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.08642282">translate(mr, addr, flag, iommu_idx)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.89072585px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.09033526"
+       x="190.9232"
+       y="185.77849"
+       id="text1049-6-7-6-3-2-7-6-7-1-0-3"
+       transform="scale(1.0769406,0.92855632)"><tspan
+         x="190.9232"
+         y="188.66924"
+         id="tspan1592-29-7-6"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.09033526">pci_dma_rw(dev, addr, buf, len, directory)</tspan></text>
   </g>
 </svg>
