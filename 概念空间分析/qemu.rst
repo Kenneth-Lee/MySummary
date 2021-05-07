@@ -504,7 +504,7 @@ IOMMU MR不放入系统MR和AS空间中，因为系统MR和AS相当于物理地�
            .target_as = &address_space_memory,
            .iova = addr,
            .translated_addr = addr,
-           .addr_mask = ~(hwaddr)0,
+           .addr_mask = ~(hwaddr)0,     //地址空间长度掩码，如果要求的读写范围超过这个限度，会分多次翻译
            .perm = IOMMU_NONE,
        };
        ...
