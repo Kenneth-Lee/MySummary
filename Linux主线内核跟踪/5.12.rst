@@ -1,0 +1,112 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+5.12
+=====
+
+2021年4月25日发布。\ [1]_
+
+大特性
+======
+
+ID Mapping on Mount
+---------------------
+这个特性我喜欢，它的意思是mount的时候可以给定一个映射表，把uid重新映射一下。设
+想我在一台机器上设置了一个自己的目录叫kenneth uid=1，换台机器mount，那台机器的
+kenneth uid=10，mount上来后我就访问不了自己的目录了。
+
+当然，原作者不是这个目的，他要解决的是container访问Host的目录的问题。所以，功能
+会不会加到mount中就不知道了。
+
+现在这个特性通过加新的系统调用实现的：::
+
+        static int do_mount_setattr(struct path *path, struct mount_kattr *kattr);
+
+作者实现一个用户程序mount_setattr去测试功能。
+
+功能加在namspace上，需要CAP_SYS_ADMIN权限才能调用。虽然它不增加mount上对super
+block的调用，但每个fs需要增加逻辑处理对应namespace的行为的，所以这个Patch几乎动
+了所有fs的代码，甚至还动了selinux这些安全框架的代码。算是个大工程了。
+
+功能主要由Ubuntu Christian Brauner提供，但有其他自由开发者的工作。
+
+KFENCE
+--------
+
+Kernel Electric Fence。一个低成本的抽样内存错误检测器。功能类似KASAN，但成本低
+一些。这个成本通过配置CONFIG_KFENCE_SAMPLE_INTERVAL参数来控制，它是隔一个
+Interval检查一次的。检查的原理很基本，就是在每个分配前后加上个页用做保护页，然后
+在检查的时候有没有被污染
+
+配置接口通过debug提供。
+
+补丁来自Google的Alexander Potapenko。
+
+ACRN Hypervisor支持
+-------------------
+
+这是一个Type 1的Hypervisor，类似Xen。Xen的DOM0它叫Service VM，其他叫Guest VM。
+文档说这个是个参考平台。
+
+Dynamic Thermal Power Management framework
+-------------------------------------------
+
+代码实现在这里：drivers/powercap/dtpm.c。
+
+建立在powercap上，后者提供一个内核通过sysfs给用户态提供功耗状态的框架，它把系统
+分成很多个功耗区，给出每个区的功耗限制，控制和实时功耗数据等。DTPM用几乎一样的
+模式，相当于把功耗区当作一个温度检测区而已。
+
+有趣的东西
+===========
+
+1. 可以在启动或者运行的阶段修改抢占算法。启动阶段用参数
+   preempt=none/voluntary/full，运行阶段靠debugfs sched_debug切换。这个功能居然
+   需要7个补丁，这倒是没有想到。
+
+2. BtrFS支持Zoned Device（分区的顺序写设备，就是说，在区内，写指针只能一路向前），
+   mount的时候加-o zoned参数实现。不知道这个特性用于什么场景。
+
+3. NFS支持Eager写，这表示写操作请求会一直等到服务器响应才结束，而不是异步的。用
+   参数write=eager指定。
+
+4. openat()支持一种新的Non-block的模式，如果路径查找不在cache中，直接返回失败，
+   据说是io_uring需要的功能。功能来自Al Viro，一个很有名的Linux开发者（主要负责
+   VFS）。
+
+5. 支持基于内核线程的NAPI。原来的NAPI是基于Softirq的，这样的结果是如果本CPU很忙
+   ，你也得用这个CPU来完成数据报的Polling。补丁来之Google，它看来不是个独立的配
+   置项，而直接就是一个修改。我觉得这样的补丁照理说我们应该已经有研究的，不应该
+   等Google来发现这种问题。
+
+6. 编译系统（Lds）中增加对DWARF 5的支持。这只是一个小补丁，我只是对这个升级有兴趣，
+   可以看到内核的工具支持走到哪一步了。修改来自Google。
+
+7. 支持clang LTO（Link Time Optimization），这是一个大修改，包含33个补丁。主要
+   修改者来自Redhat和Google。
+
+
+华为和海思的相关特性
+====================
+
+1. ZIP和HPRE加速器在加SVA支持
+
+2. 宋宝华继续在修改WayCa-Scheduler调度器相关的基础设施，有十个补丁，比如这种：
+
+        scripts/gdb: add lx_current support for arm64
+
+3. mechhab+huawei@kernel.org各种错误修正，估计是机器人做的，有800+个补丁。
+
+4. 其他的大部分是鲲鹏驱动的优化，有100个补丁左右。
+
+
+总结
+====
+这次好像是Google的专场啊。
+
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
