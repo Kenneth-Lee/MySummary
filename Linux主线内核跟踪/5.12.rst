@@ -1,7 +1,7 @@
 .. Kenneth Lee 版权所有 2021
 
 :Authors: Kenneth Lee
-:Version: 1.0
+:Version: 1.1
 
 5.12
 =====
@@ -36,11 +36,15 @@ KFENCE
 --------
 
 Kernel Electric Fence。一个低成本的抽样内存错误检测器。功能类似KASAN，但成本低
-一些。这个成本通过配置CONFIG_KFENCE_SAMPLE_INTERVAL参数来控制，它是隔一个
-Interval检查一次的。检查的原理很基本，就是在每个分配前后加上个页用做保护页，然后
-在检查的时候有没有被污染
+的多，预期可以直接在产品代码中打开。按文档它主要保护use-after-free,
+invalid-free和out-bound access。检查的原理很基本，就是在每个分配前后加上个页用
+做保护页，避免越界访问。
 
-配置接口通过debug提供。
+低成本通过配置CONFIG_KFENCE_SAMPLE_INTERVAL参数来控制，参数控制多长时间才做一次
+有检查的分配。它的设想是：虽然这样检查会漏掉部分的错误，但只要时间足够长，所有
+错误都会被发现的。这个思路很“Google”，因为只有数据中心才是这样想问题的。
+
+配置接口通过debug提供。从代码上看现在只做了x86和ARM的实现。
 
 补丁来自Google的Alexander Potapenko。
 
@@ -48,7 +52,17 @@ ACRN Hypervisor支持
 -------------------
 
 这是一个Type 1的Hypervisor，类似Xen。Xen的DOM0它叫Service VM，其他叫Guest VM。
-文档说这个是个参考平台。
+文档说这个是个用于IoT领域的参考平台。主页上的支持厂商包括：
+
+        EXEED星途（奇瑞的子品牌），LG，TTTech（做工业控制的），
+        ADLink（车解决方案为主的台企），APTIV（一家做车方案的），
+        Intel，东软
+
+看起来方向是奔着车去的。代码在这里：
+
+        https://github.com/projectacrn/acrn-hypervisor/
+
+从代码上看，现在只支持x86。
 
 Dynamic Thermal Power Management framework
 -------------------------------------------
@@ -58,6 +72,9 @@ Dynamic Thermal Power Management framework
 建立在powercap上，后者提供一个内核通过sysfs给用户态提供功耗状态的框架，它把系统
 分成很多个功耗区，给出每个区的功耗限制，控制和实时功耗数据等。DTPM用几乎一样的
 模式，相当于把功耗区当作一个温度检测区而已。
+
+这是Linaro Mark Pearson提交的补丁，但查不到他是那个组的，从Signoff的人来看，这
+应该是Kernel组的工作。
 
 有趣的东西
 ===========
@@ -87,24 +104,32 @@ Dynamic Thermal Power Management framework
 7. 支持clang LTO（Link Time Optimization），这是一个大修改，包含33个补丁。主要
    修改者来自Redhat和Google。
 
+8. Power子系统增加了一个小框架，通过sysfs可以直接设置系统的功耗模式（比如性能，
+   平均，低功耗等），补丁来自联想的Mark Pearson。这个特性叫ACPI Platform
+   Profile。
 
-华为和海思的相关特性
+9. USB3.2 Multilane支持。来自华为和Synopsis。
+
+10. 中兴的ZX平台被整体从内核中移除了。我把这个信息作为兴趣点，只是感叹一下：产
+    品做失败了是怎么样的。
+
+
+华为和海思的相关提交
 ====================
 
-1. ZIP和HPRE加速器在加SVA支持
+1. ZIP和HPRE加速器在加SVA支持。
 
-2. 宋宝华继续在修改WayCa-Scheduler调度器相关的基础设施，有十个补丁，比如这种：
+2. 鲲鹏HNS增加Direct WQE支持（直接写WQE到设备上，越过经过内存交换的过程）。
+
+3. HNS3增加了多个可服务性的功能（比如Debugfs的新接口等）
+
+3. 宋宝华继续在修改WayCa-Scheduler调度器相关的基础设施，有十个补丁，比如这种：
 
         scripts/gdb: add lx_current support for arm64
 
-3. mechhab+huawei@kernel.org各种错误修正，估计是机器人做的，有800+个补丁。
+4. mechhab+huawei@kernel.org各种错误修正，估计是机器人做的，有800+个补丁。
 
-4. 其他的大部分是鲲鹏驱动的优化，有100个补丁左右。
-
-
-总结
-====
-这次好像是Google的专场啊。
+5. 其他的是各种鲲鹏驱动的其他小优化，有100个补丁左右。
 
 
 参考
