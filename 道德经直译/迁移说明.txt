@@ -1,0 +1,11 @@
+
+.. warning::
+
+   本主题的翻译部分已经全部移到《道德经直译》项目中维护，这里只留下旧的版本和新
+   的关于《道德经》相关哲学的一些独立讨论。
+
+   所以，如果单独要看《道德经》翻译的最新内容，请参考对应项目的这两个公开git库：
+
+        https://gitee.com/Kenneth-Lee-2012/daodejing_translation
+
+	https://github.com/Kenneth-Lee/daodejing_translation
