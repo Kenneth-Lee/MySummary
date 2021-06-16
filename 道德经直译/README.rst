@@ -1,5 +1,10 @@
+.. Kenneth Lee 版权所有 2017-2021
+
+:Authors: Kenneth Lee
+:Version: 1.1
+
 《道德经》直译
-==============
+***************
 
 .. include:: 迁移说明.txt
 
@@ -115,8 +120,8 @@ prefix是要解读的一组章节的第一句话。每个独立文档根据感�
 
 就这样。 
 
-20210315补充
-=============
+.. rubric:: 20210315补充
+
 这个专栏写完很长一段时间了，我已经把整个翻译独立出去变成一本自洽的书：
 
         https://gitee.com/Kenneth-Lee-2012/daodejing_translation

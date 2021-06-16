@@ -21,6 +21,8 @@ import sys
 import os
 import sphinx
 
+sys.path.append(os.path.abspath("./_extensions"))
+
 major, minor, patch = sphinx.version_info[:3]
 
 # -- General configuration ------------------------------------------------
@@ -35,7 +37,8 @@ major, minor, patch = sphinx.version_info[:3]
 extensions = ['sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
-    'sphinx.ext.intersphinx']
+    'sphinx.ext.intersphinx',
+    'cnote']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
