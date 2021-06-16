@@ -85,9 +85,11 @@ yuwen的成绩改一下就可以了，平均分的计算那条运算可以拷下
 Anaconda看到也当作看不到）
 
 我们前面说了，程序的好处就是可以把重复的东西变成一个指引，这里这个计算总分和平
-均分的过程，就是重复的过程，我们可以写成一个“定义”（definition），比如这样：::
+均分的过程，就是重复的过程，我们可以写成一个“定义”（definition），比如这样：
 
-        def calculate(yuwen, shuxue, yingyu):
+.. code-block:: python
+
+   def calculate(yuwen, shuxue, yingyu):
           sum=yuwen+shuxue+yingyu
             ave=sum/3
               print "sum and average are ", sum, ave
@@ -109,9 +111,11 @@ Anoconda的强大之处在于它已经有很多写好的“定义”了，你可
 名称空间中的语言。但如果你要用更复杂的定义，就需要“引入”其他的名称空间了。
 
 我们先看看我们最常用的名称空间：math。
-::
-      import math
-      math.sin(30)
+
+.. code-block:: python
+
+   import math
+   math.sin(30)
 
 这是求sin(30)，我们引入了math这个名称空间，这个名称空间对sin有“定义”，我们就可
 以用这个定义来要求Anoconda解决我们的问题：sin(30)等于几。
@@ -119,29 +123,39 @@ Anoconda的强大之处在于它已经有很多写好的“定义”了，你可
 要知道一个名称空间里面有哪些定义，我们可以用dir这个定义来找，比如你要知道“公共
 名称空间”里面有哪些定义，你可以：::
 
-      dir()
+.. code-block:: python
+
+   dir()
 
 如果你要支持math里面有什么定义（前提当然是你import了math，否则Anoconda就不知道
-你“说什么”了）：::
+你“说什么”了）：
 
-      dir(math)
+.. code-block:: python
+
+   dir(math)
 
 引入了其他名称空间，你要用这个名称空间里面的定义，你要专门说“这是谁家的sin”，这
 话说起来很麻烦。你也可以简单把这个名称空间全部作为你的“公共名称空间”，比如这样
-：::
+：
 
-        from math import sin
+.. code-block:: python
 
-或者::
+    from math import sin
 
-        from math import * //引入所有的符号
+或者
+
+.. code-block:: python
+
+   from math import * # 引入所有的符号
 
 这样，你再用sin的时候，就不需要写math.sin了，直接写sin就可以了。
 
 每个名称空间都引入所有的符号可能会引起冲突，可能两个名称空间都用sin，但“定义”不
-一样，如果你只是想写起来简单，还可以这样：::
+一样，如果你只是想写起来简单，还可以这样：
 
-      import math as m
+.. code-block:: python
+
+   import math as m
 
 这样，你以后提到math的地方，说m就可以了。
 

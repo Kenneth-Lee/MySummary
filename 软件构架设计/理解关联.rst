@@ -36,7 +36,7 @@
                 ...
         }
 
-或者另一个对象把两者关联起来：
+或者另一个对象把两者关联起来：::
 
         class C {
                 Map<class A, class B> ab_map;

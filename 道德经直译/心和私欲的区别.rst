@@ -149,8 +149,9 @@
 有点帮助了。
 
 
-.. rubric:: Footnotes
-.. [#1] 什么是本心的逻辑，我给一个比较好玩的例子：
+.. rubric:: 脚注
+
+[1] 什么是本心的逻辑，我给一个比较好玩的例子：
 
 2019年3月，Linux Kernel发布了5.0，kernelnewbies的网站对这个版本进行了介绍。里
 面在Coolest features这一章给出的第一个特性是New version 5.0。里面的内容是这样

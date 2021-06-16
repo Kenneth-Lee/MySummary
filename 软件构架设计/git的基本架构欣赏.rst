@@ -32,8 +32,8 @@ git的核心需求是一个文件树版本管理工具。这个事情的本质�
 
 你记录它的内容：::
 
-040000 tree e1b8ecbb1f19709f3a4867a0ffe08bb2e07acf19 dir 100644 blob
-9daeafb9864cf43055ae93beb0afd6c7d144bfa4 file
+        040000 tree e1b8ecbb1f19709f3a4867a0ffe08bb2e07acf19 dir
+        100644 blob 9daeafb9864cf43055ae93beb0afd6c7d144bfa4 file
 
 用e1b8...作为文件名，放dir的描述，用9dae...作为文件名，放file的内容，这个数据结
 构可以被复现在任何文件系统上，这样这个架构，就会有一个非常坚实的基础，任何时候
@@ -49,7 +49,7 @@ git的核心需求是一个文件树版本管理工具。这个事情的本质�
 hash-object/update-index/write-tree/commit-tree这样的命令手工建出相关的数据结构
 来）
 
-        .. figure:: _static/git1.jpg
+.. figure:: _static/git1.jpg
 
 好了，这就是我要说到架构控制的点了，很多工程师会认为，新文件仅仅是对旧文件的修
 改，应该只保存新文件的变化才对。但从架构控制的观点来看，这个理解是错误的，因为
