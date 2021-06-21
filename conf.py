@@ -38,6 +38,7 @@ extensions = ['sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.intersphinx',
+    'chinese_space',
     'cnote']
 
 # Add any paths that contain templates here, relative to this directory.

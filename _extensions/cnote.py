@@ -21,11 +21,16 @@ def depart_cnote_node(self, node):
 class cnote_directive(SphinxDirective):
 
     has_content = True
-    required_arguments = 1
+    required_arguments = 0
+    option_spec = { 'caption' : directives.unchanged }
 
     def run(self):
         node = cnote_node("cnote")
-        node += nodes.title(text=self.arguments[0])
+        if 'caption' in self.options.keys():
+            node += nodes.title(text=self.options['caption'])
+        else:
+            node += nodes.title(text=u'说明')
+
         self.state.nested_parse(self.content, self.content_offset, node)
 
         return [node]
