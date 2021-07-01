@@ -22,13 +22,6 @@
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :glob:
 
-   binfmt
-   infiniband
-   iommu_vfio
-   vfio-mdev
-   qemu
-   Sail
-   虚拟化特权级
-   Linux内核页表
-   消息中断
+   *
