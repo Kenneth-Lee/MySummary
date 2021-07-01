@@ -72,9 +72,9 @@ qemu在实现这个特性的时候，还停留在这样的认识上，所以，�
 
 .. figure:: _static/qemu_iommu_logic_view.svg
 
-首先，我们在创建单板的时候，创建每个物理对象，就会有IOMMU_X和Bus_X，然后我们用
-IOMMU_X的primary_bus属性关联Bus_X，Bus_X发现设备的时候，就可以用这个IOMMU_X创建
-一个IOMMU_X_dev，这个其实不是个设备，只是一个数据结构，用于IOMMU_X对应一个设备。
+我们在创建单板的时候，创建每个物理对象，就会有IOMMU_X和Bus_X，然后我们用IOMMU_X
+的primary_bus属性关联Bus_X，Bus_X发现设备的时候，就可以用这个IOMMU_X创建一个
+IOMMU_X_dev，这个其实不是个设备，只是一个数据结构，用于IOMMU_X对应一个设备。
 IOMMU_X_dev创建的时候同时创建对应的IOMMU MR和AS。这样后面对这个设备做dma操作的
 时候，就可以拿到一个AS，这样pci_dma_rw(pcidev, va, buf, len, direction)就可以从
 pcidev得到一个AS，然后dma_address_rw(as, va, buf, len, direction)的参数就够了。
