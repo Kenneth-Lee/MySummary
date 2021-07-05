@@ -4,6 +4,8 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 
+:dtag:`架构设计案例`
+
 一些典型的架构设计错误
 **********************
 

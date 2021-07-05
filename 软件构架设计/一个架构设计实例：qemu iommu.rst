@@ -3,6 +3,8 @@
 :Authors: Kenneth Lee
 :Version: 1.2
 
+:dtag:`架构设计案例`
+
 一个架构设计实例：qemu iommu
 *****************************
 
