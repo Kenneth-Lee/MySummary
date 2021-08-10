@@ -538,10 +538,10 @@ pci_setup_iommu()设置回调，之后每个EP注册到这个总线上，就会�
    够的。
 
 2. translate函数只有VA和属性作为输入。但现代IOMMU设备支持多页表（ASID Index），
-   这个接口参数不足。
-
-这个架构的深入分析，我单独写在这里：
-:doc:`../软件构架设计/一个架构设计实例：qemu iommu`\ 。
+   这个接口需要通过iommu_idx参数索引MemTxAttrs，现在的版本MemTxAttrs不支持pasid
+   ，需要增加上去才能支持。这个地方其实设计得不是很好看，因为iommu_idx这个名字
+   就预期这只是一个index，而不是一个值，但要把pasid编码进来，未来如果有更多参数
+   ，这就不好发展了。
 
 中断
 =====
@@ -1172,6 +1172,25 @@ init，里面创建内存映射，增加基本设备这些东西。没有多少�
 
 其他小设施
 ===========
+
+RCU
+----
+
+qemu也支持类似内核的RCU机制（从liburcu移植过来的），接口是这样的：
+
+1. 用到这个机制的线程都要调用rcu_register_thread()设置相关线程变量
+
+2. 读方用rcu_read_lock/unlock()保护，或者直接放一个RCU_READ_LOCK_GUARD进行区域
+   自动保护。
+
+3. 用原子指令替换变量，释放旧数据的有两种模式：
+
+   1. 修改完替换指针，调用sychonized_rcu()等所有reader都退出访问了，再释放旧数
+      据。
+
+   2. 用call_rcu1(head, func)设定一个释放函数，等reader退出自动释放。启动head通
+      常是放在数据中的一个成员，类型是struct rcu_head。
+      call_rcu(head, func, field)和g_free_rcu(obj, field)是call_rcu1的封装。
 
 Monitor
 --------
