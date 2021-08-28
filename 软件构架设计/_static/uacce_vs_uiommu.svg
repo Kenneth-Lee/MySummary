@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="292.23267mm"
+   height="229.85042mm"
+   viewBox="0 0 292.23267 229.85042"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="uacce_vs_uiommu.svg">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path935"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path941"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-0"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path935-9"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-06"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path935-2"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-06-1"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path935-2-8"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="416.59625"
+     inkscape:cy="419.21008"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:window-width="1920"
+     inkscape:window-height="1136"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1.57404,8.9366651)">
+    <rect
+       style="opacity:0.878;fill:#ffffff;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect815"
+       width="88.370834"
+       height="31.220833"
+       x="23.018745"
+       y="43.529167"
+       ry="0.65480936" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="30.162502"
+       y="52.525002"
+       id="text819"><tspan
+         sodipodi:role="line"
+         id="tspan817"
+         x="30.162502"
+         y="52.525002"
+         style="stroke-width:0.26458332">进程地址空间</tspan></text>
+    <rect
+       style="opacity:0.878;fill:#ffffff;stroke:#000000;stroke-width:0.96499997;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect821"
+       width="42.333332"
+       height="19.579166"
+       x="99.21875"
+       y="149.62709"
+       ry="0.65480936" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="124.72037"
+       y="156.80258"
+       id="text819-3"><tspan
+         sodipodi:role="line"
+         id="tspan817-6"
+         x="124.72037"
+         y="156.80258"
+         style="stroke-width:0.26458332">IOMMU</tspan></text>
+    <rect
+       style="opacity:0.878;fill:#ffffff;stroke:#000000;stroke-width:0.86500001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect821-7"
+       width="42.333332"
+       height="19.579166"
+       x="100.27708"
+       y="190.90208"
+       ry="0.65480936" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="130.27663"
+       y="197.81299"
+       id="text819-3-5"><tspan
+         sodipodi:role="line"
+         id="tspan817-6-3"
+         x="130.27663"
+         y="197.81299"
+         style="stroke-width:0.26458332">设备</tspan></text>
+    <rect
+       style="opacity:0.878;fill:#ffffff;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect815-5"
+       width="88.370834"
+       height="31.220833"
+       x="128.32292"
+       y="43.264587"
+       ry="0.65480936" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="135.46666"
+       y="52.260422"
+       id="text819-6"><tspan
+         sodipodi:role="line"
+         id="tspan817-2"
+         x="135.46666"
+         y="52.260422"
+         style="stroke-width:0.26458332">Hypervisor地址空间</tspan></text>
+    <rect
+       style="opacity:0.878;fill:#ffffff;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect815-5-9"
+       width="192.61667"
+       height="31.485416"
+       x="24.606247"
+       y="91.154167"
+       ry="0.65480936" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="31.749985"
+       y="100.14999"
+       id="text819-6-1"><tspan
+         sodipodi:role="line"
+         id="tspan817-2-2"
+         x="31.749985"
+         y="100.14999"
+         style="stroke-width:0.26458332">内核空间</tspan></text>
+    <ellipse
+       style="opacity:0.42699998;fill:#ffffff;stroke:#ff0000;stroke-width:0.465;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path904"
+       cx="141.94896"
+       cy="150.55313"
+       rx="12.567708"
+       ry="7.2760415" />
+    <ellipse
+       style="opacity:0.42699998;fill:#ffffff;stroke:#ff0000;stroke-width:0.465;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path904-7"
+       cx="144.19792"
+       cy="190.6375"
+       rx="12.567708"
+       ry="7.2760415" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 175.41875,63.902084 c 6.12874,32.420033 6.03209,62.553186 -22.07787,82.395736"
+       id="path930"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-0)"
+       d="m 175.41875,63.902084 c 6.12874,32.42004 9.20709,104.092766 -18.90287,123.935316"
+       id="path930-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="179.91667"
+       y="153.86043"
+       id="text2613"><tspan
+         sodipodi:role="line"
+         id="tspan2611"
+         x="179.91667"
+         y="153.86043"
+         style="fill:#ff0000;stroke-width:0.26458332">用/dev/iommu方案需要分别管理IOMMU和设备的关联，</tspan><tspan
+         sodipodi:role="line"
+         x="179.91667"
+         y="159.1521"
+         style="fill:#ff0000;stroke-width:0.26458332"
+         id="tspan2615">这个关联必须放在Hypervisor中，否则安全无法保证。</tspan></text>
+    <ellipse
+       style="opacity:0.42699998;fill:#ffffff;stroke:#0000ff;stroke-width:0.465;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path904-6"
+       cx="106.3625"
+       cy="176.87918"
+       rx="7.2760415"
+       ry="32.411457" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-06)"
+       d="m 79.875517,105.38297 c -6.128741,32.42004 -9.471672,52.76361 18.638287,72.60616"
+       id="path930-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-06-1)"
+       d="m 64.608003,62.38818 c -6.128741,32.42004 -15.292505,70.49069 12.817454,90.33324"
+       id="path930-6-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="11.214207"
+       y="160.43901"
+       id="text2613-9"><tspan
+         sodipodi:role="line"
+         x="11.214207"
+         y="160.43901"
+         style="fill:#0000ff;stroke-width:0.26458332"
+         id="tspan2615-0">uacce的功能就是在内核这个安全</tspan><tspan
+         sodipodi:role="line"
+         x="11.214207"
+         y="165.73068"
+         style="fill:#0000ff;stroke-width:0.26458332"
+         id="tspan4695">的区域中管理IOMMU和设备的关联。</tspan></text>
+    <rect
+       style="opacity:0.878;fill:#ffffff;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect815-5-2"
+       width="88.370834"
+       height="31.220833"
+       x="129.11665"
+       y="1.1958349"
+       ry="0.65480936" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="133.65271"
+       y="8.3035994"
+       id="text819-6-3"><tspan
+         sodipodi:role="line"
+         id="tspan817-2-7"
+         x="133.65271"
+         y="8.3035994"
+         style="stroke-width:0.26458332">Guest地址空间</tspan></text>
+  </g>
+</svg>
