@@ -3,7 +3,7 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 
-Zircon架构简单分析1: Overview
+Zircon架构简单分析1：Overview
 ******************************
 
 有朋友让我评价一下Zircon的可用性，所以我花了几天时间大概看了一下这个系统的构架
