@@ -1,0 +1,149 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+5.13
+=====
+
+2021年6月27日发布。\ [1]_
+
+大特性
+======
+
+Landlock安全模块
+------------------
+
+2016年在Kernel Recipes宣布的一个方案，这个版本合入主线。它是一个和LSM并列的安全
+方案。和LSM一个本质的区别是，LSM的是给Root用户控制全系统的，Landlock是给普通用
+户限制自己可以使用的资源范围的。
+
+框架目录在security/landlock目录中，文档在
+Documentation/userspace-api/land-lock.rst中。
+
+它的控制条件是通过bpf写到内核中的，用户态接口则封装成一组控制接口，比如
+
+* LANDLOCK_ACCESS_FS_WRITE_FILE
+* LANDLOCK_ACCESS_FS_READ_FILE
+* LANDLOCK_ACCESS_FS_READ_DIR
+* LANDLOCK_ACCESS_FS_REMOVE_DIR
+
+等等。你通过landlock_create_ruleset()创建一个针对不同钩子的文件句柄，然后通过这
+个设置参数，可以决定某个文件目录是否可以访问之类的。
+
+暂时我用不上这么精细的控制，不过这个无论如何是个大特性就是了。
+
+ARM平台支持CFI特性
+--------------------
+
+CFI，Control Flow Integrity，是Clang的一个编译器功能，可以加强目标代码的安全性
+。具体的原理可以看这个文档：https://lwn.net/Articles/810077/。不过老实说，我觉
+得这个文档写得很模糊，我没有完全理解，大概的信息是这样的：
+
+很多攻击的方法都需要修改目标代码，为了收缩攻击面，一般的方法就是控制数据段不可
+执行，代码段不可修改等等。但这些收缩不可能全部隔绝，因为修改代码本来就是个需求，
+这样有人又想出修改函数指针的思路，ARM的BTI特性防的是这类攻击，不让你用函数指针
+调用原来不认为是函数的位置，不让函数返回到不是调用点的位置（后者是ROP攻击的基本
+方法）。但BTI保护的是一个范围，不是每个具体的点。而CFI是通过编译器知道整个程序
+所有的调用点和返回点，根据这个信息进行保护。
+
+这里很多细节没有说清楚，但安全不是我的专业范围，我就知道个原理就完了，这里就先
+这样吧。
+
+这个补丁需求修改编译选项：::
+
+  +ifdef CONFIG_CFI_CLANG
+  +CC_FLAGS_CFI   := -fsanitize=cfi \
+  +                  -fsanitize-cfi-cross-dso \
+  +                  -fno-sanitize-cfi-canonical-jump-tables \
+  +                  -fno-sanitize-trap=cfi \
+  +                  -fno-sanitize-blacklist
+  +
+  +ifdef CONFIG_CFI_PERMISSIVE
+  +CC_FLAGS_CFI   += -fsanitize-recover=cfi
+  +endif
+
+还要在内核中加配合的调用：kernel/cfi.c。
+
+还要修改ld脚本在内核映像中插入一个TEXT_CFI_JT的段用来自动保存所有的调用和返回点。
+
+杂七杂八，整个Patchset合起来有18个补丁，虽然每个都不大，只修改一行两行的，但其
+实影响的子系统挺多的。
+
+作者是Google的，根据介绍这个特性首先Android用的。也合理，手机的攻击面比PC和服务
+器大多了。服务器和PC我们基本上是信任应用程序的。手机么，好多应用都是流氓。
+
+支持同步TLB Invalidate
+--------------------------
+
+我还以为这个功能早有了呢。它的原理很简单，就是提供全局TLB Invalidate支持，先发
+remote请求，然后发local请求，然后等全部完成。而不是一个个发，一个个等。
+
+为此flush_tlb_func_local/remote()合并成flush_tlb_func()。
+
+这是vmware提交的特性，
+
+提供苹果M1支持
+---------------
+
+提供M1的片上外设的驱动支持。提交者叫：Hector Martin <marcan@marcan.st>。手工做
+了一个devtree去描述系统，支持了最基本的几个驱动：
+
+* arch_timer，用通用驱动ARM的构架时钟的驱动
+* ioremap的实现
+* aic（中断控制器），不是用GIC的驱动。而且看起来很简单，专用的，不是服务器的那种形式。
+* framebuffer。最简单的framebuffer驱动，显卡和GPU就不要指望了。
+* 串口（叫apple,s5l-uart）
+
+毫无感觉。
+
+
+有趣的东西
+===========
+
+1. 支持每个系统调用的调用栈地址随机化。我每次看到这种东西都对新的非主流体系架构
+   感到紧张。现在这些细节功能，现在都只针对主流体系结构（其实只有x86和ARM）做了，
+   如果没有弯道，根本不可能追赶。
+
+   从另一个角度来说，真随机数可能成为通用系统的必须功能。
+
+2. BPF支持内核调用——我怎么觉得BFP这样发展下去，迟早要翻车的。
+
+3. 支持了一个新的virtio声卡
+
+4. io_uring继续在加特性。我就等它再发展两个版本，再回过头来跟踪它的变化吧。
+
+5. 增加了一种cgroup controller（cgroup v1/v2都增加了），msic，可以注册一些很难
+   分类的资源到cgroup控制中。现在的用户是SVM（arch/x86/kvm/svm/\*），一个用于虚
+   拟机内存加密的模块，控制地址空间ID的数量。
+
+   Google提供的特性。
+
+6. ARMv8.5a的提供MTE（Memory Tag Extension）异步模式支持。通过内核参数
+   kason.mode进行选择。异步模式下，tags检查失败不会直接报告，而是收集在队列中定
+   期报告。
+
+7. ARM SCMI接口升级，SCMI是SCP（System Control Process）的接口，后者用于全局控
+   制整机的功耗，时钟等功能。
+
+8. MIPS现在只剩下龙芯在玩了，没有投资，再好的架构也是白搭。
+
+华为和海思的相关提交
+====================
+
+1. Hi1630（Hip09）的PMU驱动升级，删掉很多多余的行为。（吐嘈一句：你们能不能不要
+   吧这种修改的标题叫add xxxx support啊？）Hip08的一些旧驱动也有一些修改。
+
+2. HNS3升级：修改VF状态同步算法，从周期推送变成事件驱动。增加新的PHY设备和功能
+   （比如pause）的支持。
+
+3. 增加鲲鹏平台的SPI，I2C控制器驱动
+
+4. HPRE和ZIP加速器驱动升级，支持Hi1630，还升级了对应的qm协议。但还是保持一个驱
+   动支持多个鲲鹏平台。
+
+
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
