@@ -67,7 +67,6 @@ Linux主线内核跟踪
    软件构架设计/README
    Linux主线内核跟踪/README
    概念空间分析/README
-   维特根斯坦理论读书笔记/README
 
 Indices and tables
 ==================
