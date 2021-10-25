@@ -11,7 +11,7 @@ LW来缩写）的理论\ [1]_\ 的。我先看了两遍，感觉很难摸到他�
        己看《道德经》的经历就很明显。我姑且认为拉丁语系的翻译，损失没有那么大吧。
 
 学过LW的人看了我对《道德经》的解释，都说和LW的理论很像。我看着也是挺像的，比如
-他在perface对他的理论的总结是这样的：::
+他在preface对他的理论的总结是这样的：::
 
         What can be said at all can be said clearly, and what we cannot talk
         about we must pass over in silence.
