@@ -10,7 +10,7 @@ Linux主线内核跟踪
 有点乱，后面会逐步整理。
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    5.0
@@ -25,10 +25,8 @@ Linux主线内核跟踪
    5.9
    5.10
    5.11
-   lvc21
-   mac_air_m1_vm_config
    5.12
    5.13
-   uncached_store_on_clearing
+   others
 
 .. vim: tw=80 fo+=mM
