@@ -2,7 +2,7 @@
 
 :Authors: Kenneth Lee
 :Version: 1.0
-:Date: 2021-11-9
+:Date: 2021-11-26
 :Status: Draft
 
 逻辑哲学论读书笔记
@@ -22,6 +22,25 @@
 的系统就会被收缩为一组“\ :doc:`逻辑闭包<../软件构架设计/逻辑闭包>`\ ”，之后再把
 这些逻辑闭包抽象出来的名字作进一步的收缩，这样逐步收缩下去，这个系统的细节逻辑
 和我对它的抽象就对应起来了。
+
+网上有一个Maynard Handley写的关于Apple M1电脑的分析材料，很有名，叫\ *M1
+Explainer*\ 。他完全从一个非M1设计者的角度分析M1的设计思路，他的手法和我这个是
+类似的，所以我也想用他的表述来增强我这个意思，他的说法是：
+
+        | As I have said, I've written and rewritten, experimentd and
+        | re-experimented, with this section rpeatedly. I would come
+        | up with a general theory of how it all fitted together, then
+        | realize all my probes did not test and alternate explanation,
+        | run a new set of tests, and again be surprised.
+
+所以，我这里也有他那个号召：
+
+        | If someone else has a better theory of how it all fits together,
+        | or advises a different set of experiments showing a flaw in my
+        | analysis, or even realizes I made a mistake in some of the
+        | experiments (it happens! especially when you have no idea what
+        | to expect, what counts as an unexpected result), please help advance
+        | our common understanding.
 
 我们通过“名”来思考问题，名是一个抽象，是我们“结构化思维”的最小单位，但名是被细
 节所解释的。这就好像在机器学习中，你用来训练的数据集（比如一千张猫的照片）是无
@@ -51,7 +70,7 @@ silence中彼此认可。你也看过猫，我也看过猫，我们就可以用�
         | have to find both sides of the limit thinkable.
 
 每个名都可以被无限维度，无限空间地进行细分，这些细分的名，一同定义了这个抽象的
-名本身。所以，高层的名，是一个细节的名的集合。直到我们只能通过Silence传递的
+名本身。所以，高层的名，是一个细节的名的集合。直到我们只能通过Silence传递到
 Atomic的名上面。
 
 所以，我们拆解一个构架，比如“逻辑哲学论”，我们唯一的方法是拆解它下一层的名，看
@@ -141,8 +160,8 @@ Atomic的名上面。
 部逻辑的。但如果你一个函数本身就很长，要理解这个函数的逻辑就很复杂了，人脑不擅长
 处理这种东西。
 
-逻辑哲学论就是这样弄的，一个概念的定义可以十几页，你都没法抽象它原始的含义，就算他
-实际上也组织成一个层次结构，你都不好完整地理解它。比如我给你一句简单的话：
+逻辑哲学论就是这样弄的，一个概念的定义可以十几页，你都没法抽象它原始的含义，就
+算他实际上也组织成一个层次结构，你都不好完整地理解它。比如我给你一句简单的话：
 
         如果维特根中心斯坦的中间序列对他的反身代谢逻辑弧构成一个不来梅等比逻辑，
         那么这个中间序列对这个逻辑弧的几何重心具有溶解性质。
@@ -154,12 +173,13 @@ Atomic的名上面。
 作为后面阅读的一个标记，这样我们就可以反复去对比这个标记，确认我们没有迷失我们
 的方向。
 
-维特根斯坦认为，恍惚的部分是无法被描述的，但只要你开始交流，开始传递，就必然是
-一个结构化数据。这个概念我用两个类似的定义帮助读者理解：
+维特根斯坦认为，恍惚的部分是无法被描述的，所以只要你开始交流，开始传递，就必然
+是一个结构化数据。这个概念我用两个类似的定义帮助读者理解：
 
 其一，道德经里的道和名的关系。世界的客观存在，是道，你也能感受到它，你能看它，
-你能听它，但你没法说它，因为你说的是用“语音”这个媒介，去“部分”贴近那个感受（
-Sense），这已经转意了。所以，名不是不可名，道也不是不可道，但两者不是全等的。
+你能听它，但你没法说它，因为你说的是用“语音”这个媒介，去“部分”贴近你对世界的那
+个感受（Sense），这已经转意了。所以，名不是不可名，道也不是不可道，但两者不是全
+等的。
 
 这不但体现为语言，同样体现为文字，体现为脑子里面的思考。
 
@@ -204,6 +224,15 @@ Sense），这已经转意了。所以，名不是不可名，道也不是不可
 
 这里猫就是一个名，而那些什么图片，声音，气味之类的东西，就是“道”，或者说更贴近
 道（因为还可以细分），它的本质就是“大”，大到你没法在语言和思考中罩住它。
+
+下面这个图是Tensorflow教程的一个例子，叫fashine mnist，用101700个参数表达对一组
+时尚物品图标的认知：
+
+.. figure:: _static/fashine_mnist.png
+
+给每次给进去一副图，算法用101700个参数来计算一个输出（就是旁边那副坐标系的图），
+图标很复杂，也没有什么逻辑，最后那副坐标系的结果就很简单，鞋子就是7，衣服就是4
+……图标本身就是POIS，而数字就是逻辑的部分。
 
 无论是什么吧，对人脑的某个时刻，我们有一部分是进行结构化处理的，有一部分完全是
 个恍惚，你觉得你看见了它，但你的结构化信息里面没有它。那个部分对结构化信息处理
@@ -253,7 +282,7 @@ Function接受Truth Function自己作为输入，比如“猫会上树”，这�
 泳”，这也是一个Atomic，那么我们组合一下，“狗会游泳而且猫会上树”，这是用真值函数
 “而且”组合出来的一个Complex。如果我们知道两个Atomic的真假，我们也就知道了这个
 Complex的真假了。如果所有的Complex都是通过真值函数来组合的，那么，我们就可以清
-晰描述我们要所的所有Tractatus要描述的问题。
+晰描述我们所有Tractatus要描述的问题。
 
 为此，维特根斯坦还特意去解决了罗素悖论中的问题，不允许把一个Truth Function自己
 作为自己的输入。这里的关键就是他前面那个定义：一个名称被它的所有用法所定义，所
@@ -315,8 +344,8 @@ Complex的真假了。如果所有的Complex都是通过真值函数来组合的
 ？这在中文里是“不知”，这个地方无定义。
 
 但在西方哲学中，他们认为可能性存在，就没有拒绝，所以这都可以看作是真。一旦我们
-这样看这个问题，p->q和~p v q就是等价的。所以他们说“Neither I work hard, or I am
-promoted.”等价于说：“只要我努力工作，我就能被升职”。
+这样看这个问题，p->q和~p v q就是等价的。所以他们说“Either I don't work hard, or
+I am promoted.”等价于说：“只要我努力工作，我就能被升职”。
 
 但我们中文是没有这个表达的，我们可以说：“如果我努力工作，我就能升职”，或者“如果
 我不努力工作，我就升不了职”。我们是直接排除掉p=F的情形的。我们要非常小心这个地方
@@ -360,13 +389,15 @@ Case
         case，它就是fact，否则它就不是fact。
 
 Logic
-        Logic头脑中理性思考的部分，是一个静态的概念，是一种状态（State），
+        Logic头脑中理性思考的部分，是一个静态的概念，是一种状态（State），是我
+        们当前对各种对象的状态的判断。
         *In logic，nothing is accident*\ 。
-        所以，Logic包含所有is the case和is not the case的全部信息。我们只是不知
-        道未来是否会发生某个case，但我们知道它们有可能成为the case这件事本身，
-        是静态的。
+        我们觉得明天可能下雨，也可能不下雨。这个是我们对这个事情的全部判断，下雨
+        和不下雨都在明天的天气这个对象中，都是我们对明天天气这个Object的认知的
+        一部分（而且都是True），也就是说，如果我们认为某个可能性存在，我们脑子里的
+        Picture就个这个空间画了一个等于True的空间。
         *A new possibility cannot be discoverred later.*
-        所以，如果我们有了新的发现，我们现在的Logic，就不是过去那个Logic了。
+        如果我们有了新的发现，我们现在的Logic，就不是过去那个Logic了。
 
 Picture
         从空间上说，所有逻辑都可以被用Picture的方式表达，也就是说，如果我们能用逻辑
@@ -375,32 +406,47 @@ Picture
         *2.1 We picture facts to ourself*
 
 Object
-        逻辑空间中一个被命名的一个对象，是组成Pciture的，被结构化处理的实体。
+        逻辑空间中一个被命名的一个对象，是组成Picture的，被结构化处理的实体。
         *In a manner of speaking, objects are colourless。*
-        根据逻辑的定义，它是静态的，只有Space, time和colour三个属性。我不知道这
-        是定义还是结论。
+        Object是逻辑空间中不变的部分，包含它的所有变数，而这个变数，用对象的配
+        置（Configure）参数来表示。比如我们说“苹果是红”的，这个苹果和红，就是
+        Object，苹果可以有变化，红一点的，青一点的，都是这个变化的范围，是它的
+        configuration，但只要我们还认知某个对象是苹果，在我们的“世界”中，它就是
+        红的。而红的定义同理。
+        所以，苹果是我们世界中不变的部分，青不青，是它的范围。
 
 Logic Form
-        被认知为结构化数据的Pciture上的逻辑，表达了同一个Logic Form。也就是说，
+        被认知为结构化数据的Picture上的逻辑，表达了同一个Logic Form。也就是说，
         两个东西即使是不一样的，如果我们切取了它部分的要素作为“名”，那么这两个
         东西在逻辑上对我们来说就是一样的。如果我们认为它们不一样，那么我们肯定
         用了特定的属性去区分它们，然则它们的Logic Form的Picture一定是不同的。
 
 State of Affair
-        事件的状态，也是事实的状态，这个表面意思很直接，但我理解不了它明确指向
-        什么。但我现在为了这句话把它标记出来：In a state of affairs objects fit
-        into one another link the links of chain. 后面所有Proposition全部被定义
-        为一个Connexion，似乎就依赖这个定义，但我看不出为什么。
+        Object的自由空间（可能性）组成的一个逻辑空间。
 
-        一个证据性的定义是这样的：2.0 6 The existence and non-existence of states
-        of affairs is reality.
+“2.0 2 4 Substance is what subsists independently of what is the case”，
+“2.0 2 5 It is form and content”。
+我们对物质的认知也只是逻辑形式和POIS，也是分类而已。
 
-“2.0.2 4 Substance is what subsists independently of what is the case”这句话我
-暂时看不出指向什么。后面有一个解释：“It is form and content”。
+这一章重点定义的是逻辑世界的特性：既然逻辑是真实世界中我们放弃了POIS的部分，那
+么，这个世界中最终不存在模糊性的东西，任何一个决策进入这个世界，最终总会落到某
+个范围中，非左即右，这种判断包括你对外说：“我不知道”，“我可能去，我可能不去”……
+这些都是你的最终决策。
 
-这一章最重要的一个结论我觉得是：\ *2.19 Logical pictures can depict the world*
-。因为这是后面能用图像表示所有这个世界的情况的基础，但为什么可以得到这个结论，
-我现在判断不了。
+所以，世界（逻辑世界）可以被Picture表述，而且Picture是无色的。这里注意两点，为
+什么可以被图像化表述——因为逻辑是个分类，分类其实是一个“内-外”的概念，这本身是个
+空间概念。所以，抛弃我们复杂的语言，在我们脑子里，这些复杂的逻辑，可能就是个图
+，至少在我们遇到不能表达为图的逻辑前，我们可以这样认为。
+
+而颜色，在这幅图中不存在，因为我们不承认POIS，所以，我们最多认为这种红色和这种
+红色相同，这种红色比那种红色颜色深……这同样是一种在集合内和不在集合内的分类，所
+以，世界是无色的。
+
+所以，在维特根斯坦的定义中，我们的逻辑世界其实是一个对世界认识的分类，这个分类
+用Object来表示，每个Object都有一定的范围，这个范围被它的Configuration所定义。
+我们通过关联一个或者多个Object给自己描述自己对这个世界的“判断”，比如关联
+**苹果**\ 和\ **红的**\ 两个对象，决定了我们对苹果和红的两个对象的判断。
+
 
 定义3：A logical picture of facts is a thought
 -------------------------------------------------
