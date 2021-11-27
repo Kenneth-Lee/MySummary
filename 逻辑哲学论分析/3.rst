@@ -1,0 +1,85 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+:Date: 2021-11-27
+:Status: Draft
+
+定义3：A logical picture of facts is a thought
+**********************************************
+
+这里开始把logical picture引入到“想法”这个概念上，也就是说，只要我们想得出来，它
+就是结构化的，那么我们就可以用图来表示。
+
+*3.0 0 1 'A state of affairs is thinkable': what this means is that we can
+picture it to ourselves.*
+
+这里有一个观点很有意思：
+
+        *3.03 Thought can never be of anything illogical, since, if it were, we
+        should have to think illogically*.
+
+想法不可能是不合逻辑的，否则我们的认为它不合逻辑的想法本身不合逻辑。我们平时认
+为不合逻辑的想法是说它不符合物理经验，但它本身仍是合乎逻辑的（只要能进行范围叠
+加就可以）。
+
+“这是一只不是猫的猫”，符合逻辑，因为它描述了一种可能性，并且可以被图形化，只是这个
+被图形化的对象不存在而已。
+
+一个先天的知识只在它自己证明自己，而且没有任何其他对此进行比较的情况下是可能的
+（3.0 5）
+
+*A proposition contains the form, but not the content of its sense. （3.1 3）*
+
+上面这句话是我最想看到证明的。因为这是我经常要用的逻辑：一个函数的描述，只包括
+它本身所写的逻辑，不包括它调用的那些函数包含的逻辑，比如：::
+
+        function Reset() {
+                do_reset(1);
+        }
+
+这个函数只包含了do_reset()这个调用要求，没有包含真的把系统reset的行为，把系统
+reset的行为，是do_reset()干的，Reset里面没有包含那些信息。所以，当我们有一个想
+法，我们的想法只是包含了我们构成这个想法本身的那些子概念之间的关系，不包含那些
+子概念里面的子子概念的关系。
+
+3.1 4定义了Propositional Sign表明，所有的陈述，只是对象之间的关系。
+
+而这些对象，最后可以追溯到The essence of a propositional sign。也就是我们只能在
+沉默中传递的东西，或者称为Simple signs（3.2 0 1）或者primitive sign (3.2 6)。
+
+所以，所有陈述中的对象，没有被陈述的时候是Object，被陈述的时候是Propositional
+Sign。所有的陈述都只能说明Propsition Sign的关系，不能说明Proposition Sign内部的
+结构（在沉默中传递）。所以，所有名其实是和其他名的一个关系。我们不需要管名字是
+什么意思，我们只需要知道它是怎么用的。最小的的名字之下，是只能从沉默中传递的东
+西。
+
+这一章反复提到Content这个概念，我把它理解为“完满”，也就是道德经中“一”的概念。所
+以，
+*An expression is the mark of a form and a content*\ 。
+这是说，一个表达，要不表达一个非一的结构，要不表达一个完整的概念，这个概念中，
+所有东西都在恍惚中，你无法定义它的结构，因为它没有分别（“玄”）让你定义名。
+
+一个Proposition定义的部分，是它的Constant，而所有其他部分是Variable。（3.3 1 2
+），这就是说，当我们说一句话的时候，我们定义了一个集合，这个集合的边界就是它的
+所表述的部分，而它没有表述的部分的，就是他集合内部的自由度。
+
+也就是说，一个名字的所有用法，定义了它的范围和它的内涵。如果这个范围完全一样，
+我们就用一个符号（sign）去表示它。（换句话说，我们不用一个名字的定义去定义这个
+名字，而用它的所有用法去定义这个名字，如果一个名字和另一个名字的所有用法都是一
+样的，那么就算这个名字不同，我们也认为这两个名字是一样的），所以，如果名字的
+Pictual Form一样，它们就是一样的。
+
+Sign是逻辑符号，表明它的逻辑含义的是它和其他Sign的关联关系。我们不关心它本身的
+含义。
+
+现在终于到戏肉了：如果把一个Proposition本身（原文是constituent of proposition）
+作为一个variable，那么我们可以定义一个“类”（class，程序员真适合当哲学家，理解这
+些概念都是感性的，但在生活中你几乎不可能直接接触这些抽象概念。不知道为什么没有
+把编程作为哲学的必修课？），这个类构成一个“逻辑原型”（Logical Propotype）。
+
+这种原型可以抛开那个variable本身，全部用符号代替，写成这样：
+
+:math:`[\overline{p}, \overline{\xi}, N(\overline{\xi})]`
+
+这个定义我们第五章再讨论。

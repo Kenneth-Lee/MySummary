@@ -27,6 +27,7 @@ Linux主线内核跟踪
    5.11
    5.12
    5.13
+   5.14
    others
 
 .. vim: tw=80 fo+=mM

@@ -31,7 +31,7 @@ Linux主线内核跟踪
 概念空间分析
         这个主题用于整理对各种软件或者其他领域的概念空间的分析。
 
-维特根斯坦理论读书笔记
+逻辑哲学论分析
         这个主题就是文字表面的意思。
 
 本工程用Python Sphinx进行管理，所有的文本都是reStructuredText文档，这是一种文字
@@ -60,13 +60,14 @@ Linux主线内核跟踪
 .. toctree::
    :maxdepth: 2
    :numbered:
-   :caption: Contents:
+   :caption: 独立专栏：
 
    道德经直译/README
    花朵的温室/README
    软件构架设计/README
    Linux主线内核跟踪/README
    概念空间分析/README
+   逻辑哲学论分析/README
 
 Indices and tables
 ==================

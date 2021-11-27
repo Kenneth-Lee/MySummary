@@ -1,0 +1,13 @@
+.. Kenneth Lee 版权所有 2021
+
+:Authors: Kenneth Lee
+:Version: 1.0
+:Date: 2021-11-27
+:Status: Draft
+
+定义7：What we cannot speak about we mush pass over in silence
+**************************************************************
+
+这一章只有标题上这一句，说明维特根斯坦有多重视这个结论。我觉得是因为它直接点出
+整个理论的局限性：他是不考虑POIS的。
+
