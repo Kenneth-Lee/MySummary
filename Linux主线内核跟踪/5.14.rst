@@ -22,17 +22,176 @@ Idea很简单，就是用这个fd后面的back memory不和其他进程共享，
 实现在mm/secretmm.c中，我的感觉就是实现了一个内存文件，可能会拒绝其他进程用它分
 配的backend页，其他什么都看不到，我理解不了这个需求。
 
+Burstable CFS bandwith controller
+---------------------------------
+阿里巴巴提交的特性，增加CFS的cgroup控制参数允许冲击性的流量（这是解决双十一问题
+吗？），参数是使能后，group中的进程，前一个周期没有用完的runtime可以加到下一个
+周期上。补丁提供的数据显示在schbench上起到很好的整形效果，避免了最坏情况的进程的
+时延百倍的增加。
+
+参数cpu.cfs_burst_us用于控制积累的上限，默认是0，表示不积累。而
+cpu.cfs_period_us表示周期内的quota。
+
+算法类问题的原理我就不再这里分析了，参数一变什么都会变。
+
+prctl针对超线程的新命令
+-----------------------
+
+一组新的prcl参数，用于控制进程是否和其他进程共享同一个核的超线程，把安全要求高
+的进程隔离出来，避免被侧信道攻击。
+
+有四个prctl命令，包括：
+
+* PR_SCHED_CORE_CREATE
+* PR_SCHED_CORE_GET
+* PR_SCHED_CORE_SHARE_TO
+* PR_SCHED_CORE_SHARE_FROM
+
+create针对一个pid创建一个cookie，get把它取出来，share把它共享给其他pid。说起功
+能很简单，就看你需不需要了。Linus说它：
+
+        make little sense to most people.
+
+这个特性本身不小，还包含19个独立补丁（包括文档更新）。
+
+madvise针对页表的新命令
+-----------------------
+madvise增加两个针对页表prefault的新命令：
+
+* MADV_POPULATE_READ
+* MADV_POPULATE_WRITE
+
+这应该是个细节的需求，据说是qemu性能优化用到的。光这么一想，我是没有想到什么时
+候页表prefault会成为瓶颈的。
+
 
 
 有趣的东西
 ===========
 
-1. 
+1. cgroup增加了一个新接口：cgroup.kill，写1可以杀掉group内所有进程。
+2. 增加了一个mount参数，nosymfollow，不跟随软链接。我初步认为你mount到一个链接
+   的时候，就在这个链接上就mount了，不是到目标文件上去再mount。
+3. ARM提交了一组设计很多不同模块的补丁组，说要把全系统切换到ARCH_ATOMIC接口上，
+   但我不太能抓得住这个补丁到底在干什么（主要是没有时间作全面分析），表面上是统
+   一cmpxchg64, atomic_set这些函数的接口，但这些函数本来就有统一接口，整个代码
+   树查找ARCH_ATOMIC这个关键字也找不到介绍，这里就只是留个心眼吧。
+4. 
 
 华为和海思的相关提交
 ====================
 
-1. 
+1. 鲲鹏的SPI驱动增加了一个debugfs接口，用来dump所有的硬件寄存器的值。（方健）
+2. 鲲鹏加密加速器的qm中增加对1630支持的逻辑（叶凯），对于1630还能服用1620的接口，
+   我很高兴。Lin Wenkai加了一个hisi_qm_is_q_updated回调（总算1630把这个功能支持
+   了，不知道效果如何）
+3. 3559A加了一个时钟驱动，不知道这是谁的芯片？（小海思的？）
+
+补充分析
+=========
+
+KUNIT
+-----
+
+这个版本有几个kunit的补丁，我一直没有认真看过这个子系统的思路，这次来看看：
+
+首先，这不是一个代码逻辑级别的单元测试框架，而是基于一个运行起来的Linux上的单元
+测试框架。这个运行可以基于um（这确实是个好思路，不用我这么辛苦插那么多桩，但不插桩
+测试范围可能有限了，估计只能测试系统库），也可以基于qemu。
+
+要验证一下用法很简单，随便找一个源代码运行命令就行：::
+
+  kenny@lklp02:~/work/linux-kernel-dev$ ./tools/testing/kunit/kunit.py run
+  [09:09:58] Configuring KUnit Kernel ...
+  Generating .config ...
+  Populating config with:
+  $ make ARCH=um olddefconfig O=.kunit
+  [09:10:00] Building KUnit Kernel ...
+  Populating config with:
+  $ make ARCH=um olddefconfig O=.kunit
+  Building with:
+  $ make ARCH=um --jobs=8 O=.kunit
+  ../arch/x86/um/Makefile:44: FORCE prerequisite is missing
+  
+  [09:10:35] Starting KUnit Kernel (1/1)...
+  [09:10:35] ============================================================
+  [09:10:36] =============== time_test_cases (1 subtest) ================
+  [09:10:36] [PASSED] time64_to_tm_test_date_range
+  [09:10:36] ================= [PASSED] time_test_cases =================
+  [09:10:36] ================ sysctl_test (10 subtests) =================
+  [09:10:36] [PASSED] sysctl_test_api_dointvec_null_tbl_data
+  [09:10:36] [PASSED] sysctl_test_api_dointvec_table_maxlen_unset
+  [09:10:36] [PASSED] sysctl_test_api_dointvec_table_len_is_zero
+  [09:10:36] [PASSED] sysctl_test_api_dointvec_table_read_but_position_set
+  [09:10:36] [PASSED] sysctl_test_dointvec_read_happy_single_positive
+  [09:10:36] [PASSED] sysctl_test_dointvec_read_happy_single_negative
+  [09:10:36] [PASSED] sysctl_test_dointvec_write_happy_single_positive
+  [09:10:36] [PASSED] sysctl_test_dointvec_write_happy_single_negative
+  [09:10:36] [PASSED] sysctl_test_api_dointvec_write_single_less_int_min
+  [09:10:36] [PASSED] sysctl_test_api_dointvec_write_single_greater_int_max
+  [09:10:36] =================== [PASSED] sysctl_test ===================
+  ...
+  [09:10:36] Testing complete. Passed: 88, Failed: 0, Crashed: 0, Skipped: 2, Errors: 0
+  [09:10:36] Elapsed time: 38.381s total, 2.087s configuring, 34.866s building, 1.381s running
+
+原理也很容易猜到，就是编译了一个um linux，只能在命令行运行就是了。如果是qemu的
+版本，估计就是运行起一个虚拟机，然后通过debugfs接口要求内核调用对应的测试函数（
+通过kunit_test_suite宏定义），然后在内核中直接调用那个函数。这样基本上你不能插
+桩，但你可以直接用Linux内已经存在的任何facility，如果你写的是一个库，比如写了一
+个list，你要测试这个list，这种方法就很方便，但如果你做了一个驱动，想测试这个驱
+动的一个组合逻辑，这种方法就没戏了。
+
+框架提供最基本的facility，除了刚才提到的定义kunit_test_suite用于暴露测试用例接
+口，还有check(), compare()这些函数用于检查结果。
+
+说起来，这个东西简单得很，使用范围也有限，就这么着吧。
+
+比较有趣的是它的报告格式，叫TAP，(Test Anything Protocol），是个简单得要死的文
+本格式，我是没想到连这种东西都可以标准化（我不是讽刺，实际上这样简单的标准化也
+是有用的）。
+
+对了，这个框架是Google做的。
+
+UML
+---
+
+kunit的分析让我突然对UML有了兴趣。我原来对它没有兴趣主要是我觉得它不是“真的”，
+用qemu来运行一个Linux，Linux在qemu里面是“真的”，有特权级，有多CPU，但UML运行在
+用户态，这些东西肯定都是模拟出来的，它还受用户态权限的各种限制，我就觉得既然
+qemu能用，就没有必要用UML。
+
+但kunit给了我一个启示：如果我仅仅要测试一个内核的函数，UML是有明显优势的，因为
+它可以直接在一个用户空间里面运行，我不用老想着怎么在qemu和kenrel两头插桩。
+
+所以我简单分析一下UML的边界，也就是前面提到的问题，UML具体是如何模拟的。
+
+先大概看一下UML的运行模型，这个方案这样使用：::
+
+  make ARCH=um O=my_um_test
+  cd my_um_test
+  ./linux ubd0=rootfs.img root=/dev/ubda init=/bash/sh
+
+除了不需要虚拟机（自己就是虚拟机），其他各方面和qemu等虚拟机的用法很接近，说明
+它也是一种模拟方案，而且还直接可以解释一个文件系统。它也不需要root工作权限。从
+这点看，它就是用普通的用户服务提供一个虚拟的系统的。
+
+arch代码在arch/um目录中，由于是个用户程序，就有main入口了。这个入口在
+arch/um/os-Linux/main.c，。除了准备工作，主函数应该是start_uml()，这里创建了CPU
+模拟线程：start_kernel_proc()，这里就会调用内核真正的入口start_kernel()，里面就
+是标准的Linux启动行为，对应的平台相关调用就用uml的实现代替。用gdb跟踪这个过程可
+以看到这些实现包括：
+
+1. 内核自己的调度用longjmp来实现，所以，内核无论有多少线程（包括Guest进程）都是
+   同一个Host进程。
+2. 所有设备模拟都用一个单独的lkm来实现，需要异步的东西创建线程自己和相关资源互动。
+   这可以有任意多个，但不通过pthread实现，而是直接通过clone调用实现（参考
+   start_io_thread()）的实现。
+3. mmu相关的功能依靠No-MMU的相关实现，这个实现在nommu.c中，主要原理是保留所有的
+   vma设置，但实际操作以后，都直接在虚拟空间（对虚拟机自己来说就是物理空间了）
+   直接给出地址的位置。所以实际上不会发生缺页，分配虚拟地址的时候其实就分配进程
+   可以访问的地址了。所以也无所谓缺页，mmap的过程其实就是一个分配空间的过程。
+
+更深入的分析等以后有时间再看吧。
 
 
 参考
