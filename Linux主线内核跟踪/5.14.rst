@@ -191,11 +191,33 @@ arch/um/os-Linux/main.c，。除了准备工作，主函数应该是start_uml()�
    直接给出地址的位置。所以实际上不会发生缺页，分配虚拟地址的时候其实就分配进程
    可以访问的地址了。所以也无所谓缺页，mmap的过程其实就是一个分配空间的过程。
 
-更深入的分析等以后有时间再看吧。
+这是根据快速看代码形成的印象，可能理解有错。另外，根据这里的描述：
 
+        http://user-mode-linux.sourceforge.net/old/skas.html
+
+过去UML是通过每个Guest进程对应一个Host进程来实现的，靠一个独立线程跟踪踩空的系
+统调用，调度到UML自己的内核中（所以后来这个方案称为TT模式，Tracing Thread），而
+且和内核共享空间，所以安全性不好，性能也低，现在的实现称为skas（Separate Kernel
+Address Space），这需要在Host Kernel上增加ptrace接口。这个文档很旧了，只能说明
+历史，但跟踪当前的实现，确实看到这个异常的处理流程是这样的：::
+
+  #0  handle_mm_fault (vma=vma@entry=0x60a4b5c0, address=address@entry=1073762302, flags=flags@entry=596,
+      regs=regs@entry=0x0) at ../mm/memory.c:4758
+  #1  0x0000000060022279 in handle_page_fault (address=address@entry=1073762302, ip=ip@entry=1073762302,
+      is_write=is_write@entry=0, is_user=is_user@entry=1, code_out=code_out@entry=0x62803e34)
+      at ../arch/um/kernel/trap.c:74
+  #2  0x000000006002252d in segv (fi=..., ip=1073762302, is_user=1, regs=regs@entry=0x608266c0)
+      at ../arch/um/kernel/trap.c:226
+  #3  0x00000000600227a3 in segv_handler (sig=<optimized out>, unused_si=<optimized out>, regs=0x608266c0)
+      at ../arch/um/kernel/trap.c:190
+  #4  0x0000000060035e4e in userspace (regs=0x608266c0, aux_fp_regs=0x62800028)
+      at ../arch/um/os-Linux/skas/process.c:482
+  #5  0x000000006001fdbc in new_thread_handler () at ../arch/um/include/asm/thread_info.h:52
+  #6  0x0000000000000000 in ?? ()
+
+这确实靠ptrace实现，说明这些支持已经在主线内核中了。这要分析下去就复杂了，我到
+此为止吧，我觉得这个功能就让它暂时停留在kunit这样的功能上吧。
 
 参考
 ====
 .. [1] https://kernelnewbies.org/LinuxChanges
-
-
