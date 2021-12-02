@@ -17,3 +17,5 @@
    mac_air_m1_vm_config
    uncached_store_on_clearing
    free_page_table_pages
+   perf_bench
+   vdpa

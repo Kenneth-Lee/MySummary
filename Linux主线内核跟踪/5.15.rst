@@ -3,7 +3,7 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 :Date: 2021-11-26
-:Status: Draft（未完成分析）
+:Status: Released
 
 5.15
 ****
@@ -86,7 +86,7 @@ DAMON
 它同时提供了kunit和sleftest的测试用例，我觉得kunit这个框架也算是简单有效了，以
 后我们的代码也可以把它们作为基本方法放进去的，专门用来测试数据接口挺好的。
 
-amzon德国提交的补丁。
+这是Amazon德国提交的补丁。
 
 
 新系统调用：process_mrelease
@@ -132,6 +132,33 @@ Symmetric Scheduling Affinity。也许应该成为非对称调度绑定。主要
 现在这个方案是需要用户态制定自己可以兼容的CPU在什么位置上的，设置后反映为
 task.user_cpus_ptr上的一个掩码。
 
+VDUSE
+------
+
+这个框架不是这个版本才加入的，但这次它提交了一组比较长的补丁引起我的注意。所以
+我作为一个大特性来分析。
+
+VDUSE是字节跳动维护的一个特性，叫vDPA Device in Userspace。而vDPA是Redhat维护的
+一个特性，叫virtio Data Path Accelerator。说起来原理很简单，就是把网卡数据面直
+接从内核分流到virtio共享内存buffer，让虚拟机用virtio设备去处理它。然则，既然
+virtio一直宣称不仅针对虚拟机，还可以是任何要暴露给用户态的接口，那么提供一个用
+户态直接访问它的引擎也顺理成章了。
+
+不过实际看这个代码，会发现它并不是直接使用用户态的virtio设备去用这个框架的，而是
+在内核中直接和vDPA接口，同时封装了iommu/iova接口接口来提供用户态支持的。
+
+为了理解这个框架，我们可以先理解一下vDPA框架：
+
+        :doc:`vDPA框架分析<vdpa>`
+
+根据这个分析，我们注意到了，要创建一个新的vdpa，你需要在内核驱动里面干。但VDUSE
+呢，希望可以根据需要创建任意多的虚拟vdpa设备，所以它创建了一个控制文件：
+/dev/duse/control，你通过这个文件下命令，可以创建很多的vdpa设备实例，设置它们的
+virtqueue参数。
+
+但这样有什么用呢？这些vDPA和谁通讯呢？难道是为了虚拟机之间互相通讯？
+
+现在只能这样猜了。
 
 有趣的东西
 ===========
@@ -153,6 +180,9 @@ task.user_cpus_ptr上的一个掩码。
 8. perf/trace这两个框架的修改似乎每个版本都没有停过，开发真是活跃。perf bench现
    在多了一个针对evlist的benchmark。
 9. UEFI支持非标准GPT的启动位置
+10. Nvidia提交了一系列的补丁，把vfio_pci分成vfio_pci_core和vfio_pci两个部分，一
+    个用于用作框架，一个用作具体的驱动支持。我觉得后面应该有其他动作，但现在的
+    补丁看来，仅仅就是拆成两部分。
 
 华为和海思的相关提交
 ====================
