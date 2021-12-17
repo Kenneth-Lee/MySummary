@@ -1069,47 +1069,54 @@ CPU
 
 TCG
 ----
-为了理解CPU，我们先理解一种最基本的CPU模拟引擎：TCG，Tiny Code Generator。这个
+为了理解CPU，我们先理解qemu最基本的CPU模拟引擎：TCG，Tiny Code Generator。这个
 引擎是纯软件模拟器，可以在任何qemu支持的平台上，模拟任何其他硬件平台。
 
-在TCG的概念空间中，Target是指运行TCG引擎的平台（也就是qemu的host），Guest是指它
-模拟的平台。比如你在x86上模拟RISCV，那么x86就是Target，而RISCV是Guest。
+.. note::
 
-TCG的原理是先给每条指令定义一个translate函数，模拟CPU的执行的时候，就先根据当前
-PC的位置，每次取一条指令，让translate函数生成一段修改被模拟的CPU的状态的代码，
-填到一片翻译内存中（称为TB，Translated Block）。直到遇到一个会跳转等行为的指令
-，就停止TB的构建，对TB中的代码进行一次重定位（相当于动态链接这个TB中临时拼凑的
-代码），然后跳到TB中直接执行。这样一次次填充和执行TB，就模拟了被模拟TB的行为了
-。Qemu之所以叫"Quick" EMUlator，就是因为这个算法。因为过去很多模拟器是直接解释
-指令的行为，然后用动态逻辑去更新被模拟CPU的状态的，而Qemu是用写好的静态C代码去
-更新这些状态，然后用编译器的优化能力去更新被模拟CPU状态，这个效率更高，所以就
-Quick了。
+  KVM等执行用另外的执行引擎，利用硬件直接执行需要模拟的代码，这个当然效率更高，
+  但只能是同Arch模拟。所以从通用性来说，TCG是最好的，我们主要用TCG来理解CPU的执
+  行架构。
 
-KVM等执行用另外的执行引擎，利用硬件直接执行需要模拟的代码，这个当然效率更高，但
-只能是同Arch模拟。所以从通用性来说，TCG是最好的，我们主要用TCG来理解CPU的执行架
-构。
+TCG和很很多解释型的CPU模拟系统不一样，它不是通过一条条指令解释执行的，而是先把
+指令翻译成本地代码，然后通过执行本地代码完成整个编译的。所以，在TCG的概念空间中
+，target不是qemu中那个被模拟的系统的概念，而是翻译结果的概念，而这个翻译结果是
+本地平台的指令，刚好和qemu的target相反。比如你在x86上模拟RISCV，qemu的target是
+RISCV，但tcg的target是x86，而RISCV，则称为Guest。
 
-TCG的实现包含如下概念：
+TCG target组织成多个Translate Buffer，简称TB。它把Guest的代码分成多个小块，一次
+连续翻译多条指令到这个TB中，然后跳进去执行，执行完了，再翻译一个TB。这些TB作为
+Cache存在，如果指令跳回到到翻译过的地方，可以直接复用这些Cache。这个算法，是
+qemu最初被称为“Quick EMUlator”的原因。
+
+我们Review一下前面这个过程，这里其实有三个程序上下文：
+
+1. Guest的执行上下文
+2. Qemu自身的执行上下文
+3. TB的执行上下文
+
+比如在x86上执行riscv的jal指令，jal是guest的期望，Qemu负责把jal翻译到TB中，而TB
+中的动态代码需要负责修改Qemu中定义的那些表示CPU状态的数据结构。
+
+每个Guest的翻译程序负责把代码流翻译到TB中，这其中用到如下概念：
 
 TB
-        Translated Block，这是一个连续的翻译块。
+        Translated Block，这是一个连续的翻译块。又称为Fucntion，因为它就好像一
+        个函数调用那样，有一个自己的上下文，有自己生命周期的变量，独立参与一次
+        单独的链接。
 
 BB
-        Basic Block，这是连续使用的多个TB，直到遇到一个跳转类的指令。
+        Basic Block，这是TB中一段连续执行的指令（直到遇到跳转），TB中可以有多个
+        BB，但BB结束的时候必须重新进行TB查找，以便转到新的位置上去执行。
 
-Function
-        用于重定位的一段代码，看做一个C的函数，对应一个TB。
+整个总结执行过程可以总结为这样一个过程的循环：
 
-Temporary
-        BB范围中的变量
-
-Local temporary
-        TB范围的变量
-
-Global temporary
-        全局范围的变量
-        
-
+1. 调用guest平台对应的gen_intermediate_code()把TCG的中间代码翻译到TB中（作为一
+   条链表存在）
+2. 调用tcg/<target>中的编译程序（tcg-target)把TB中的中间代码翻译成实际内存中的
+   本地代码
+3. 优化和链接这个本地代码（tcg_gen_code(ctx, tb))
+4. 跳入TB中执行本地代码
 
 
 CPU
@@ -1157,12 +1164,41 @@ cpu_exec_interrupt，dump_state, synchronized_from_tb（对齐tb的状态和cpu�
 
 Qemu写了一个Python程序基于定义文件自动生成decode程序，输入是一个.decode文件，格
 式在这里有介绍：docs/devel/decodetree.rst。在meson.build中调用decode_tree，可以
-生成一个.inc文件，里面包含一个decode函数，你包含这个inc文件，就可以直接调用这个
-函数直接进行解码。解码后，inc文件会主动调用对应代码的trans_函数，向TB中填充代码
-。所以，一般来说，你只需要写一个translate文件，包含decode产生的decode函数，并在
-里面定义所有的trans_函数，就可以支持这个Arch的TCG了。
+生成一个.inc文件，里面包含一个decode-xxx函数，你包含这个inc文件，就可以直接调用
+这个函数直接进行解码。解码后，inc文件会主动调用对应代码的trans_函数，向TB中填充
+代码。所以，一般来说，你只需要写一个translate文件，包含decode产生的decode函数，
+并在里面定义所有的trans_函数，就可以支持这个Arch的TCG了。
 
-TCG和CPU的支持代码需要特别处理，一般都放在target/<arch>目录中。
+trans_函数完成guest代码到tcg target的翻译过程，生成TCG中间代码，这通过一系列的
+tcg_gen_xxxx()函数来完成。
+
+看一个例子，下面是一个为了说明问题而改进过的riscv的trans_addi翻译算法：
+
+.. code-block:: C 
+
+  static bool trans_addr(DisasContext *ctx, arg_addi *a)
+  {
+      TCGv tmp = tcg_temp_new();
+
+      tcg_gen_mov_i64(tmp, cpu_gpr[a->rs1]);
+      tcg_gen_addi_i64(tmp, tmp, a->imm);
+      tcg_gen_mov_i64(cpu_gpr[a->rs1], tmp);
+
+      tcg_temp_free(source1);
+      return true;
+  }
+
+这实际上生成了3条tcg指令：::
+
+  mov_i64 tmp, rs1
+  addi_i64 tmp, tmp, imm
+  mov_i64 rs1, tmp
+
+TCG Target
+----------
+
+todo: TCG target用于把TCG中间指令翻译成Host指令。
+
 
 Machine
 =======
