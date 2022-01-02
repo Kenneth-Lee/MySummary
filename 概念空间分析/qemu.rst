@@ -1064,110 +1064,100 @@ device_id表一样的virtio_device_id表来匹配具体的设备，其他行为�
 层的实现），里面用virtqueue_get_buf()读，当然你也可以像其他驱动那样，raise一个
 softirq来读。
 
-CPU
-===
+CPU模拟
+=======
 
-TCG
-----
-为了理解CPU，我们先理解qemu最基本的CPU模拟引擎：TCG，Tiny Code Generator。这个
-引擎是纯软件模拟器，可以在任何qemu支持的平台上，模拟任何其他硬件平台。
+CPU对象
+-------
 
-.. note::
-
-  KVM等执行用另外的执行引擎，利用硬件直接执行需要模拟的代码，这个当然效率更高，
-  但只能是同Arch模拟。所以从通用性来说，TCG是最好的，我们主要用TCG来理解CPU的执
-  行架构。
-
-TCG和很很多解释型的CPU模拟系统不一样，它不是通过一条条指令解释执行的，而是先把
-指令翻译成本地代码，然后通过执行本地代码完成整个编译的。所以，在TCG的概念空间中
-，target不是qemu中那个被模拟的系统的概念，而是翻译结果的概念，而这个翻译结果是
-本地平台的指令，刚好和qemu的target相反。比如你在x86上模拟RISCV，qemu的target是
-RISCV，但tcg的target是x86，而RISCV，则称为Guest。
-
-TCG target组织成多个Translate Buffer，简称TB。它把Guest的代码分成多个小块，一次
-连续翻译多条指令到这个TB中，然后跳进去执行，执行完了，再翻译一个TB。这些TB作为
-Cache存在，如果指令跳回到到翻译过的地方，可以直接复用这些Cache。这个算法，是
-qemu最初被称为“Quick EMUlator”的原因。
-
-我们Review一下前面这个过程，这里其实有三个程序上下文：
-
-1. Guest的执行上下文
-2. Qemu自身的执行上下文
-3. TB的执行上下文
-
-比如在x86上执行riscv的jal指令，jal是guest的期望，Qemu负责把jal翻译到TB中，而TB
-中的动态代码需要负责修改Qemu中定义的那些表示CPU状态的数据结构。
-
-每个Guest的翻译程序负责把代码流翻译到TB中，这其中用到如下概念：
-
-TB
-        Translated Block，这是一个连续的翻译块。又称为Fucntion，因为它就好像一
-        个函数调用那样，有一个自己的上下文，有自己生命周期的变量，独立参与一次
-        单独的链接。
-
-BB
-        Basic Block，这是TB中一段连续执行的指令（直到遇到跳转），TB中可以有多个
-        BB，但BB结束的时候必须重新进行TB查找，以便转到新的位置上去执行。
-
-整个总结执行过程可以总结为这样一个过程的循环：
-
-1. 调用guest平台对应的gen_intermediate_code()把TCG的中间代码翻译到TB中（作为一
-   条链表存在）
-2. 调用tcg/<target>中的编译程序（tcg-target)把TB中的中间代码翻译成实际内存中的
-   本地代码
-3. 优化和链接这个本地代码（tcg_gen_code(ctx, tb))
-4. 跳入TB中执行本地代码
-
-
-CPU
-----
-
-CPU也是一种QoM，继承树是：::
+和其他设备一样，CPU也是一种QoM，继承树是：::
 
         TYPE_DEVICE <- TYPE_CPU <- TYPE_MY_CPU
 
 CPU有自己的as，mr，如果是全系统模拟，这当然就是system_as这些东西了。
 
-定义一种新的CPU，关键是class_init的时候设置CPUClass的回调，比如
-cpu_exec_interrupt，dump_state, synchronized_from_tb（对齐tb的状态和cpu的状态，
-比如pc的位置）。如果支持TCG（指令模拟，不使用KVM等硬件加速技术），关键要支持：
+CPU对象的模拟使用不同的算法，在CPU的概念中称为一种加速器，Accelerator。TCG，KVM
+都是Accelerator。
 
-1. tcg_initialize：主要用tcg_global_mem_new()分配被模拟CPU的状态空间
+CPU的状态定义在它的QoM的State中，由加速器在模拟的过程中进行同步修改，但这种修改
+不是实时的。
 
-2. tlb_fill：这个主要是搞定TCG才需要的访存处理
+就现在来说，无论是哪种加速器，Qemu都创建了一个本地线程去匹配它，所以我们可以简
+单认为每个虚拟的CPU就是Host上的一个线程，在这个线程之内的调用，都是串行的，只有
+访问CPU间的数据结构才需要上锁保护。
 
-此外，要实现一个全局函数，：::
+TCG
+----
 
-    gen_intermediate_code(cpu, tb, max_insns) {
-        translator_loop(&xxxx_tr_ops, &ctx.base, cs, tb, max_insns);
-    }
+TCG，Tiny Code Generator，是Qemu最基本的模拟加速器，它是引擎是纯软件模拟器，可
+以在任何qemu支持的平台上，模拟任何其他硬件平台。
 
-让tcg引擎来调用。ops包括这些回调：
+和很多解释型的CPU模拟系统不同，TCG不是通过一条条指令解释执行的，而是先把Guest的
+指令翻译成Qemu中间代码，进行中间代码优化，然后再把中间代码翻译成Host代码，才投
+入执行的。所以，在TCG的概念空间中，target不是qemu中那个被模拟的系统的概念，而是
+翻译结果的概念，而这个翻译结果是本地平台的指令，刚好和qemu的target相反。比如你
+在x86上模拟RISCV，qemu的target是RISCV，但tcg的target是x86，而RISCV，则称为Guest
+。
 
-.init_disas_context 
-        总初始化，但也是反复调用的
+TCG target组织成多个Translate Buffer，简称TB。它把Guest的代码分成多个小块，一次
+连续翻译多条指令到这个TB中，然后跳进去执行，执行完了，再翻译一个TB。这些TB作为
+Cache存在，如果指令跳回到到翻译过的地方，可以直接复用这些Cache。这个算法大幅提升
+了Qemu的模拟效率，是qemu最初被称为“Quick EMUlator”的原因。
 
-.tb_start
-        一个TB初始化
+我们Review一下前面这个过程，这里其实有三个程序上下文：
 
-.insn_start/.translate_insn
-        指令翻译loop，分了两步，后者调用decode_opc，进而调用decode_insn32，而这
-        个函数由decode文件自动生成，被包含到一个翻译文件中，那个翻译文件再实现
-        对应的trans_xxx函数，让这个翻译文件调用。剩下的事情就是怎么翻译的问题了
-        。
+1. Guest的执行上下文，我们简称G。
+2. Qemu自身的执行上下文，我们简称Q。
+3. TB的执行上下文，我们简称T。
 
-.tb_stop
-        翻译完一个TB
+比如在ARM上执行riscv的jal指令，jal是guest的期望，jal表现的行为就是G上下文，Qemu
+的程序负责把jal翻译到TB中，这个执行翻译的程序属于Q上下文。而TB中的动态代码需要
+负责修改Qemu中定义的那些表示CPU状态的数据结构，这些动态代码，就在运行T上下文。
 
-.breakpoint_check
-        检查有没有发生断点
+本质上，Q和T是同一个上下文，只是如果用gdb去跟踪qemu，你只能看到Q上下文，T上下文
+对gdb是黑盒，但从执行的角度，它们的地位是相同的。另一方面，虽然它们地位相同，由于
+T上下文是动态生成的，所以T上下文的程序，只能访问Q上下文程序给它链接的符号，例如，
+在T上下文的程序其实可以直接调用Qemu自己的函数，但你需要主动把这些函数声明为helper
+函数，这样生成程序才能把这些函数链接进去。
 
-Qemu写了一个Python程序基于定义文件自动生成decode程序，输入是一个.decode文件，格
-式在这里有介绍：docs/devel/decodetree.rst。在meson.build中调用decode_tree，可以
-生成一个.inc文件，里面包含一个decode-xxx函数，你包含这个inc文件，就可以直接调用
-这个函数直接进行解码。解码后，inc文件会主动调用对应代码的trans_函数，向TB中填充
-代码。所以，一般来说，你只需要写一个translate文件，包含decode产生的decode函数，
-并在里面定义所有的trans_函数，就可以支持这个Arch的TCG了。
+在TB之外还有一个BB，Basic Block的概念，它的定义是一个中间没有跳转的TB。这其实是
+生命周期上的概念，如果一个TB发生的跳转，必然要重新找下一个TB，所以这一段连续的
+代码必然构成一个BB。
+
+为了支持多个平台，TCG框架支持南北两个翻译模块。北向是Qemu Target，这部分程序负
+责把Guest指令翻译到TB中（当前代码在target/<arch>目录下）。南向是TCG Target，这
+部分程序负责把TCG中间代码翻译成TB里面的真实代码（当前代码在tcg/<arch>目录下）。
+
+整个CPU的模拟过程可以总结为这样一个过程的循环：
+
+1. 用北向模块的gen_intermediate_code()把Guest代码翻译成TCG的中间代码，作为一个
+   链表保存在TB中。
+2. 优化中间代码（现在主要做中间变量合并）
+3. 用南向模块的tcg_out_op()接口生成Host测代码，也保存在TB的运行缓冲中
+4. 链接
+5. 跳入TB中执行本地代码
+
+这个跳入的过程对Q上下文来说，就是一个函数调用：::
+
+        tcg_qemu_tb_exec(CPUArchState *env, uint8_t *tb_ptr)
+
+T上下文根据这个调用的要求更新CPU的状态就可以了，这个过程中，南向模块会动态分配
+Host寄存器去取代Guest的寄存器，以便降低计算成本，但在跨越BB前，这些寄存器会被
+T上下文生成的代码同步到CPUArchState中。
+
+如果执行中发生了内存访问，异常等行为，对应指令会在T上下文中部署helper函数，这时
+Q上下文的代码会重新接管控制权，就又变成一个解释执行的问题了。
+
+北向模块接口
+^^^^^^^^^^^^
+
+Qemu写了一个Python程序基于定义文件自动生成decode程序，以便降低南向模块的写作成
+本。它的输入是一个.decode文件，格式在这里有介绍：docs/devel/decodetree.rst。在
+qemu的Make文件meson.build中调用decode_tree，可以生成一个.inc文件，里面包含一个
+decode_xxx函数，你包含这个inc文件，就可以直接调用这个函数直接进行解码。解码后，
+inc文件会主动调用对应代码的trans_函数，向TB中填充代码。所以，一般来说，你只需要
+写一个translate文件，包含decode产生的decode函数，并在里面定义所有的trans_函数，
+就可以支持这个Arch的TCG了。
 
 trans_函数完成guest代码到tcg target的翻译过程，生成TCG中间代码，这通过一系列的
 tcg_gen_xxxx()函数来完成。
@@ -1176,7 +1166,7 @@ tcg_gen_xxxx()函数来完成。
 
 .. code-block:: C 
 
-  static bool trans_addr(DisasContext *ctx, arg_addi *a)
+  static bool trans_addi(DisasContext *ctx, arg_addi *a)
   {
       TCGv tmp = tcg_temp_new();
 
@@ -1188,16 +1178,69 @@ tcg_gen_xxxx()函数来完成。
       return true;
   }
 
-这实际上生成了3条tcg指令：::
+这表面上生成了3条指令：::
 
   mov_i64 tmp, rs1
   addi_i64 tmp, tmp, imm
   mov_i64 rs1, tmp
 
-TCG Target
-----------
+但那三个函数其实生成了4条TCG指令：::
 
-todo: TCG target用于把TCG中间指令翻译成Host指令。
+   mov_i64 tmp2,x5/t0
+   movi_i64 tmp3,imm
+   add_i64 tmp2,tmp2,tmp3
+   mov_i64 x12/a2,tmp2
+  
+这是因为tcg_gen_addi_i64()实际上把那个立即数也换成了一个TB上的临时变量。
+
+Qemu优化器合并临时变量，4条TCG指令优化成2条：::
+
+   movi_i64 tmp2,imm2
+   mov_i64 x12/a2,tmp2
+
+这些中间指令再翻译成ARM指令，就是这样的：::
+
+  0xffff8f41b0d0:  f9001674  str      x20, [x19, #0x28]
+  0xffff8f41b0d4:  52820514  movz     w20, imm2
+  0xffff8f41b0d8:  f9003274  str      x20, [x19, #0x60]               
+
+这里第一条指令先把前一条指令的结果（x20）更新到CPUState(env)上，然后更新tmp2分配的寄存器，
+再吧它更新到CPUState上。
+
+从这个例子可以看到：
+
+1. Guest翻译程序使用gen系列函数生成目标TCG程序逻辑。
+2. gen系列函数生成TCG指令。
+3. TCG指令根据代码逻辑进行指令优化。
+4. TCG target生成代码重新分配临时寄存器，并且时刻同步到env的CPU状态参数中。
+
+这些过程可以通过qmeu命令的-d参数跟踪。
+
+从上面的例子可以看到，T上下文可以使用自己的变量，这些变量称为TCGv，它们有不同的
+生命周期，主要包括：
+
+1. 普通TCG变量：通过tcg_temp_new()等函数创建的临时变量，它们只在一个BB之内有效。
+
+2. 本地TCG变量：通过tcg_temp_local_new()创建，它在一个TB内有效。
+
+3. 全局TCG变量：这种可以跨越BB
+
+   1. 参数类，其实就只有一个，就是tcg_qemu_tb_exec(env, tb_ptr)中的这个env，访
+      问它可以更新CPU的状态。
+
+   2. 内存类，这种通过tcg_global_mem_new()创建，用于和env中的参数同步。
+
+南向模块接口
+------------
+
+南向模块接口的实现在tcg/<arch>目录中，它主要是提供tcg_target_qemu_prologue()和
+tcg_out_op()函数。实际工作就是根据tcg中间指令，决定如何映射成TB中的一段本地代码。
+
+tcg_target_qemu_prologue()用于生成prologue和epilogue，也就是根据
+tcg_qemu_tb_exec()这个函数输入，设置生成代码的工作环境，比如保存callee-saved寄
+存器，这样就可以让出所有的寄存器给目标代码使用了。
+
+而tcg_out_op()就是一条条tcg指令的映射实现，这完全是个体力活了。
 
 
 Machine
