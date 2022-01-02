@@ -1148,6 +1148,10 @@ T上下文生成的代码同步到CPUArchState中。
 如果执行中发生了内存访问，异常等行为，对应指令会在T上下文中部署helper函数，这时
 Q上下文的代码会重新接管控制权，就又变成一个解释执行的问题了。
 
+如果需要跳转，只要离开BB就可以回到执行循环中，让TCG调度器重新计算PC的位置，重新调用
+tcg_qemu_tb_exec()，但这样会比较慢。TCG允许直接跳到下一个BB，这通过在目标生成一个跳转
+指令就可以了（参考下文提到的tcg_gen_lookup_and_goto_ptr()函数）。
+
 北向模块接口
 ^^^^^^^^^^^^
 
@@ -1230,6 +1234,18 @@ Qemu优化器合并临时变量，4条TCG指令优化成2条：::
 
    2. 内存类，这种通过tcg_global_mem_new()创建，用于和env中的参数同步。
 
+TCG也提供一些gen函数用于辅助完成一些特殊代码的生成，比如：
+
+1. BB间直接跳转（不经过prologue和epilogue），这通过设置PC寄存器，然后调用
+   tcg_gen_lookup_and_goto_ptr()完成。加入这个翻译后，这个BB需要结束，这通过设
+   置翻译上下文的翻译状态来完成（TCGContext->is_jmp）设置成任何跳转类的状态。
+
+   这个功能还有一个tcg_gen_goto_tb()的版本，用于在同一个TB之内的跳转，效率更高
+   一点。
+
+2. gen_helper系列函数，如前所述，这些函数通过DEF_HELPER_FLAGS_X()系列宏定义，然
+   后用gen_helper_xxxx()的方式在TB中生成调用。
+
 南向模块接口
 ------------
 
@@ -1242,7 +1258,6 @@ tcg_qemu_tb_exec()这个函数输入，设置生成代码的工作环境，比�
 
 而tcg_out_op()就是一条条tcg指令的映射实现，这完全是个体力活了。
 
-
 Machine
 =======
 Machine代表一个整机，它本质就是个后端驱动，可以定义在比如hw/xxxx/board.c里面。
@@ -1251,6 +1266,23 @@ init，里面创建内存映射，增加基本设备这些东西。没有多少�
 
 其他小设施
 ===========
+
+BQL：Big Qemu Lock
+------------------
+
+这是一个全局的qemu概念，qemu的线程模型是：给每个被模拟cpu创建一个模拟线程，留下
+主线程做io，这个主线程通过glib的事件模型去调度，如果你要做事件IO，就创建一个
+glib的MainLoop的source，然后注册一批bh（bottom half）去作为这个MainLoop的
+Handler（g_source_new()注册的一个事件源的dispatcher）。这样整个IO事件模型就和
+glib的MainLoop调度模型匹配起来了。
+
+如果CPU线程要访问MainLoop相关的数据（主要是IO），就需要上锁，这个锁就是BQL。BQL
+就是qemu_global_mutex，通过函数qemu_mutex_lock/unlock_iothread()锁，本质就是个
+mutex。用于和主线程进行互斥。
+
+这个概念后来升级了，qemu支持了多iotthread，可以用-object iothread,id=my_id创建
+独立的io线程（入口在iothread_run()），和这些线程互斥使用
+aio_context_acquire/release()，也是个mutex。
 
 RCU
 ----
