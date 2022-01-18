@@ -1084,7 +1084,8 @@ CPU的状态定义在它的QoM的State中，由加速器在模拟的过程中进
 
 就现在来说，无论是哪种加速器，Qemu都创建了一个本地线程去匹配它，所以我们可以简
 单认为每个虚拟的CPU就是Host上的一个线程，在这个线程之内的调用，都是串行的，只有
-访问CPU间的数据结构才需要上锁保护。
+访问CPU间的数据结构才需要上锁保护。（这种多线程支持机制在Qemu中称为MTTCG，
+Multi-threaded TCG，对应传统的STTCG，Single-threaded TCG）
 
 TCG
 ----
@@ -1247,7 +1248,7 @@ TCG也提供一些gen函数用于辅助完成一些特殊代码的生成，比�
    后用gen_helper_xxxx()的方式在TB中生成调用。
 
 南向模块接口
-------------
+````````````
 
 南向模块接口的实现在tcg/<arch>目录中，它主要是提供tcg_target_qemu_prologue()和
 tcg_out_op()函数。实际工作就是根据tcg中间指令，决定如何映射成TB中的一段本地代码。
@@ -1258,6 +1259,32 @@ tcg_qemu_tb_exec()这个函数输入，设置生成代码的工作环境，比�
 
 而tcg_out_op()就是一条条tcg指令的映射实现，这完全是个体力活了。
 
+原子操作模拟
+````````````
+如前所述，每个Guest的CPU对应的就是Host的一个线程，所以要模拟Guest CPU的原子操作
+，只要用Host的原子仿存就可以了。但如果要模拟的平台没有对应的Host原子仿存怎么办？
+比如我们要在没有Transaction Memory的系统上模拟Transcation Memory怎么做？
+
+最粗暴的方法是用锁。但这样效率最低，因为每个访存操作都要上锁，而且你不可能每个
+内存单元都上锁，这样，只要访存，撞上的机会都会很高。
+
+一种可能的优化是对内存分段上锁，但由于\ :ref:`BQL<bql>`\ 的存在，TCG选择了另一
+个成本更低的算法。因为和真实的CPU不同，TCG并不是无时无刻都在执行，很大一部分时
+间它其实是在翻译。所以，如果能把原子操作躲到翻译的时间内，也能大幅降低冲突。
+
+所以TCG的方法是在遇到需要翻译这种复杂的原子操作的时候，让翻译程序在BB中调用一个
+helper，helper_exit_atomic()，像发生异常一样离开BB，然后在异常处理中用BQL的
+exclusive区进行互斥，并在这个互斥区中这个BB剩余的执行过程。这个过程通过
+cpu_exec_step_atomic()来完成（它是框架的一部分，如果只是做翻译，这个事情留给框
+架就可以了）。
+
+mmap_lock
+`````````
+mmap_lock是一个简单的可叠加的锁机制，qemu的代码模拟通过mmap TB的代码区域让代码
+生效，但代码准备的时候必须上锁，mmap_lock允许所有这些操作嵌套调用mmap_lock，直
+到真的发生冲突的时候再真的上锁。
+
+
 Machine
 =======
 Machine代表一个整机，它本质就是个后端驱动，可以定义在比如hw/xxxx/board.c里面。
@@ -1266,6 +1293,8 @@ init，里面创建内存映射，增加基本设备这些东西。没有多少�
 
 其他小设施
 ===========
+
+.. _bql:
 
 BQL：Big Qemu Lock
 ------------------
@@ -1278,7 +1307,12 @@ glib的MainLoop调度模型匹配起来了。
 
 如果CPU线程要访问MainLoop相关的数据（主要是IO），就需要上锁，这个锁就是BQL。BQL
 就是qemu_global_mutex，通过函数qemu_mutex_lock/unlock_iothread()锁，本质就是个
-mutex。用于和主线程进行互斥。
+mutex。用于和主线程进行互斥。它的核心算法是：
+
+除非显式开关，否则在翻译和执行的时候就开锁，其他处理的时候就上锁。
+
+在这个基础上，Qemu提供start/end_exclusive()，这个两个函数创建一个互斥区，等待所有
+cpu都进入BQL的lock状态，这样在这个范围内的操作就是在所有CPU间互斥的。
 
 这个概念后来升级了，qemu支持了多iotthread，可以用-object iothread,id=my_id创建
 独立的io线程（入口在iothread_run()），和这些线程互斥使用
@@ -1356,7 +1390,7 @@ error_fatal
 
 事件通知
 --------
-Qemu的时间通知用于两个线程间进行事件通知，在Linux下主要是对eventfd(2)的封装，在
+Qemu的事件通知用于两个线程间进行消息同步，在Linux下主要是对eventfd(2)的封装，在
 Windows下是对CreateEvent()的封装。它主要是封装这样一对接口：::
 
         event_notifier_set(EventNotifier);
