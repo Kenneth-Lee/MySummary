@@ -1278,6 +1278,11 @@ exclusive区进行互斥，并在这个互斥区中这个BB剩余的执行过程
 cpu_exec_step_atomic()来完成（它是框架的一部分，如果只是做翻译，这个事情留给框
 架就可以了）。
 
+.. note::
+
+   cpu_exec_step_atomic()方法只支持一条指令，如果需要更多，需要更多的修改才能做
+   到。
+
 mmap_lock
 `````````
 mmap_lock是一个简单的可叠加的锁机制，qemu的代码模拟通过mmap TB的代码区域让代码
