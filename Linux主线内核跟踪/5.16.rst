@@ -1,0 +1,75 @@
+.. Kenneth Lee 版权所有 2022
+
+:Authors: Kenneth Lee
+:Version: 1.0
+:Date: 2022-02-23
+:Status: Draft
+
+5.16
+****
+
+本文基于kernelnewbies.org的跟踪的基础信息，加上查阅相关感兴趣的文档和代码写成。
+[1]_
+
+5.16在2022年1月9日发布，这个时间基于主线版本的tag时间估计的。
+
+大特性
+======
+
+Memory Folios
+-------------
+
+等了好久终于有人动这个东西了，原来的Huge Page和传统的Page管理让整个内核到处都是
+if is_huage_page(...)这样的判断。希望这个改进方案能有最后变成主流吧，这部分代码
+是在是看累了。
+
+我们从架构设计的角度深入一点看看这个主题：Linux Kernel的底层内存管理是完全基于
+页的，所以最底层的页首先用pages[]数组来描述，之后的分配都是以这个为基础了。这个
+设计有个基本假设是page的大小是一样的，所以用pages的下表可以直接换算物理地址。
+
+但现在情况发展了，现在的CPU常常支持变长页（这样可以节省TLB entry），上面这个条件
+不成立了，但这个数据结构一时不好大改。所以改进为，如果是大页，就看做是一组page
+，称为compound page。第一个page叫做这个compound page的head page，最后一个叫tail
+page。这样原来那些输入一个page作为参数的实现全部都要补充逻辑，判断一下这个给进
+来的page是真的是page还是一个compound page的一部分。所以代码的逻辑就很难看。因为
+你必须知道page不一定是page，但有时page也确实是page，这种代码看着就很烦了。
+
+Folio的定义就彻底不叫page，而是这样的：::
+
+ * A folio is a physically, virtually and logically contiguous set
+ * of bytes.  It is a power-of-two in size, and it is aligned to that
+ * same power-of-two.  It is at least as large as %PAGE_SIZE.  If it is
+ * in the page cache, it is at a file offset which is a multiple of that
+ * power-of-two.  It may be mapped into userspace at an address which is
+ * at an arbitrary page offset, but its kernel virtual address is aligned
+ * to its size.
+
+它其实就是变长的page，但不再叫page了。新的数据结构可以和page之间用
+page_folio()/folio_page()进行转换。现在主要修改在FS（包括BIO）的代码中。
+
+Cluster Scheduler
+=================
+
+这是我们宋宝华老师，Jonathan Cameron，和Intel Tim Chen加的特性。是我们去年开始
+做鲲鹏920多核优化工作的结果。主要就是要求调度器认识类似鲲鹏920这样的Many Core多
+层CPU互联结构，避免把有关系的多个线程分散到过多的核中，这样会降低Cache的利用效
+率，让调度算法关注到Cluster的存在，同时把这个层级结构通过hwloc暴露给用户态。
+
+提供的测试数据显示这个优化可以把鲲鹏920的stream性能提高百分之几到百分之十几。
+
+todo
+====
+
+
+有趣的东西
+===========
+1. 增加了一个futex_waitv()，可以等待多个对象（用于对应Windows的
+   WaitForMultipleObjects()，最多支持128个对象）。这看起来可以实现一些汇聚等待
+   的算法。
+2. 增加一个FAN_FS_ERROR的fnotify参数，可以监控文件系统的全局错误。
+3. AMX支持（x86的矩阵指令扩展）。这是x86一个大特性。不过我没有什么可写的，所以
+   放在这里了。补丁主要是提供内核的寄存器保存等实现，内核本身并不使用这个特性。
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
