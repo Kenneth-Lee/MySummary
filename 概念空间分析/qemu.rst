@@ -1084,21 +1084,20 @@ CPU的状态定义在它的QoM的State中，由加速器在模拟的过程中进
 
 就现在来说，无论是哪种加速器，Qemu都创建了一个本地线程去匹配它，所以我们可以简
 单认为每个虚拟的CPU就是Host上的一个线程，在这个线程之内的调用，都是串行的，只有
-访问CPU间的数据结构才需要上锁保护。（这种多线程支持机制在Qemu中称为MTTCG，
-Multi-threaded TCG，对应传统的STTCG，Single-threaded TCG）
+访问CPU间的数据结构才需要上锁保护。
 
 TCG
 ----
 
-TCG，Tiny Code Generator，是Qemu最基本的模拟加速器，它是引擎是纯软件模拟器，可
-以在任何qemu支持的平台上，模拟任何其他硬件平台。
+TCG，Tiny Code Generator，是Qemu最基本的模拟加速器，它是g个纯软件的模拟器，可以
+在任何qemu支持的平台上，模拟任何其他硬件平台。
 
 和很多解释型的CPU模拟系统不同，TCG不是通过一条条指令解释执行的，而是先把Guest的
 指令翻译成Qemu中间代码，进行中间代码优化，然后再把中间代码翻译成Host代码，才投
-入执行的。所以，在TCG的概念空间中，target不是qemu中那个被模拟的系统的概念，而是
-翻译结果的概念，而这个翻译结果是本地平台的指令，刚好和qemu的target相反。比如你
-在x86上模拟RISCV，qemu的target是RISCV，但tcg的target是x86，而RISCV，则称为Guest
-。
+入执行的（这相当于是个JIT）。所以，在TCG的概念空间中，target不是qemu中那个被模
+拟的系统的概念，而是翻译结果的概念，而这个翻译结果是本地平台的指令，刚好和qemu
+的target相反。比如你在x86上模拟RISCV，qemu的target是RISCV，但tcg的target是x86，
+而RISCV，则称为Guest。
 
 TCG target组织成多个Translate Buffer，简称TB。它把Guest的代码分成多个小块，一次
 连续翻译多条指令到这个TB中，然后跳进去执行，执行完了，再翻译一个TB。这些TB作为
@@ -1123,7 +1122,8 @@ T上下文是动态生成的，所以T上下文的程序，只能访问Q上下�
 
 在TB之外还有一个BB，Basic Block的概念，它的定义是一个中间没有跳转的TB。这其实是
 生命周期上的概念，如果一个TB发生的跳转，必然要重新找下一个TB，所以这一段连续的
-代码必然构成一个BB。
+代码必然构成一个BB。（这个概念在现在的代码中已经没有明显的痕迹了，所以，如果看
+见有代码在使用这个概念，当作TB就可以了。）
 
 为了支持多个平台，TCG框架支持南北两个翻译模块。北向是Qemu Target，这部分程序负
 责把Guest指令翻译到TB中（当前代码在target/<arch>目录下）。南向是TCG Target，这
@@ -1149,9 +1149,9 @@ T上下文生成的代码同步到CPUArchState中。
 如果执行中发生了内存访问，异常等行为，对应指令会在T上下文中部署helper函数，这时
 Q上下文的代码会重新接管控制权，就又变成一个解释执行的问题了。
 
-如果需要跳转，只要离开BB就可以回到执行循环中，让TCG调度器重新计算PC的位置，重新调用
-tcg_qemu_tb_exec()，但这样会比较慢。TCG允许直接跳到下一个BB，这通过在目标生成一个跳转
-指令就可以了（参考下文提到的tcg_gen_lookup_and_goto_ptr()函数）。
+如果需要跳转，只要离开TB就可以回到执行循环中，让TCG调度器重新计算PC的位置，重新
+调用tcg_qemu_tb_exec()，但这样会比较慢。TCG允许直接跳到下一个BB，这通过在目标生
+成一个跳转指令就可以了（参考下文提到的tcg_gen_lookup_and_goto_ptr()函数）。
 
 北向模块接口
 ````````````
@@ -1235,9 +1235,33 @@ Qemu优化器合并临时变量，4条TCG指令优化成2条：::
 
    2. 内存类，这种通过tcg_global_mem_new()创建，用于和env中的参数同步。
 
+Chained TB
+``````````
+
+Qemu从Q上下文跳到T上下文执行，需要经过TB的prologue和epilogue进行上下文保存，这
+需要成本，为了提高执行速度，如果一个TB完成了，下一个TB已经翻译过了，就可以直接
+跳转过去，这些TB就可以全部连成一个链条，一直在TB间跳转，而不需要回到Q上下文。
+
+这个技术称为Chained TB，对于那些循环之类的代码，Chained TB可以大幅提高性能。为此
+对于跳转指令的翻译，Qemu提供了两个手段进行TB间的关联：
+
+1. tcg_gen_lookup_and_goto_ptr()，这个函数在TB里产生一个跳转代码，这个段跳转代码会
+   先调用helper函数查找下一个TB，如果查找成功，就直接跳转到那个TB中。这个效率比退出
+   TB高，到因为每次都要查找，而且用绝对跳转，这个效率也有点低。
+
+   这个函数要使用CPU状态中的PC，但PC的更新是在退出TB才做的，所以如果使用这个函数，
+   先要主动更新PC。
+
+2. tcg_gen_goto_tb()，这个函数在TB里面产生一个调用桩，第一次设置的时候，它跳到
+   epilogue代码中，退出当前tb，但退出以后，Qemu会检查是否有这个桩，有的话，会把
+   下一个TB的地址写入这个桩，之后再进入前面那个TB的时候，就不需要退出，直接跳到
+   下一个TB了。这个方法显然更快，但它只适合固定跳转，不能动态计算目标地址。Qemu
+   提供了两个目标地址供固定关联，用来处理if/else两个固定链接点。（这个方法在User
+   模拟的时候还有更多限制，这里不深入到那个细节了）
+
 TCG也提供一些gen函数用于辅助完成一些特殊代码的生成，比如：
 
-1. BB间直接跳转（不经过prologue和epilogue），这通过设置PC寄存器，然后调用
+1. TB间直接跳转（不经过），这通过设置PC寄存器，然后调用
    tcg_gen_lookup_and_goto_ptr()完成。加入这个翻译后，这个BB需要结束，这通过设
    置翻译上下文的翻译状态来完成（TCGContext->is_jmp）设置成任何跳转类的状态。
 
@@ -1259,6 +1283,22 @@ tcg_qemu_tb_exec()这个函数输入，设置生成代码的工作环境，比�
 
 而tcg_out_op()就是一条条tcg指令的映射实现，这完全是个体力活了。
 
+TCG的线程模型
+`````````````
+
+如前所述，Qemu为每个vcpu创建了一个线程。而main函数所在的线程称为iothread。由于
+qemu原来设计是单线程的（称为STTCG，Single-threaded TCG），升级到多线程后（称为
+MTTCG，Multi-threaded TCG），很多传统的代码并不能处理多线程。所以Qemu设计了
+:ref:`BQL<bql>`
+机制：除了vcpu翻译执行和iothread polling，其他处理的进入都是加上BQL的，所以，
+vcpu的中断异常处理，一般设备程序的事件处理，都是串行的，不需要额外的锁保护。
+
+iothread机制后来升级了，除了main线程天然是个iothread外，用户可以通过iothread命
+令创建更多的io线程。（todo：其他iothread的BQL原理待分析）iothread使用glib的main
+loop机制进行事件处理，简单说就是所有的外部事件监控都封装成文件，然后对文件组进
+行polling，来一个事件用本线程处理一个事件，相当于所有io行为都在本线程上排队。这
+些我文件可以是字符设备，socket，eventfd，signalfd等等。
+
 原子操作模拟
 ````````````
 如前所述，每个Guest的CPU对应的就是Host的一个线程，所以要模拟Guest CPU的原子操作
@@ -1268,13 +1308,15 @@ tcg_qemu_tb_exec()这个函数输入，设置生成代码的工作环境，比�
 最粗暴的方法是用锁。但这样效率最低，因为每个访存操作都要上锁，而且你不可能每个
 内存单元都上锁，这样，只要访存，撞上的机会都会很高。
 
-一种可能的优化是对内存分段上锁，但由于\ :ref:`BQL<bql>`\ 的存在，TCG选择了另一
-个成本更低的算法。因为和真实的CPU不同，TCG并不是无时无刻都在执行，很大一部分时
-间它其实是在翻译。所以，如果能把原子操作躲到翻译的时间内，也能大幅降低冲突。
+一种可能的优化是对内存分段上锁，但这个算法成本也很高。由于\ :ref:`BQL<bql>`\ 的
+存在，TCG选择了另一个成本更低的算法：互斥区。这个执行区域通过start_exclusive()
+和end_exclusive()制造，它通过pthread_cond一类的接口，等待所有vcpu都离开翻译执行
+区以后，上锁，不让它们再进入执行，这样，成功进入start_exclusive()的vcpu就可以在
+其他vcpu停下的情况下执行了。
 
-所以TCG的方法是在遇到需要翻译这种复杂的原子操作的时候，让翻译程序在BB中调用一个
-helper，helper_exit_atomic()，像发生异常一样离开BB，然后在异常处理中用BQL的
-exclusive区进行互斥，并在这个互斥区中这个BB剩余的执行过程。这个过程通过
+在遇到需要翻译这种复杂的原子操作的时候，让翻译程序在TB中调用一个
+helper，helper_exit_atomic()，像发生异常一样离开BB，然后进入互斥区，在互斥区中完成
+原子功能，这种情况下，其他vcpu就不能在中间插入操作了。这个过程通过
 cpu_exec_step_atomic()来完成（它是框架的一部分，如果只是做翻译，这个事情留给框
 架就可以了）。
 
@@ -1285,9 +1327,12 @@ cpu_exec_step_atomic()来完成（它是框架的一部分，如果只是做翻�
 
 mmap_lock
 `````````
-mmap_lock是一个简单的可叠加的锁机制，qemu的代码模拟通过mmap TB的代码区域让代码
-生效，但代码准备的时候必须上锁，mmap_lock允许所有这些操作嵌套调用mmap_lock，直
-到真的发生冲突的时候再真的上锁。
+
+（这是一个独立的主题。)
+
+TCG代码中经常用到mmap_lock的概念，它是一个简单的可叠加的锁机制，qemu的代码模拟
+通过mmap TB的代码区域让代码生效，但代码准备的时候必须上锁，mmap_lock允许所有这
+些操作嵌套调用mmap_lock，直到真的发生冲突的时候再真的上锁。
 
 
 Machine
@@ -1304,24 +1349,40 @@ init，里面创建内存映射，增加基本设备这些东西。没有多少�
 BQL：Big Qemu Lock
 ------------------
 
-这是一个全局的qemu概念，qemu的线程模型是：给每个被模拟cpu创建一个模拟线程，留下
-主线程做io，这个主线程通过glib的事件模型去调度，如果你要做事件IO，就创建一个
-glib的MainLoop的source，然后注册一批bh（bottom half）去作为这个MainLoop的
-Handler（g_source_new()注册的一个事件源的dispatcher）。这样整个IO事件模型就和
-glib的MainLoop调度模型匹配起来了。
+BQL是一个简化Qemu IO调度模型的锁机制。Qemu中主流的线程包括：
 
-如果CPU线程要访问MainLoop相关的数据（主要是IO），就需要上锁，这个锁就是BQL。BQL
-就是qemu_global_mutex，通过函数qemu_mutex_lock/unlock_iothread()锁，本质就是个
-mutex。用于和主线程进行互斥。它的核心算法是：
+1. 进程的主线程，这个线程完成初始化后，剩下的时间全部用于IO调度。调度通过glib的
+   MainLoop机制完成。也就是说，所有的IO都转化为文件fd，注册成MainLoop的一个
+   Source，内部的通知也通过eventfd和signalfd这些机制注册，之后只要用poll这组fd，
+   然后一个事件一个事件串行处理就可以了。
 
-除非显式开关，否则在翻译和执行的时候就开锁，其他处理的时候就上锁。
+2. vcpu线程，每个vcpu一个，用于处理翻译，执行和异常处理。
+
+3. 通过-object iothread,id=my_id额外创建的io线程。
+
+其中第三个是后来加的功能，在这个功能之前，第一个线程才是iothread，这个名字在代
+码现在还有痕迹。我们这里为了区分，把第一个叫main iothread，第三个叫extra
+iothread。
+
+BQL就是一个简单的mutex，通过qemu_mutex_lock/unlock_iothread()调用。和大多数锁不
+同，那些锁是在少数关键区域才上锁的，而这个锁在大部分时候都是锁上的，只在小部分
+地方才放开，比如：
+
+1. vcpu翻译和执行的时候
+2. main iothread做polling的时候
+
+除此以外，所有时间都是有锁的。这保证了qemu那些传统的io代码，比如设备模拟，vcpu
+的中断和异常处理，都是独占的。
 
 在这个基础上，Qemu提供start/end_exclusive()，这个两个函数创建一个互斥区，等待所有
 cpu都进入BQL的lock状态，这样在这个范围内的操作就是在所有CPU间互斥的。
 
-这个概念后来升级了，qemu支持了多iotthread，可以用-object iothread,id=my_id创建
-独立的io线程（入口在iothread_run()），和这些线程互斥使用
-aio_context_acquire/release()，也是个mutex。
+Extra iothread是另一个独立的体系，它的原理和main iothread相近，代码都有部分共享
+，有自己独立的时钟和bottom half等所有辅助机制。但它没有BQL，互斥使用
+aio_context_acquire/release()，也是个mutex。它的存在主要是为了帮某些子系统（主
+要是块设备）挂在它上面的事件处理独立运行，如果需要发回主线程处理，就只能通过发
+消息回去main iothread中来完成了。
+
 
 RCU
 ----
@@ -1395,8 +1456,9 @@ error_fatal
 
 事件通知
 --------
-Qemu的事件通知用于两个线程间进行消息同步，在Linux下主要是对eventfd(2)的封装，在
-Windows下是对CreateEvent()的封装。它主要是封装这样一对接口：::
+Qemu的事件通知用于两个线程间进行消息同步，在Linux下主要是对eventfd(2)和
+signalfd(2)的封装，在Windows下是对CreateEvent()的封装。它主要是封装这样一对接口
+：::
 
         event_notifier_set(EventNotifier);
         event_notifier_test_and_clear(EventNotifier);
