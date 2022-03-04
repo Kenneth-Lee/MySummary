@@ -29,7 +29,7 @@ CPU状态的更新不一定是及时的，比如PC（指令地址寄存器），
 但这样会产生一个破绽：如果代码执行的时候发生了异常怎么办？TB会提前结束，这时我们
 只知道当前Host JIT执行到哪条指令了，但我们不知道实际上Guest执行到什么地方。
 
-.. figure:: qemu_cpu_restore.svg
+.. figure:: _static/qemu_cpu_restore.svg
 
 cpu_restore_state()这个函数主要就是解决这个问题的，它的核心逻辑就是找到pc在什么
 地方：
