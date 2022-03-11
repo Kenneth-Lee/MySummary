@@ -28,7 +28,7 @@
 
 我给各位读者一个鲜活的例子。
 
-在看这本《Tractatus Logico-Philosophicsu的时候》的时候，我看到里面使用了一个概
+在看这本《Tractatus Logico-Philosophicsu》的时候的时候，我看到里面使用了一个概
 念：Truth-Function。我不知道它是什么意思。图方便，我查了一下中文维基上的解释，
 它是这样的：
 

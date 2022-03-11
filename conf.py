@@ -56,7 +56,7 @@ master_doc = 'README'
 
 # General information about the project.
 project = 'MySummary'
-copyright = '2019-2021, Kenneth Lee'
+copyright = '2019-2022, Kenneth Lee'
 author = 'Kenneth Lee'
 
 # The version info for the project you're documenting, acts as replacement for
