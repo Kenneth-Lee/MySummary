@@ -1,0 +1,272 @@
+.. Kenneth Lee 版权所有 2022
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2022-04-03
+:Status: Draft
+
+什么是架构设计V3
+****************
+
+最近在单位内部培训中写了一个新的介绍架构设计的模型，感觉沟通效果比我之前用的定
+义好。我把那里的观点总结在这里，作为最近（2022年）的一个我在架构定义上的一个里
+程碑。
+
+为了让复杂的抽象概念可以总有个具像作为参照，我们用一个人人都能理解的实例作为我
+们讨论抽象问题的参照例子。
+
+比如说，我们现在要从深圳去北京联调（联合调试一个被开发的系统），联调用的单板在
+上海，我们怎么走？我们能不能直接出门直接向被走，一直走到北京？
+
+“去北京联调”这句话，就是我们要做的整件事的一个“抽象”，而我们做这件事的每个动作
+，都是“去北京联调”这件事的“实现”。
+
+架构设计，就是一层层细化我们的抽象，保证我们做每个细节实现的时候能维持我们原来
+的高层抽象。从而保证我们的目标可以的到保证。
+
+类比到我们这个参照的例子，如果我们不做高层的规划，我们直接出门就往北走，我们大
+概率到不了北京，或者到了北京发现没带单板，或者带了单板发现其他参与联调的人不是
+这个时间来。
+
+《道德经》里有一句话，叫“九层之台，起于垒土”。一件复杂的事情，“抽象”上说的那个
+目标，必然不是具体做事情的时候的目标。如果我们没有“九层之台”的筹划，那么我们盖
+第一层的时候就不会考虑到要夯实地基，保证能盖九层的台。如果我们没有考虑我们去北
+京的目的是为了联调，我们也很可能考虑不到要准时到达上海拿到联调用的单板。
+
+这里我们要提醒读者架构设计的第一个特征：它是控制目的得以达成的高层抽象，不是在
+目标已经达成之后的细节提取。
+
+我看到现实中，很多的架构设计错误都来自这里：很多人是先完成了编码，然后才开做补
+架构设计。如果你可以完成编码了，为什么你还需要架构设计呢？我们规划先去上海，再
+去北京，是为了保证我们能完成“去北京联调”这个目的，你都到北京了，单板拿到没有拿
+到，事实已经发生了，这时的“架构设计”，不会就是为自己的行为做解释，也就是说，你
+根本不认为做这个设计（筹划）是必须的，只是有人（比如领导，或者企业流程）要求你
+做这个“动作”，所以你做了这个“动作”而已。这个“动作”根本就对你做成这件事没有帮助
+，所以，你做的这个就不是架构设计。
+
+我们要理解架构设计，首先要理解这一点：架构设计是对细节的控制，而不是给细节行为
+背书。我们要去上海，有很多方法，可以坐飞机，可以坐高铁，甚至可以骑单车，哪个方
+法是最优的？哪个才能满足我们的所有要求，我们是否对这件事情有清楚的认识？一旦我
+们对这种问题做出了选择，我们具体做的事情就会变成买机票，验核酸，准备行李，过安
+检，但电话让人送单板去机场，而不再是“去北京”这个目标了，没有高一级的筹划，我们
+可能就会选错方向，走错路径，卡在原来没有设想的障碍上过不去。
+
+所以，架构是必须的，它是保证我们的长远目标可以达成的关键活动。不做架构的产品是
+很难发展的——除非——依附。实际上我确实看过不少没有架构也可以成功的例子，那就是用
+别人的架构。比如，我们做一个中断控制器，我们根据ARM的要求，做GICD，ITS，
+Redistributor，我们按规定的范围“实现”这些部件，我们就可以作出一个SoC了。又比如
+，我们做操作系统，主体是Linux，我们只是做驱动，驱动内部我们读IO，处理中断，自由
+发挥，但首先它是一个Linux Kernel Module，它不会直接访问物理内存（而是通过slab）
+等等。这些其实基本上不需要架构，相当与有人告诉你，联调的方法就是先去上海拿单板
+，然后去北京，中间必须坐飞机。这不是说你的方案不需要做架构，而是被人给你做了架
+构。如果没有这个架构，你是根据什么决定一个中断控制器必须同时有GICD和ITS，而不能
+直接从设备发送给CPU的？你又是根据什么决定你的中断必须调用request_irq()去注册，
+而不是直接把中断处理函数的handle放在硬件的中断vector地址上的？
+
+这是目标。下面我们开始看方法。
+
+我们注意一下这句话：“去北京联调”，这个“总结”到底包括了哪些信息？它包括“谁去联调
+”这个信息吗？没有。它包括“去北京的时候坐飞机还是做高铁”，这个信息吗？也没有。
+
+所谓“抽象”，就是减少特征，从而扩大范围的一种方法。
+
+比如“一只黄色的猫”，“一只白色的猫”，“一只短尾巴的猫”，这些具像，我们抽象为“一只
+猫”，后者是前三者的抽象，实际上它是通过丢失部分信息实现的。但正因为我们丢失了信
+息，“一只猫”这个抽象，就可以同时覆盖前三种可能性的所有情形。
+
+假设我们现在要解决的问题是“找一只能抓老鼠的猫”，那么，“一只猫”这个抽象，显然比“
+一只白色的猫”具有更高的自由度。因为针对我们的目标，猫是否是白色的，根本不重要。
+
+同样，我们的目标是去北京联调，只要这个目标能达成，我们不关心我们是坐飞机去，还
+是坐高铁去。这个目标只是限制了我们：“必须找一个方法去北京，不能躺在家里刷手机”。
+
+这恰恰就是我们必须做高层设计（架构设计）的原因：我们必须找到我们可以支持目标达
+成的那些属性，然后保证我们做的细节是能保证这些属性成立的。
+
+让我们看一个更直观的例子，下面这个程序是gdb tdesc_use_registers函数的实现：
+
+.. code-block:c++
+
+  tdesc_use_registers (struct gdbarch *gdbarch,
+		       const struct target_desc *target_desc,
+		       tdesc_arch_data_up &&early_data,
+		       tdesc_unknown_register_ftype unk_reg_cb)
+  {
+    int num_regs = gdbarch_num_regs (gdbarch);
+    struct tdesc_arch_data *data;
+  
+    gdb_assert (tdesc_has_registers (target_desc));
+  
+    data = (struct tdesc_arch_data *) gdbarch_data (gdbarch, tdesc_data);
+    data->arch_regs = std::move (early_data->arch_regs);
+  
+    /* Build up a set of all registers, so that we can assign register
+       numbers where needed.  The hash table expands as necessary, so
+       the initial size is arbitrary.  */
+    htab_up reg_hash (htab_create (37, htab_hash_pointer, htab_eq_pointer,
+				   NULL));
+    for (const tdesc_feature_up &feature : target_desc->features)
+      for (const tdesc_reg_up &reg : feature->registers)
+        {
+	  void **slot = htab_find_slot (reg_hash.get (), reg.get (), INSERT);
+  
+	  printf_unfiltered("kenny: add reg %s(group=%s) to hash\n", reg.get()->name.data(), reg->group.data());
+	  *slot = reg.get ();
+	  /* Add reggroup if its new.  */
+	  if (!reg->group.empty ())
+	    if (reggroup_find (gdbarch, reg->group.c_str ()) == NULL) {
+	      reggroup_add (gdbarch, reggroup_gdbarch_new (gdbarch,
+							   reg->group.c_str (),
+							   USER_REGGROUP));
+  
+	      printf_unfiltered("kenny: add reg %s to group %s\n", reg.get()->name.data(),reg->group.c_str());
+	    }
+        }
+  
+    int sum=0;
+    for (const tdesc_arch_reg &arch_reg : data->arch_regs) {
+      sum++;
+      if (arch_reg.reg != NULL) {
+        htab_remove_elt (reg_hash.get (), arch_reg.reg);
+        printf_unfiltered("kenny: remove reg %s from hash\n", arch_reg.reg->name.data());
+      }
+    }
+  
+    gdb_assert (data->arch_regs.size () <= num_regs);
+    printf_unfiltered("kenny: now data->arch_regs.size=%ld, num_regs=%d, data->arch_regs num=%d\n", data->arch_regs.size(), num_regs, sum);
+    while (data->arch_regs.size () < num_regs)
+      data->arch_regs.emplace_back (nullptr, nullptr);
+  
+    if (unk_reg_cb != NULL)
+      {
+        for (const tdesc_feature_up &feature : target_desc->features)
+	  for (const tdesc_reg_up &reg : feature->registers)
+	    if (htab_find (reg_hash.get (), reg.get ()) != NULL)
+	      {
+	        int regno = unk_reg_cb (gdbarch, feature.get (),
+				        reg->name.c_str (), num_regs);
+	        gdb_assert (regno == -1 || regno >= num_regs);
+	        if (regno != -1)
+		  {
+		    while (regno >= data->arch_regs.size ())
+		      data->arch_regs.emplace_back (nullptr, nullptr);
+		    data->arch_regs[regno] = tdesc_arch_reg (reg.get (), NULL);
+		    num_regs = regno + 1;
+		    htab_remove_elt (reg_hash.get (), reg.get ());
+		  }
+	      }
+      }
+  
+    gdb_assert (data->arch_regs.size () == num_regs);
+  
+    for (const tdesc_feature_up &feature : target_desc->features)
+      for (const tdesc_reg_up &reg : feature->registers)
+        if (htab_find (reg_hash.get (), reg.get ()) != NULL)
+	  {
+	    data->arch_regs.emplace_back (reg.get (), nullptr);
+	    num_regs++;
+	  }
+  
+    /* Update the architecture.  */
+    set_gdbarch_num_regs (gdbarch, num_regs);
+    set_gdbarch_register_name (gdbarch, tdesc_register_name);
+    set_gdbarch_register_type (gdbarch, tdesc_register_type);
+    set_gdbarch_remote_register_number (gdbarch,
+				        tdesc_remote_register_number);
+    set_gdbarch_register_reggroup_p (gdbarch, tdesc_register_reggroup_p);
+  }
+
+我删掉了大部分的注释，让它不要太长。其实这些注释对大部分读者来说也没有意义，我
+这里不指望各位看懂它，我只是让你直接感受一下：我们的意图，变成具体的代码，会是
+什么样的。
+
+然后，我给你“总结”一下这个函数的含义：
+
+1. 它用调用者提供的gdbarch_data，初始化当前gdbarch的tdesc gdbarch_data，然后把
+   tdesc中描述的寄存器数据，合并到gdbarch_data中。
+2. gdbarch是描述gdb中某种CPU和OS的数据结构
+3. tdesc是一种描述CPU和OS寄存器的数据结构
+4. tdesc gdbarch_data是本gdbarch中记录tdesc导入数据的数据结构
+
+现在请对比一下那个代码，和这些写的这个“总结”，两者在信息上，有共同之处吗？
+
+从文字信息上说，这是没有的。这就好比你在Python或者Java上写的逻辑，从CPU指令流序
+列上看，是看不到逻辑的。
+
+我的总结中，把tdesc的信息“合并”的gdbarch_data中，我只关心的是信息的合并，这个合
+并表现在代码中，是用一个哈希树来合并，还是用一个数组来合并，其实我都是不关心的
+，所以，“总结”只是细节实现的其中一个抽象。
+
+如果用数学来理解，一个具像，相当与一个包含了所有参数的“结果”，比如，我们可以类
+比为一个选择了所有参数的向量：(1, 2, 3, 4, 5)，这个向量的选择，可以达成我们的目标，
+比如，满足：
+
+* 1 + 2 + 3 + 4 + 5 = 15
+* 1*2 + 2*3 + 3 + 4 + 5 = 20
+
+15和20是我们的“目标”，具像是达成目标的所有细节。而抽象，就相当于我们把向量的部
+分条件设置为变量，而取得的一个模型。比如：
+
+1. f(x, y, z) = 1 + x + y + z + 5 = 15
+2. g(x, y, z) = 1*2 + 2*x + y + z + 5 = 20
+
+这些x, y, z，就是被我们忽略的“细节”，我们不关心“一只猫”的颜色，尾巴长短，我们只
+关心这只猫。猫是常量，它的颜色和尾巴是变量。在一个抽象中，我们基于常量来推演结论，
+而不是变量。
+
+很多人有误会，觉得架构只是抽取的细节，而没有注意到，架构抽取的是能达成目标的关
+键细节。所以他们觉得自己先把代码写完了，然后抽一些细节出来，这“肯定没有错”。但
+这是错的，因为不正确抽取目标，我们的细节本身就是错的。整个代码的生命周期可以是
+数年甚至数十年，不能正确抽取关键目标，代码就会引入多余的约束，从而让我们维护不
+下去。
+
+在前面这个例子中，f(x, y, z)是一个视图，g(x, y, z)是另一个视图，它们具有这些特点：
+
+1. 特征1：都有目标，从而限定了范围，比如 f(x, y, z)的目的是得到15，没有15这个结
+   果，仅仅定义f(x, y, z)没有意义。
+
+2. 特征2：它们足够简单，人脑可以Cover。这一点的重要性，很多人都没有意识到。但你
+   要这样想：一个建模的正确性，又不能运行（不要觉得形式化验证是一种“运行”，那是
+   一种“建模”），唯一可以校验它的就是人脑，而人脑不可能判断一个信息量过大的东西
+   的。人脑对复杂系统的理解方式只有重新建模。
+
+3. 特征3：视图之间是交叉的，等效方程对解方程组没有意义，同样，关注相同要素的视
+   图没有意义。
+
+4. 特征4：视图本身自恰，不依靠被抽象的细节中的信息。比如，我们认为1+x+y+z+5=15
+   ，这个视图不需要确定x的细节就能成立。x本身在本视图中被看做是原子的。当我们讨
+   论这个模型的时候，我们只讨论这个模型的逻辑是否成立。这就是维特根斯坦说的：A
+   Proposition contains the form, but not the context of its sense。一个命题只
+   包含它的形式，而不是它的感觉。
+
+   说得直接一点，你跟我谈一个推理模型，你需要就在这个推理模型中，仅靠这里面的信
+   息完成推理，而不是需要补充更多的细节信息才能让本模型成立。f(x, y, z)=15是独
+   立成立的，不依靠g(x, y, z)=20成立。
+
+综合上面的所有特征，就是我在这个专栏中反复介绍的所谓
+\ :doc:`逻辑闭包<逻辑闭包V2>`\ 。
+
+所以，所谓架构设计，就是事前建模的，针对目的的一组分层，分角度的不同逻辑闭包，
+为细节设计提供支撑，保证目标最终可以达成。
+
+Use Case建模，概念（逻辑）空间建模，运行视图建模，部署视图建模，DFD建模，STD建
+模，时序建模，可靠性建模，安全性建模，所有这些模型，都是架构设计的一部分，都是
+逻辑闭包，都要满足我们前面说到的那些特征。代码一定程度上，也是建模，每个函数也
+是一个独立的模型。但整个代码综合起来不是，因为它不满足特征2。
+
+架构设计，需要做到我们都有信心：这些模型的逻辑都能保证的话，我们进行细节设计的
+时候，就还能保持通往目标的方向。这个架构设计就是可靠的。所有架构设计是个信心问
+题，从深圳去北京，确定坐飞机，确定配合的时间，剩下要不要打的去机场，出门穿什么
+衣服，就可以不纳入考量，这个选择什么，是个信心问题，并没有逻辑说你必须把选择飞
+机还是高铁放在穿什么衣服前面。遇到特殊的情形，比如外族入侵，不穿西方上街就会被
+拘捕，穿什么衣服就会成为关键要素，就会改变你的建模。所以架构设计的选择本身没有
+“逻辑”，它是经验本身。
+
+最后让我们总结一下：
+
+1. 架构设计是事前的筹划，不是事后的解释。架构师是项目的技术领导者，不是给项目行
+   为洗地的吉祥物。
+
+2. 架构设计是针对目标的逻辑闭包的组合，不是细节信息的堆砌
+
+失去这两者，就没有了架构设计。
