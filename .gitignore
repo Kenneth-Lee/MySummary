@@ -2,3 +2,4 @@
 _build
 *.tmp
 __pycache__
+.viminfo

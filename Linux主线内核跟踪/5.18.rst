@@ -1,0 +1,137 @@
+.. Kenneth Lee 版权所有 2022
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2022-07-17
+:Status: Draft
+
+5.18
+****
+
+本文基于kernelnewbies.org的跟踪的基础信息，加上查阅相关感兴趣的文档和代码写成。
+[1]_
+
+5.18在2022年5月22日发布。
+
+大特性
+======
+
+Indirect Branch Tracking
+------------------------
+
+Intel的安全特性特性，防return/jump-oriented programming。
+
+所谓ROP是通过修改内核中的返回地址，控制每个返回的位置，这样既可以跳到自己想要的
+函数上，也可以跳到堆栈中的代码上（这现在不容易了，所以更多是跳到动态库上）。写
+这种高度受限的代码，现在给了个名字，叫ROP。
+
+JOP是ARM发明的概念，是ROP的一种引申，通过攻击内存中的跳转表，把程序引导到特定的
+位置上。
+
+所以，感觉这个IBT其实是一个跟随学习ARM JOP的东西，这个从名字上就可以反映出来。
+但它的方案很有趣，它要求每个可以跳转过去的点必须有一个特殊指令endbr32或者
+endbr64，这两个指令当做空指令来用，但如果跳转的目标没有这种指令，就直接当做错了。
+
+User Event
+----------
+
+配置项：CONFIG_USER_EVENTS。
+
+这是一个用来从用户程序给ftrace/perf种入事件的接口，对应perf recoard -e
+user_events:[name]的记录。用户接口是ioctl，mmap和read/write。通过如下接口进行访
+问：::
+
+  /sys/kernel/debug/tracing/user_events_status，显示和管理每个事件
+  /sys/kernel/debug/tracing/user_events_data，输出数据
+
+实现在ftrace中按标准的方式暴露：/sys/kernel/debug/tracing/dynamic_events
+
+这个特性居然是微软提供的。
+
+头文件重新组织，优化编译速度
+----------------------------
+
+原理没有看明白。主要是在调整一些包含的位置和CONFIG宏的判断。
+
+CONFIG_FORTIFY_SOURCE
+---------------------
+
+这个是编译时检查memcpy类函数的越界问题，它利用了gcc的__builtin_object_size语法
+，监控部分指针的对象长度，然后在调用的时候判断访问访问是否超限。
+
+因为跟踪这个特性，我现在还知道内核现在还有BUILD_BUG_ON这样的语法检查了。
+
+我暂时对这个特性不是太有兴趣，因为我在Ubuntu上试了一下gcc这个特性，发现返回值都
+是不支持，感觉还需要等一段时间让生态发酵。
+
+升级到C11语法
+-------------
+
+不知不觉，C89已经是30年前的技术了。
+
+突然提出这个问题，是因为在Koschel和Linus讨论一个循环后不使用的变量的bug，大家觉
+得根因是因为这个变量根本就不应该定义在循环外面，所以就想着是不是要引入C11了（最
+初Linus考虑的是C89，但Bergmann说那不如一步到位，升到C11）。当初不肯升是因为那时
+的gcc在支持C11上有些问题，但现在最小支持版本已经升级到gcc5了，所以应该不会有问
+题了。
+
+（另外，有人讨论说C89只要加上括号也能做这个，我不肯定是不是真的）
+
+Page Polios
+-----------
+
+内存子系统这个版本合入了不少Page Folios的代码。这个特性是Matthew Wilcox 2020年
+开始弄的），它主要针对一个我也不爽了很久的问题：compound page用多个原来的页表示
+一个大页，但如果我用一个tail page（head page之外的都是tail page）的时候，你的代
+码怎么认知它？比如我们求page_size(tail_page)，它的大小到底是就这个tail_page，还
+是整个compound_page？理论上，当然应该是compound_page。你这个语义也不一定正确，
+因为给定的也不是一个代表这个compound page的page。
+
+这个page folios是一个封装，把page包在这个概念里面（怎么好像这个东西我以前分析过
+？）
+
+
+有趣的东西
+===========
+
+1. io_uring好像还在不断改进，这是活跃的修改区。我看不出背后有哪个公司参与（看到
+   fb有人在参与，其他人不知道是不是披着马褂干活的？）
+
+2. userfaultfd这个特性有一个更新，我不是太关心这个更新本身，我好奇为什么需要这
+   个特性。照理说我不知道已经可以直接接管SIGSEGV了吗？为此看了一下
+   userfaultfd(2)，发现它是可以跨进程用的。触发异常的进程和处理异常的进程可以不
+   是同一个。整个补丁是vmware提供的，我预计就是个针对用户态模拟场景的一个深入优
+   化。
+
+3. IBM提交了一个perf支持nvdimm事件统计（nvdimm_pmu），内容是这样一些：::
+
+     command:# perf list nmem
+
+     nmem0/cache_rh_cnt/                                [Kernel PMU event]
+     nmem0/cache_wh_cnt/                                [Kernel PMU event]
+     nmem0/cri_res_util/                                [Kernel PMU event]
+     nmem0/ctl_res_cnt/                                 [Kernel PMU event]
+     nmem0/ctl_res_tm/                                  [Kernel PMU event]
+     nmem0/fast_w_cnt/                                  [Kernel PMU event]
+     nmem0/host_l_cnt/                                  [Kernel PMU event]
+     nmem0/host_l_dur/                                  [Kernel PMU event]
+     nmem0/host_s_cnt/                                  [Kernel PMU event]
+     nmem0/host_s_dur/                                  [Kernel PMU event]
+     nmem0/med_r_cnt/                                   [Kernel PMU event]
+     nmem0/med_r_dur/                                   [Kernel PMU event]
+     nmem0/med_w_cnt/                                   [Kernel PMU event]
+     nmem0/med_w_dur/                                   [Kernel PMU event]
+     nmem0/mem_life/                                    [Kernel PMU event]
+     nmem0/poweron_secs/                                [Kernel PMU event]
+     ...
+     nmem1/mem_life/                                    [Kernel PMU event]
+     nmem1/poweron_secs/                                [Kernel PMU event]
+
+4. 字节跳动加了一个非对称的virtio加密接口akcipher，没有细看要干什么。
+
+5. ARMv4/5的NOMMU特性被删除了，这也许是一个案例说明什么情况下特性会被删除：这里
+   是因为它一直都没有人用，而且经常编译出问题。
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
