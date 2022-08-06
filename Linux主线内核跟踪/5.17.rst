@@ -1,0 +1,166 @@
+.. Kenneth Lee 版权所有 2022
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2022-07-27
+:Status: Draft
+
+5.17
+****
+
+本文基于kernelnewbies.org的跟踪的基础信息，加上查阅相关感兴趣的文档和代码写成。
+[1]_
+
+大特性
+======
+
+BPF CO-RE
+---------
+CO-RE是Compile-Once Run Everywhere。这个特性是BPF接口的标准化。BPF直接作用在内
+核接口上，很难跨内核版本使用，甚至很难在不同编译选项的版本间复用。过去的BCC方案
+是等插入内核前重新根据内核编译，现在打算把这个事情标准化。我很少用BPF，所以也不
+关心这里的细节，只记录一组观察：
+
+1. 这个特性主要解决的一个问题是内核数据结构的定义，所以一个基本的解决方案用了一
+   个标准的头文件定义这些结构，vmlinux.h。
+
+2. 提供一组函数用于对特定结构的特定域的读写。
+
+3. extern int LINUX_KERNEL_VERSION var提供内核版本访问接口
+
+4. 内核数据结构定义__attribute__((preserve_access_index))用于在没有vmlinux.h情
+   况下，也支持上述函数。
+
+BPF不支持循环（避免DOS攻击），这个版本还支持bpf_loop()调用，在控制指令的最大深
+度的情况下，支持有限度进行循环。
+
+修改者是Alexei Starovoitov。
+
+老实说，BPF这个特性做得越来越难看了。
+
+RTLA工具优化
+------------
+
+看这次的更新记录我才意识到有这么一个特性。这是tools目录下的一个工具，RT kernel
+专用，可以直接测试内核的实时性参数。我用git blame看了一下相关代码，发现大部分代
+码都是2021年合入的。所以在这个跟踪里我主要看看这个工具到底是个啥。
+
+材料上说比传统上用得比较多的实时Kernel时延测试工具是
+`cycletest <git://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git>`_
+。这个工具的缺点是只知道时延是多少，但不知道根因，要跟踪根因呢又会引入额外的成本
+导致测试结果不对。RTLA通过一组数据模型收集数据（通过tracepoint收集到perf的cache
+中），过滤硬件的影响，这个模型在这个论文：
+`A Thread Synchronization Model for the PREEMPT RT Linux Kernel <https://bristot.me/wp-content/uploads/2020/01/JSA_preprint.pdf>`_
+中描述。这属于数学了，我等看完论文再来补充这里的内容吧（也不知道有没有时间看）。
+
+Straight-Line Speulation攻击修补
+--------------------------------
+
+直线预测（Straight-Line Speculation）攻击，我查了一下背景，这是ARM提出来的针对
+预测执行Cache侧信道攻击的一个总结性描述。因为这种攻击基本上就是攻击这样一个代码
+结构：
+
+.. code-block:: none
+
+  ldr xa, [xb]
+  and xa, #ffff  ; 或者其他任意xa的范围控制
+  ldr xc, [xd, xa]
+
+这里需要两个变址寻址，因为预测执行，两个变址都可能导致后面的代码提前执行，导致
+数据进入cache。这两个编制一个可以用于做炮架，决定加载哪里的数据，然后再用那个数
+据更新检查点的位置。这样，两者一综合，就可以构造一个场景，用炮架控制偷哪个地址
+的数据，用检查点判断炮架击中了那个地址的数据具体是什么，从而完成整个攻击。（这
+个建模真好）
+
+ARM的方法是提供预测执行的barrier指令指令（SB或者DSB+ISB），在所有这种Pattern的
+代码上加上保护。但Linux内核这次这个补丁却不是ARM的，而是x86的，比如把汇编的ret
+替换成了一个宏，比如换成了RET（有多个版本，这个不考虑这些细节），RET就是
+ret+int3，为什么int 3能起到barrier的效果，我不知道，但知道有这个修改好了，其他
+等要用再说吧。
+
+一个新的refcounter跟踪系统
+--------------------------
+
+这个特性还在开发中，现在仅仅是netdev专用的，Google的补丁。
+
+它能报这样的错误：::
+
+  [  171.648681] reference already released.
+  [  171.653213] allocated in:
+  [  171.656523]  alloctest_ref_tracker_alloc2+0x1c/0x20 [test_ref_tracker]
+  [  171.656526]  init_module+0x86/0x1000 [test_ref_tracker]
+  [  171.656528]  do_one_initcall+0x9c/0x220
+  [  171.656532]  do_init_module+0x60/0x240
+  [  171.656536]  load_module+0x32b5/0x3610
+  [  171.656538]  __do_sys_init_module+0x148/0x1a0
+  [  171.656540]  __x64_sys_init_module+0x1d/0x20
+  [  171.656542]  do_syscall_64+0x4a/0xb0
+  [  171.656546]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+  [  171.656549] freed in:
+  [  171.659520]  alloctest_ref_tracker_free+0x13/0x20 [test_ref_tracker]
+  [  171.659522]  init_module+0xec/0x1000 [test_ref_tracker]
+  [  171.659523]  do_one_initcall+0x9c/0x220
+  [  171.659525]  do_init_module+0x60/0x240
+  [  171.659527]  load_module+0x32b5/0x3610
+  [  171.659529]  __do_sys_init_module+0x148/0x1a0
+  [  171.659532]  __x64_sys_init_module+0x1d/0x20
+  [  171.659534]  do_syscall_64+0x4a/0xb0
+  [  171.659536]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+  [  171.659575] ------------[ cut here ]------------
+  [  171.659576] WARNING: CPU: 5 PID: 13016 at lib/ref_tracker.c:112 ref_tracker_free+0x224/0x270
+  [  171.659581] Modules linked in: test_ref_tracker(+)
+  [  171.659591] CPU: 5 PID: 13016 Comm: modprobe Tainted: G S                5.16.0-smp-DEV #290
+  [  171.659595] RIP: 0010:ref_tracker_free+0x224/0x270
+  [  171.659599] Code: 5e 41 5f 5d c3 48 c7 c7 04 9c 74 a6 31 ...
+  [  171.659601] RSP: 0018:ffff89058ba0bbd0 EFLAGS: 00010286
+  [  171.659603] RAX: 0000000000000029 RBX: ffff890586b19780 RCX: 08895bff57c7d100
+  [  171.659604] RDX: c0000000ffff7fff RSI: 0000000000000282 RDI: ffffffffc0407000
+  [  171.659606] RBP: ffff89058ba0bc88 R08: 0000000000000000 R09: ffffffffa6f342e0
+  [  171.659607] R10: 00000000ffff7fff R11: 0000000000000000 R12: 000000008f000000
+  [  171.659608] R13: 0000000000000014 R14: 0000000000000282 R15: ffffffffc0407000
+  [  171.659609] FS:  00007f97ea29d740(0000) GS:ffff8923ff940000(0000) knlGS:0000000000000000
+  [  171.659611] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  171.659613] CR2: 00007f97ea299000 CR3: 0000000186b4a004 CR4: 00000000001706e0
+  [  171.659614] Call Trace:
+  [  171.659615]  <TASK>
+  [  171.659631]  ? alloctest_ref_tracker_free+0x13/0x20 [test_ref_tracker]
+  [  171.659633]  ? init_module+0x105/0x1000 [test_ref_tracker]
+  ...
+
+这个功能很好用啊。我看了一下实现，方法其实很暴力，就是咋分配和释放路径上加跟踪
+纪录而已。配置项是CONFIG_TEST_REF_TRACKER，实现在lib/ref_tracker.c等文件中。
+
+其他有趣的东西
+==============
+
+1. :ref:`linux_kernel_id_mapping_mount`\ 升级，现在支持在已经是已经做了这个id
+   mapping的文件系统上再做id mapping。
+
+2. 随机数算法从SHA-1升级为BLAKE2s。
+
+3. 网络文件系统的cache系统fscache/cachefile重构，代码简化了。主要是redhat David
+   Howells等人的工作，
+
+4. 这个版本增加了一个调试功能，支持给匿名内存（就是没有file backend的内存）起名
+   字（通过prctl()调用）。
+
+5. devtmpfs默认mount为noexec。我突出这个，是因为在Mac Book M1的Parallel上安装
+   Debian的时候，安装增强工具的光盘也被默认加了noexec选项，导致我找了半天无法安
+   装的原因。所以，其实这种小改动有时也挺影响使用上的认知的。
+
+6. io_uring还在增加不少补丁，我等它稳定下来再去看它的结构。
+
+7. 内核实现解压缩模块，配合LoadPin的安全性要求。作者用的gmail，不知道什么背景。
+
+8. PCI/MSI特性代码重构。主要是为了支持MSI-X向量的动态扩展。
+
+9. Page Folios合入大量补丁，但这个特性还没有使能（请看下一个版本的介绍）。
+
+10. 看到联想lenovo-yogabook-wmi的补丁，我这么久以来就没有看过华为的笔记本有
+    Linux上的工作，终端这些人赚钱迷了心窍，令人失望。
+
+11. RISCV在加KVM的接口代码，西数的工作。
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges

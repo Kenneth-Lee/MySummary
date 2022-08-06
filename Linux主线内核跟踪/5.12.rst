@@ -12,6 +12,8 @@
 大特性
 ======
 
+.. _`linux_kernel_id_mapping_mount`:
+
 ID Mapping on Mount
 ---------------------
 这个特性我喜欢，它的意思是mount的时候可以给定一个映射表，把uid重新映射一下。设
