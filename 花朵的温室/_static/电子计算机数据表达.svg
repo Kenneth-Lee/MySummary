@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="173.48279mm"
+   height="130.48196mm"
+   viewBox="0 0 173.48278 130.48198"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="电子计算机数据表达.svg">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3243205"
+     inkscape:cx="332.25454"
+     inkscape:cy="271.07961"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1848"
+     inkscape:window-height="1136"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-26.932332,-97.51619)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.85788679px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="47.783928"
+       y="133.51375"
+       id="text1226-3-79"
+       transform="scale(0.77093687,1.2971231)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2"
+         x="47.783928"
+         y="133.51375"
+         style="font-size:2.83377266px;fill:#0000ff;stroke-width:0.26458299">每条引线高低电压不同，表示不同的输入</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.36500099;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9"
+       width="68.32196"
+       height="71.217384"
+       x="91.915192"
+       y="146.59827" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 78.410388,156.61879 h 13.4638"
+       id="path1228-8-3"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="117.76289"
+       y="183.21346"
+       id="text1226-3-79-2"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1"
+         x="117.76289"
+         y="183.21346"
+         style="font-size:4.93889999px;stroke-width:0.26458299">计算机</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 78.615521,159.26671 h 13.4638"
+       id="path1228-8-3-3"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 78.405058,161.4849 h 13.46376"
+       id="path1228-8-3-6"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 78.610191,164.13282 H 92.073945"
+       id="path1228-8-3-3-7"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 78.386117,166.90297 H 91.849898"
+       id="path1228-8-3-5"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 78.59125,169.55089 H 92.055028"
+       id="path1228-8-3-3-3"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 78.380787,171.76908 H 91.844528"
+       id="path1228-8-3-6-5"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 78.58592,174.417 H 92.049648"
+       id="path1228-8-3-3-7-6"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="64.675201"
+       y="167.53622"
+       id="text1226-3-79-2-2"><tspan
+         sodipodi:role="line"
+         x="64.675201"
+         y="167.53622"
+         style="font-size:4.93889999px;stroke-width:0.26458299"
+         id="tspan1458">输入</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.02512,152.36005 h 13.4638"
+       id="path1228-8-3-1"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.23025,155.00797 h 13.4638"
+       id="path1228-8-3-3-2"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.01979,157.22616 h 13.46376"
+       id="path1228-8-3-6-7"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.22492,159.87408 h 13.46376"
+       id="path1228-8-3-3-7-0"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.00085,162.64423 h 13.46378"
+       id="path1228-8-3-5-9"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.20598,165.29215 h 13.46378"
+       id="path1228-8-3-3-3-3"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 159.99552,167.51034 h 13.46374"
+       id="path1228-8-3-6-5-6"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.34632599px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 160.20065,170.15826 h 13.46373"
+       id="path1228-8-3-3-7-6-0"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 104.51093,107.51619 v 40.15738"
+       id="path1498"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="181.07072"
+       y="163.34561"
+       id="text1226-3-79-2-2-6"><tspan
+         sodipodi:role="line"
+         x="181.07072"
+         y="163.34561"
+         style="font-size:4.93889999px;stroke-width:0.26458299"
+         id="tspan1458-2">输出</tspan></text>
+    <circle
+       style="opacity:0.74599998;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.50270832;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path1518"
+       cx="123.69058"
+       cy="125.49711"
+       r="14.784311" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 111.04307,129.33005 h 4.67667 v -9.36761 h 5.30866 v 8.89128 h 4.67667 v -9.36761 h 5.05586 v 9.68516 h 5.05586"
+       id="path1520"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="141.41997"
+       y="125.79527"
+       id="text1226-3-79-2-2-6-6"><tspan
+         sodipodi:role="line"
+         x="141.41997"
+         y="125.79527"
+         style="font-size:4.93889999px;stroke-width:0.26458299"
+         id="tspan1458-2-1">时钟</tspan></text>
+  </g>
+</svg>

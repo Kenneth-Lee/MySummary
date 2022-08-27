@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="173.48279mm"
+   height="130.48196mm"
+   viewBox="0 0 173.48278 130.48198"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="计算机的软件抽象.svg">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3243205"
+     inkscape:cx="332.25454"
+     inkscape:cy="271.07961"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1848"
+     inkscape:window-height="1136"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-26.932332,-97.51619)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.80618954px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="151.24611"
+       y="173.39035"
+       id="text1226-3-79"
+       transform="scale(0.808865,1.2363002)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2"
+         x="151.24611"
+         y="173.39035"
+         style="font-size:2.80361581px;fill:#0000ff;stroke-width:0.26458299">鼠标，键盘，磁盘，显示器，等等等等</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.36500096;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9"
+       width="48.343163"
+       height="47.84219"
+       x="87.919434"
+       y="108.43876" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="99.582176"
+       y="144.85417"
+       id="text1226-3-79-2"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1"
+         x="99.582176"
+         y="144.85417"
+         style="font-size:4.93889999px;stroke-width:0.26458299">CPU</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="182.66902"
+       y="171.13734"
+       id="text1226-3-79-2-2-6"><tspan
+         sodipodi:role="line"
+         x="182.66902"
+         y="171.13734"
+         style="font-size:4.93889999px;stroke-width:0.26458299"
+         id="tspan1458-2">总线</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:5.465;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 35.523216,178.05116 H 194.15488"
+       id="path1577"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.165;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 110.44371,155.07554 v 21.5771"
+       id="path1579"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.36500102;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-9"
+       width="32.160336"
+       height="29.661482"
+       x="54.905418"
+       y="191.29063" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="66.368378"
+       y="209.32555"
+       id="text1226-3-79-2-2"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1-0"
+         x="66.368378"
+         y="209.32555"
+         style="font-size:4.93889999px;stroke-width:0.26458299">内存</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.16499996;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 70.286326,178.45074 v 13.78537"
+       id="path1579-2"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.36500102;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-9-3"
+       width="32.160336"
+       height="29.661484"
+       x="114.54212"
+       y="191.59032" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="116.01569"
+       y="208.82607"
+       id="text1226-3-79-2-2-7"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1-0-5"
+         x="116.01569"
+         y="208.82607"
+         style="font-size:4.93889999px;stroke-width:0.26458299">输入输出设备</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.16499996;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 130.02294,179.74936 v 13.78537"
+       id="path1579-2-9"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.36500096;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2"
+       width="20.372843"
+       height="18.07378"
+       x="112.84392"
+       y="112.37437" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667004px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+       x="116.17062"
+       y="123.58772"
+       id="text1226-3-79-2-2-7-2"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1-0-5-8"
+         x="116.17062"
+         y="123.58772"
+         style="font-size:4.93889999px;stroke-width:0.26458299">寄存器</tspan></text>
+  </g>
+</svg>
