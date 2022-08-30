@@ -1,0 +1,145 @@
+.. Kenneth Lee 版权所有 2022
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2022-08-30
+:Status: Draft
+
+C++编程入门4：调试
+******************
+
+开始看这一章的时候，我预计你已经可以写一些程序了。那我也就开始预期你有调试的需
+要了。
+
+我们上一章说过，程序本质上是一个线程的顺序变化过程。那这每步的变化是什么样的，
+我怎么知道呢？最好是走一步，停下来，让我看看内存里面的那些数变成多少，再走一步，
+又停下来，再让我看看内存里面的数变成多少了。
+
+这样我们就知道程序哪里写错了。
+
+更高级一点的，我们也没有时间每次看一步，我们可以走到某个变量变成某个值的时候再
+开始看，或者跑到某条指令上的时候再开始看。这些手段和行为，就称为“调试”。
+
+其实调试用起来还是用Word那样的图形界面最好，这会比较容易看，但学习我觉得还是先
+学最基本的命令行比较好，因为这样你会对自己在干什么有比较清楚的了解，有了这个基
+础，到时学图形界面（叫IDE，Integrated Development Environment）就很简单了，基本
+上看见就会用。
+
+g++配套的调试器叫gdb，gnu debugger。如果你要深入学，我建议直接看它的手册：
+
+`Debugging with GDB <https://sourceware.org/gdb/current/onlinedocs/gdb/>`_
+
+但你也可以直接直接从我这里学习最基本的方法，其他东西等你熟悉以后再学。
+
+你写好一个程序，比如my_app，要运行它，你在命令行上敲：::
+
+  ./my_app
+
+如果你要调试它，你需要敲：::
+
+  gdb ./my_app
+
+这样会用gdb来运行你的my_app，就可以用各种手段来一步步运行和检查它了。
+
+但在这之前，我们要检查一下你的程序里面是不是带有调试信息。还记得第二章我们说编
+译方法的时候的命令吗？：::
+
+  g++ -Wall -g my_application.cc my_function.cc -o my_app
+
+你需要保证你带了这个-g，如果没有-g，gdb其实也能够用，但因为g++编译的时候没有留
+下变量放在哪里啦，函数叫什么名字啦，这些信息，有很多东西都查不到。我们一开始学
+就不玩这些高难度的动作了，所以，要确认你的程序是带着-g的。
+
+然后就可以运行上面的命令了。
+
+gdb用起来和其他命令行一样的（比如你原来学习的Python），进入gdb后，你就进入gdb的命
+令行。这时你的my_app还没有运行。
+
+要运行它，你可以用run命令：::
+
+  (gdb) run
+
+这会一路运行你的程序，直到结束。这和不调试没有区别。你可以再运行run，再跑一次。
+这是最基本的用法。
+
+quit命令用于退出：::
+
+  (gdb) quit
+
+现在我们开始看调试，假定我们调试之前的这个程序：
+
+.. code-block:c
+  :linenos:
+
+  void test_sum(void) {
+    int sum = 0;
+    for (int i = 0; i < 100; i++) {
+            sum += i;
+    }
+    printf("sum = %d\n", sum);
+  }
+  
+  int main(void)
+  {
+    test_sum();
+    return 0;
+  }
+
+我们从头开始，让这个程序在main这个地方先停下来。我们用这个命令：::
+
+  (gdb) break main
+
+这是在main这个位置设置一个“断点”，这时你再运行run，gdb就会让这个程序停在这个位
+置了：::
+
+  (gdb) break main
+  Breakpoint 1 at 0x118e: file my_application.cc, line 16.
+  (gdb) run
+  Starting program: /home/kenny/work/test/ccpp_jaingcheng/my_app
+  
+  Breakpoint 1, main () at my_application.cc:16
+  16      {
+  (gdb)
+
+每次碰到一个断点，gdb都会把你的程序停下来，你就可以用print命令去打印你那些变量
+（现在你应该已经知道变量是什么了）的值了。这些有用的命令包括这样一些：
+
+1. next：向下走一步
+2. cont：继续向下运行
+3. print： 打印变量的值
+4. kill：停掉程序
+5. list: 显示现在的程序的源代码
+
+一般的调试，知道这几个就够了，反正你能停下程序，能看变量的值，可以继续程序，你
+的程序的流程基本上就都知道了。
+
+如果想知道每个命令可以带什么参数，可以用help命令看，比如：::
+
+  (gdb) help break
+
+这回显示break的用法，break的用法挺多的比如：::
+
+  (gdb) break my_application.cc:16
+
+这是在my_application.cc的第16行停下来。
+
+如果你设置了很多的断点，你可以用info命令来看设置在哪里了：::
+
+  (gdb) info breakpoints
+  Num     Type           Disp Enb Address            What
+  1       breakpoint     keep y   0x000055555555518e in main() at my_application.cc:16
+          breakpoint already hit 1 time
+  2       breakpoint     keep y   0x0000555555555149 in test_sum() at my_application.cc:5
+
+然后你可以用delete命令删掉其中一些，比如你可以这样删掉第一个断点：::
+
+  (gdb) delete breakpoint 1
+
+还有一个命令可能会有用：::
+
+  (gdb) tui enable
+  (gdb) tui diable
+
+这可以让你一直看到程序运行到哪里了，试一下就知道了。
+
+其他的命令，等你编的程序变得很复杂再学吧。
