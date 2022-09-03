@@ -78,7 +78,141 @@ myapp删除，前面四个才是这个工程的一部分。
 认真看看这个文件，它其实是另一种形式的脚本。一般脚本是一个线程，顺序一个命令一
 个命令执行下来的。而Makefile是一个“有条件的脚本”。
 
-它描述的意思是：先比较一下myapp和main.o foo.o bar.o，如果后面三个文件比myapp新，
-就执行下面的命令。这叫myapp“依赖”main.o, foo.o, 和bar.o
+它描述的意思是：先比较一下myapp和main.o foo.o bar.o，如果后面三个文件比myapp新
+，就执行下面的命令。这叫myapp“依赖”main.o, foo.o, 和bar.o，然后我们又知道main.o
+依赖main.c，所以如果main.c比main.o新，就说明在编译main.o之后，你又修改了main.cc，
+所以要重新运行g++ -c main.cc -o main.o这个命令，重新生成main.o，这样，main.o就
+是最新的，main.o变新了以后，它肯定比myapp新，所以g++ main.o foo.o bar.o -o
+myapp会被重新运行，重新生成这个myapp文件。
 
-这个判断可以一路跟踪过去，由于myapp
+这样，如果你仅仅修改了main.cc这个文件，就只需要执行两个命令：::
+
+  g++ -c main.cc -o main.o
+  g++ main.o foo.o bar.o -o myapp
+
+这就是Makefile的作用，如果你写了几百个文件，这样能让你编译的时间短很多，因为你
+不用每次都编译所有的文件。
+
+make程序解释这个Makefile的时候，先把所有的文件的比较关系（严格的说法叫“依赖”）
+理出来，然后一层层解释下去，按上面的比较策略找出谁被修改了，然后决定重新编译哪
+部分程序。很多图形工具（IDE工具）能帮你自动生成这个Makefile，但你还是需要知道原
+理，而且，以后你要写复杂的程序，自动生成的Makefile是不够用的，很多时候你还需要
+自己写。现在还有很多语法更灵活的完成这种make功能的工具（比如CMakefile，meson等
+），但原理都是类似的，你学会了基本的Makefile，那些工具就是给类比的问题。
+
+这也解释了，我们写一个很大的程序，为什么需要写很多个文件，一个是好管理，你把不
+同的东西放在不同的文件中了，容易找，也容易分工。另一个是好编码，不然你写了几百
+个函数，只要你修改了其中一个，编译的时候就要全部都翻译一次，这样太慢。
+
+写在不同的文件中，编译的时候只编译这个文件，但编译器怎么知道你要用其他文件呢？
+我举个例子，你的main.cc里面定义了一个变量，在bar.cc里面要用，怎么办呢？::
+
+  //main.cc                 |        //bar.cc
+  int a;                    |        int b = a + 1;
+  ...                       |        ...
+
+你的a的定义写在main.cc中，但bar.cc里面要用它，那么你前面做g++ -c bar.cc -o
+bar.o怎么知道这个a是什么类型的，内存在哪里呢？
+
+C/C++解决这个问题的方法是“声明“，就是你要用其他文件的数据或者函数，你自己说它是什么类型的。
+比如前面的程序，我们可以这样写：::
+
+  //main.cc                 |        //bar.cc
+  int a;                    |        extern int a;
+  ...                       |        int b = a + 1;
+                            |        ...
+
+先在bar.cc知道a是什么类型的了。但它还是不知道a的地址在什么地方，这个不要紧，我
+们前面提过了，链接器负责把多个单独的文件连在一起，连在一起的时候，就知道了，倒
+是链接器负责把这里的汇编修改一下就可以了。
+
+程序这样写就可以了。但其实很不方便。比如说，如果foo.cc也要用这个a怎么办呢？你又
+要写一次，而且如果main.cc是你同学写的，bar.cc是你写的，她那边把int a修改成了
+unsigned int a。你这里声明成了int。这个链接器是不知道的，因为链接的时候都是内存
+地址，你说你是当int来解释，它就是int，结果你不是int，那解释就错了。
+
+所以，最好这个extern的声明，都让写main的人写，因为她才知道怎么写才是对的。这就
+是“头文件”的作用， 你另外写个文件，里面放这句extern int a，谁要这个声明，就放一
+份这个文件在自己的文件里面就行了。C/C++提供一个语法，让你包含另一个文件进来。像
+下面这样：::
+
+  //main.cc                 |        //bar.cc
+  int a;                    |        #include "main.hh"
+  ...                       |        int b = a + 1;
+                            |        ...
+
+这个main.hh就叫“头文件”，用来放那些extern语句用的。其实编译器不管你叫什么名字，
+你叫xxx.hh也行，叫xxx.inc也行，直接叫xxx.c都行，反正只是找到这个文件，里面有什
+么就都当作bar.cc的一部分来用就行了。这样我们就又消除了一部分“重复”了。
+
+不过，一般C里面文件都叫.h，C++有叫.hh的，也有叫.hpp的，我们一般还是按规矩写的好。
+
+#include这个语法，也有几种形式，上面那种写法是C和C++都支持的。还有一种写法是这样的：::
+
+  #include <iostream.hh>
+
+这表示这个文件不是从当前目录找，从编译器自己默认的目录找（一般用来找系统自己的
+库的头文件），具体怎么找的，你自己看手册。或者用编译器的-v参数编译程序，它会告
+诉你怎么找的。
+
+C++还有一个写法，可以省略扩展名，比如这样：::
+
+  #include <iostream>
+
+这样，无论那个文件是.hpp还是.hh，编译器都能找到。
+
+头文件会给Makefile制造很多麻烦。我们假定我们有一个main.hh，然后foo.cc和bar.cc都
+要用它。假定我修改了main.hh，按上面的Makefile的规则，foo.o是不会重新编译的，因
+为foo.o还是比foo.cc新啊。所以，正确的写法得是这样：::
+
+  myapp: main.o foo.o bar.o
+    g++ main.o foo.o bar.o -o myapp
+
+  main.o: main.cc main.hh
+    g++ -c main.cc -o main.o
+
+  foo.o: foo.cc main.hh
+    g++ -c foo.cc -o foo.o
+
+  bar.o: bar.cc main.hh
+    g++ -c bar.cc -o bar.o
+
+这样修改了main.hh才会重新编译那些包含了main.hh的文件。但这样写确实很麻烦，因为
+如果main.hh中又包含了另一个.hh呢？你怎么找得齐所有头文件呢？
+
+gcc/g++可以帮你自动生成这个依赖关系，但那个就复杂了，我们重点学原理，所以我们不
+深究下去，这个事情我们以后再说。现在这个阶段，如果出现这种情况，你把这些.o啦，
+myapp啦，都删掉，然后重新make，就没有问题了。
+
+为此，我们再学习一下Phony依赖。make命令运行的时候，用Makefile的第一个依赖作为目
+标依赖。也就是说，你运行make，他就看myapp有多少依赖，保证myapp是最新的就行。如
+果你不想编译myapp，只想要foo.o，那么你可以运行make foo.o，这样，需要生成的目标
+就变成foo.o，依赖就按它来算了。
+
+但假设，我们需要做一个动作，这个动作不是一个文件，我们只是想运行一个或者几个命令，
+那么我们可以创建一个Phony依赖（Phony是假的意思），比如我们可以这样写：::
+
+  myapp: main.o foo.o bar.o
+    g++ main.o foo.o bar.o -o myapp
+
+  main.o: main.cc main.hh
+    g++ -c main.cc -o main.o
+
+  foo.o: foo.cc main.hh
+    g++ -c foo.cc -o foo.o
+
+  bar.o: bar.cc main.hh
+    g++ -c bar.cc -o bar.o
+
+  .PHONY: clean
+
+  clean:
+        rm -rf *.o
+        rm -rf myapp
+
+这个clean就是phony依赖，并不存在clean这个文件，只是你运行make clean的时候，它不
+管三七二十一，直接运行后面那几个删除命令而已。用这种方法，你不需要写很多个脚本
+，所有这些工程有关的脚本，都写在Makefile里面，要生成哪个工作，就make那个依赖就
+可以了。
+
+todo：git
