@@ -37,7 +37,7 @@ major, minor, patch = sphinx.version_info[:3]
 extensions = ['sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.imgmath',
+    'sphinx.ext.mathjax',
     'chinese_space',
     'dtag',
     'cnote']
@@ -73,7 +73,7 @@ release = '1.5'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'zh'
+language = 'zh_CN'
 
 numfig = True
 

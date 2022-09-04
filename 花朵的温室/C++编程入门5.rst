@@ -211,8 +211,255 @@ myapp啦，都删掉，然后重新make，就没有问题了。
         rm -rf myapp
 
 这个clean就是phony依赖，并不存在clean这个文件，只是你运行make clean的时候，它不
-管三七二十一，直接运行后面那几个删除命令而已。用这种方法，你不需要写很多个脚本
-，所有这些工程有关的脚本，都写在Makefile里面，要生成哪个工作，就make那个依赖就
-可以了。
+管三七二十一，直接运行后面那几个删除命令而已。用这种方法，你不需要写很多个脚本，
+所有这些工程有关的脚本，都写在Makefile里面，要生成哪个目标，就make那个目标就可
+以了。
 
-todo：git
+Makefile的基本知识基本上就这些，我们这里只讲原理，深入的，等你有兴趣了，就去看
+Makefile的手册，比如这个：
+`GNU Makefile Manual <https://www.gnu.org/software/make/manual/html_node/index.html>`_
+
+现在，简单几个文件，写成这样就可以了。或者我们可以多了解一个用来消除重复的语法：宏。
+
+我们说过，软件很大程度上要做的工作是消除重复，把重复的事情交给计算机，自己做不
+重复的事情。
+
+上面这个例子里面就有很多重复的东西，比如这个g++ -c之类的，这些重复的字，每次都
+要该的，我们都可以写成一个统一的名字，这样修改起来就简单一些，比如上面的例子，
+我们可以写成这样：::
+
+  LINKER=g++
+  COMPILER=g++ -c
+  ALL_O_FILES=main.o foo.o bar.o
+  APP=myapp
+
+  $(APP): $(ALL_O_FILES)
+    $(LINKER) $(ALL_O_FILES) -o $(APP)
+
+  main.o: main.cc main.hh
+    $(COMPILER) main.cc -o main.o
+
+  foo.o: foo.cc main.hh
+    $(COMPILER) foo.cc -o foo.o
+
+  bar.o: bar.cc main.hh
+    $(COMPILER) -c bar.cc -o bar.o
+
+  .PHONY: clean
+
+  clean:
+        rm -rf $(ALL_O_FILES)
+        rm -rf $(APP)
+
+这个Makefile就容易修改多了，如果你要把你的程序从myapp修改成selina_s_best_work，
+你修改一下APP的定义就可以了。这种用一个名字替换另一个名字的方法就叫“宏”，经过
+这段时间的学习，你应该也注意到了，C/C++也支持“宏”。这种替换，主要有两个作用：
+
+1. 像前面说的，消除重复
+2. 它相当于做了一个注释，比如g++ -c你不容易记住这个参数是什么意思吧（特别是以后
+   有很多参数的时候）？但如果它被定义成了COMPILER这个名字，你就很容易知道它什么
+   意思了。
+
+实际上，Makefile有很多默认的宏，比如，每个依赖的目标和依赖对象都可以用宏表示，
+比如对于main.o: main.cc main.hh这个依赖：
+
+1. $@表示目标，@就是一个目标的形状，表示这里的main.o
+2. $<表示第一个输入，<是一个输入的形状，表示这里的main.cc
+3. $^表示全部输入，^是一个全部的形状，表示这里的main.cc main.hh
+
+这样，前面的Makefile就可以写得更简单，比如这样：::
+
+  LINKER=g++
+  COMPILER=g++ -c
+  ALL_O_FILES=main.o foo.o bar.o
+  APP=myapp
+
+  $(APP): $(ALL_O_FILES)
+    $(LINKER) $(ALL_O_FILES) -o $(APP)
+
+  main.o: main.cc main.hh
+    $(COMPILER) $< -o $@
+
+  foo.o: foo.cc main.hh
+    $(COMPILER) $< -o $@
+
+  bar.o: bar.cc main.hh
+    $(COMPILER) $< -o $@
+
+  .PHONY: clean
+
+  clean:
+        rm -rf $(ALL_O_FILES)
+        rm -rf $(APP)
+
+这个其实还是有重复，make有其他语法让你消除它们的，我这里只是说原理，就到此为止
+吧。编程基本上我们都是先学基本原来，然后看实际的代码，看到一个新的语法糖，就去
+了解它背后的原理，慢慢慢慢经验多了，我们就“学会”这门语言了。这和我们学英语，学
+法语的原理是一样的。
+
+最后我们学习关于“工程”的最后一个辅助工具，git。
+
+git是一种管理一组文件的修改的工具。前面我们已经有了一组文件：
+
+1. main.cc
+2. main.hh
+3. foo.cc
+4. bar.cc
+5. Makefile
+6. 其他脚本
+
+反正你写的任何创造，它们都是文本文件，里面都包含了你的创造，你的智慧。你会担心
+丢了，会担心改错了。
+
+所以你要备份，比如你花了一天，写了一个计算3次多项式的函数，里面还有几个子函数，
+写在几个文件中。第二天，你打算把它修改一下，变成支持n次多项式的函数，你想好一个
+算法，然后你就开始改改这个文件，改改那个文件，改了一整天，发现该错了，但当初那
+个计算3次多项式的程序也不能用了。现在你手上什么都没有，这是不是很痛苦的一件事？
+
+程序员没日没夜工作，就是为了得到一堆文本文件，这些文本文件不但需要写，还需要经
+过很长时间的“调试”，这里改几句，那里改几句，得到一个没有错误的组合。一旦改错了，
+就什么都归零了。这完全无法接受。
+
+所以，过去很多程序员在修改一个调试好，可以正常工作的程序前，都会全部文件都拷贝
+到另一个地方，如果今天修改错了，那至少还可以把今天的工作放弃掉，留着昨天的结果。
+
+这种一个能工作的代码文件的组合，称为一个“版本”，把它拷贝一份，就叫拷贝一个“版本”
+出来。但这种原始的方法很低效，因为你每天写程序，写上一个月，你的磁盘上就有30个
+版本了，到时你都不记得哪个版本能用，每个版本都是干什么的。
+
+这样，你又需要写一个文本文件，用来说明，你这是什么版本，版本的用途。为此，就有
+人写了专门的工作来管理这些版本。这种工具就叫“版本管理工具”。
+
+git就是其中一个最出色的版本管理工具，它是Linus专门给Linux Kernel写的版本管理工
+具，但现在它几乎成了所有开源的，不开源的软件的首选版本管理工具了。甚至你可以认
+为它直接改变了人们管理版本的方式，成为软件开发管理版本的一种“事实上的标准”。
+
+git的用法很简单，比如你有一个目录，你需要用git来管理这个目录里面的文件的版本，
+你只需要到这个目录里面运行：::
+
+  git init
+
+它就会在里面创建一些文件用来放你目录中的文件的版本的信息。这些文件也不会影响你，
+因为它们全部都在.git目录下面，如果你不需要git帮你管理了，你删掉这个目录，所有这
+些信息就都没有了。
+
+之后如果你增加了，修改了文件，你只需要这样：::
+
+  git add xxxx.cc xxxx.hh
+  git commit
+
+这样就可以了，其中add表示告诉git，你增加或者修改了xxxx.cc，xxxx.hh，commit表示
+告诉git现在增加的这些，就是我新的版本了，你给我创建一个新的版本。
+
+git会让你输入这个版本的说明，这样以后你就可以查你每个修改具体修改了什么，以及具
+体是怎么修改过来的。
+
+比如，下面是我在Linux Kernel下运行：::
+
+  git log
+
+的结果：::
+
+  commit 39c3c396f8131f3db454c80e0fcfcdc54ed9ec01 (HEAD -> mainline_master, mainline/master)
+  Merge: 5de64d44968e 1f7ea54727ca
+  Author: Linus Torvalds <torvalds@linux-foundation.org>
+  Date:   Tue Jul 26 19:38:46 2022 -0700
+  
+      Merge tag 'mm-hotfixes-stable-2022-07-26' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+  
+      Pull misc fixes from Andrew Morton:
+       "Thirteen hotfixes.
+  
+        Eight are cc:stable and the remainder are for post-5.18 issues or are
+        too minor to warrant backporting"
+        ...
+  
+  commit 1f7ea54727caaa6701a15af0cbeddfdb015b2869
+  Author: Gao Xiang <xiang@kernel.org>
+  Date:   Tue Jul 19 23:42:46 2022 +0800
+  
+      mailmap: update Gao Xiang's email addresses
+  
+      I've been in Alibaba Cloud for more than one year, mainly to address
+      cloud-native challenges (such as high-performance container images) for
+      open source communities.
+
+  ...
+
+这里的每个commit，就是一个版本（git里面叫revision），用一个随机生成的代码表示，
+里面说了谁是修改的人，什么时候修改了，为什么要修改。
+
+这样我们就可以记住所有的修改，也可以用那个commit的代码查这个commit具体修改了什
+么，比如我们有一个commit叫commit cdb281e63874086a650552d36c504ea717a0e0cb，我们
+可以用show命令：::
+
+  git show cdb281e6387408
+
+（注：commit代码不需要写全的，只要能写到和其他commit代码不一样就行）
+去显示它的内容：::
+
+  commit cdb281e63874086a650552d36c504ea717a0e0cb
+  Author: Qi Zheng <zhengqi.arch@bytedance.com>
+  Date:   Tue Jul 26 14:24:36 2022 +0800
+  
+      mm: fix NULL pointer dereference in wp_page_reuse()
+  
+      The vmf->page can be NULL when the wp_page_reuse() is invoked by
+      wp_pfn_shared(), it will cause the following panic:
+  
+      ...
+  
+      Fixes: 6c287605fd56 ("mm: remember exclusively mapped anonymous pages with PG_anon_exclusive")
+      Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+      Reviewed-by: David Hildenbrand <david@redhat.com>
+      Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+  
+  diff --git a/mm/memory.c b/mm/memory.c
+  index 4cf7d4b6c950..9174918ce3f7 100644
+  --- a/mm/memory.c
+  +++ b/mm/memory.c
+  @@ -3043,7 +3043,7 @@ static inline void wp_page_reuse(struct vm_fault *vmf)
+          pte_t entry;
+  
+          VM_BUG_ON(!(vmf->flags & FAULT_FLAG_WRITE));
+  -       VM_BUG_ON(PageAnon(page) && !PageAnonExclusive(page));
+  +       VM_BUG_ON(page && PageAnon(page) && !PageAnonExclusive(page));
+  
+          /*
+           * Clear the pages cpupid information as the existing
+  (
+
+这个commit你看见了，它说明了作者，日期这些基本信息，还有作者给你说明的为什么要
+进行的修改，你还可以看到它具体修改了哪个（些）文件（这里的mm/memory.c），还有就
+是具体修改了哪一行（这里的-号表示删掉的，+号表示增加的），这样你就很容易知道当
+时那个修改具体是用来解决什么问题的了。
+
+这种方法特别适合用来多人协助，比如你和其他3个同学一起合作写程序，你负责几个函数，
+她们负责另外几个函数。你们可以创建一个一起用的工程，把这个工程放到一台服务器上，
+大家修改完了，就写到那个服务器上，这样你们互相修改，就有各自的commit，如果有一
+个人修改错了，大家可以把她的commit删除，这样也不影响其他人的工作。这样合作起来
+就会很方便。
+
+git把另一个git目录叫remote，比如你原来的git目录叫myapp，你同学的目录叫herapp，
+你可以用remote命令把她的目录的位置告诉你的目录，比如这样：::
+
+  git remote add hereapp_s_remote /path/to/herapp  #让你的目录认识她的目录
+  git pull                        #把她的修改拉进来
+  git push                        #把你的修改推给她
+
+当然，她的目录一般不在你的机器上，这是你就可以用一个公共的服务器来完成这样的工
+作。所以，要学习这种合作开发，你可以先从gitee.com申请一个免费的帐号，然后创建一个
+工程，创建了以后，网站会告诉你用什么add命令去让你认识它，比如我这里这个文档，就用
+了gitee的目录，我要认识它，我的写法是这样的：::
+
+  git remote add origin git@github.com:Kenneth-Lee/MySummary.git   # 把gitee的工程叫做origin，这是个默认的名字
+  git push                                                         # 把我的目录push给gitee
+  git pull                                                         # 把gitee的内容拉到我的目录来
+
+这样，你们所有同学都对着这个服务器进行推拉，内容就可以互相拷贝了。而且，这样也
+自动完成了备份，不会你机器坏了，代码就丢了。当然，放在网上的信息是不安全的，你
+学习的代码这样放可以，不要把密码，个人隐私这些东西放上去。
+
+好了，我的整个教程就写到这个程度了。剩下的东西就等你自己看教程和提问题了。很多
+学校上机学习可能用IDE（图形界面），但其实背后都是对上面这些工具的调用，你搞懂这
+些工具，学习那些东西就是个眼见功夫，那些就自我发挥就可以了。
