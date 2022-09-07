@@ -1,0 +1,155 @@
+.. Kenneth Lee 版权所有 2022
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2022-09-07
+:Status: Draft
+
+5.19
+****
+
+本文基于kernelnewbies.org的跟踪的基础信息，加上查阅相关感兴趣的文档和代码写成。
+[1]_
+
+发布时间：7月31日。
+
+大特性
+======
+
+安全虚拟化：AMD的SEV-SNP（Secure Nested Paging）和Intel的TDX（Trust Domain Extension）支持
+------------------------------------------------------------------------------------------
+
+SEV和TDX都是Guest防Host的方法。这个方法我一开始感觉挺魔幻的，就好像你用自己公司
+的电脑工作，还想在里面放你自己的隐私一样。
+
+不过想开一点呢，多个保障多条路，至少提供个机会，多了芯片公司作为中间人来多保护
+一点你的隐私吧。
+
+这两个方案都是通过用芯片的私钥来解密Guest公钥加密的程序的内存的。其中SEV演进了
+三代：SEV, SEV-ES, SEV-SNP。SNP（这次加的支持就是这个）主要就是增加了这个完整性
+攻击的预防手段。包括防replay攻击，垃圾数据覆盖，同地址map dram等。
+
+所谓integrity attach（完整性攻击）的思路是这样的：虽然我没有你的密码，但我可以
+写东西进去，把你污染了再说。防这个攻击的方法是guest读的数据必须是当初写的数据。
+这要处理VM迁移，备份和Hypervisor/IO介入控制的问题。方法是把page分成是share和
+private的，后者才实施这个比较。具体实现是在物理地址（单位是Page）上加一个Cbit，
+表示是priviate，这个bit等于1的才加密（AES），读的时候只有这个才解，如果数据被污
+染了，结果就不对了。避免被解密。
+
+而Replay attach的思路是：虽然我没有你的密码，但我可以把你上次写的数据记下来，下
+次用这个记下来的数据覆盖你的内容。防这个攻击主要是要保证位置或者时间成为密码的
+一部分。SNP具体怎么做的我没有细看了。
+
+SEV-SNP还有一个保护是Memory Aliasing Attach：把你的guest同一个物理地址被
+hypervisor二次map到两个不同的地方。预防的方法是每个物理地址（在二级翻译中）只能
+被map一次。这个通过物理地址indexed的RMP来定义，和PageWalk组合到一起来使用。
+
+RMP的状态通过Hypervisor的RMPUPDATE指令和Guest的PVLIDATE指令来控制，前者用
+RMPUpdate把RMP对应项设置成1，后者再设置一个，之后如果前者不再设置一次，后者仅仅
+再做一次映射是无效的。
+
+TDX是另一套方案，总体介绍看它主要在限制不让Hypervistor访问Guest的内存，并且提供
+一种投递给Guest的#VE（Virualization Exception）的异常去让Guest自己处理一些硬件
+行为。我没有进一步进去看细节了。
+
+Jumbograms支持
+--------------
+
+据Jesper Brouer的一个观点，在100G网络中，每个接口一秒要处理8百万个包，每个包，
+CPU要在120ns中完成处理，这个过程中，只要发生一个Cachemiss，结果就会不同。所以，这
+种软件其实很难写。所以吧，最好每个包都大一点。否则按这个类推：
+
+用于转发64K包的时间，只有：
+
+* 1G网络：500us
+* 10G：50us
+* 100G：5us
+* 200G：2.5us
+* 400G：1.25us
+
+现在每个IP包的长度受限于64K，因为在包头里面长度就是16bit，RFC2675提供了一个
+hop-by-hop的header支持，用是包头是32bit的。这个版本支持这个特性，但改这东西涉及
+很多小东西的改动，因为很多地方的大小被写死了，至少skb没法给你预留4G的空余包空间，
+IPV6_MAXPLEN这种宏也到处都在用，所以这个改动很大，涉及Ipv6,GSO, GRO, skb，TX驱
+动等一堆东西，但确实，表现出来，不是什么大修改。就是支持更大的IP长度了。
+
+补丁作者有Google和FB的人。
+
+龙芯支持
+--------
+
+这个版本正式提供龙芯支持了（在arch/loongarch目录下）。可怜的是对外连文档都拿不
+出来，只能用wiki来当做架构文档，还要被人说The LoongArch microarchitecture is
+poorly documented。
+
+反正我还是要不到龙芯的内核代码，晚点试试能不能编译公共版本吧。
+
+其他有趣的东西
+==============
+
+1. XFS支持很多xattrs。attr原来是ext2的概念，用来放额外的属性，比如a属性表示只能
+   扩展，不能直接修改之类的，通过chattr来修改。后来xfs也开始支持，而且扩展为一
+   个通用的概念xattr，用来存一些key-value的值，用setxattr()调用来用。
+
+2. overlayfs支持id mapping。
+
+3. memcg支持内存回收，用法是echo 10M > memory.reclaim，这样会要求对应的cg回收
+   10M的内存。（Google的补丁）
+
+4. firmware文件支持z.std压缩（Suse的补丁）
+
+5. ticket spin lock实现了一个平台无关版本（我都没有注意到这过去居然是个平台相关
+   的实现，照理说这是个纯算法，不需要平台相关啊）
+
+6. Linaro加了一个温度相关的库到tools/lib/thermal里面
+
+7. 这个版本nolibc加入了RISCV的不少支持代码。这东西在tools/include/nolibc目录下，
+   我不知道它的背景是什么，从实现上看，似乎是一组最简单的libc的实现，全部实现成
+   了头文件。
+
+8. Makefile加个一个选项W=e可以在warnning的时候直接退出编译。应该是设置那个
+   Warning当Error的选项了吧。
+
+9. Page Folios还在到处修改代码。
+
+10. 这个版本Redhat的人修复了一个gup的在COW上的安全漏洞（CVE-2020-29374），加入
+    了二十多个补丁，不过每个修改都只有几行。这个漏洞主要是GUP的索引和COW的索引
+    不是同一个对象（一个在Page上，一个在map上），所以可以在fork后通过GUP（比如
+    vmslice）制造一个索引，然后放弃它，从而让COW的子进程的数据被暴露到父进程中。
+    COW这个逻辑一直都是乱乱的，不是专门做这一块我也很难静下心来老去看这东西。
+
+io_uring
+========
+
+io_uring这次又有一堆的修改（好多不同组织的人都在参与：腾讯，fb，kerne.org的作者
+都有），过了这么久了，这次我决定分析一下它的整个构架。
+
+这个特性的前身是aio，是FB的Jens Axboe开始开发的，用的是标准的双循环队列通讯结构：
+一个SQ一个CQ，用户态同SQ发送请求到内核态，内核通过CQ回应这些请求。
+
+队列通过io_uring_setup和mmap建，用io_uring_enter去ping内核，根据io_uring_enter
+的参数不同，每个SQE可以等待一个CQE，也可以组合起来统一回应，数据不一定要
+in-order。
+
+sqe的参数是opcode, fbd, off, address, len, userdata, flags和应用相关数据。cqe的
+内容是userdata（对应用），res和flags。读写的数据对应到一个fd，所以最终就是对某
+个可以映射为文件的设备或者socket的通讯了。
+
+printk
+======
+
+printk迎来了一个大修改（虽然代码不多，但对printk来说也算是大修改，关键是这东西
+天天用），原来的printk已经可以在很多场合里面用了（比如中断），但还是有一些场合
+是不能用的，比如NMI上下文。这些问题说到底是因为ringbuffer还是需要锁来保护的，而
+锁就会对上下文有要求，如果ringbuffer做成一个彻底的无锁算法，这个问题就没有了。
+
+但无锁算法显然是很复杂的，这个文档（
+`printk <https://lwn.net/Articles/800946/>`_
+）说用了9+个Memory Barrier pair，而且很难文档化和review。
+
+不过这个版本的提交只是整个修改的一部分，主要修改了所有console_printer的全局锁，
+变成per console的。
+
+参考
+====
+.. [1] https://kernelnewbies.org/LinuxChanges
