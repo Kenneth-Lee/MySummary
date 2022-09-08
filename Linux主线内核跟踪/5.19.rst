@@ -82,7 +82,12 @@ IPV6_MAXPLEN这种宏也到处都在用，所以这个改动很大，涉及Ipv6,
 出来，只能用wiki来当做架构文档，还要被人说The LoongArch microarchitecture is
 poorly documented。
 
-反正我还是要不到龙芯的内核代码，晚点试试能不能编译公共版本吧。
+我一直拿不到龙芯的内核代码（发邮件去支持那里要，人家根本不理我），我试着编译这
+个最新的版本，在3A5000LLL硬件，UOS的gcc8下根本编译不过，错误是：::
+
+  gcc: error: unrecognized argument in option '-mabi=lp64s'
+
+我估计这东西上传的时候主线就没有人测试过，这就没有什么诚意。
 
 其他有趣的东西
 ==============
