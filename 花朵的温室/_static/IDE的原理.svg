@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="245.40065mm"
-   height="135.4053mm"
-   viewBox="0 0 245.40064 135.40533"
+   width="239.88188mm"
+   height="68.008949mm"
+   viewBox="0 0 239.88187 68.008962"
    version="1.1"
    id="svg8"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   sodipodi:docname="c++开发环境的原理.svg"
+   sodipodi:docname="IDE的原理.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -100,8 +100,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3243205"
-     inkscape:cx="476.84832"
-     inkscape:cy="177.82704"
+     inkscape:cx="561.41999"
+     inkscape:cy="298.64372"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -131,7 +131,7 @@
      inkscape:label="图层 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(11.374935,-233.10452)">
+     transform="translate(33.822602,-233.10452)">
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-2-9-3-7-3"
@@ -142,14 +142,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="55.710819"
-       y="253.42902"
+       x="75.528069"
+       y="253.16602"
        id="text1823-8-5-3-7-3"><tspan
          sodipodi:role="line"
          id="tspan1821-4-0-6-4-6"
-         x="55.710819"
-         y="253.42902"
-         style="stroke-width:0.264583">GCC和你用gcc编译的程序</tspan></text>
+         x="75.528069"
+         y="253.16602"
+         style="stroke-width:0.264583">IDE</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.365002;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-2-9-3-7-3-7"
@@ -167,7 +167,7 @@
          id="tspan1821-4-0-6-4-6-3"
          x="27.68009"
          y="284.7005"
-         style="stroke-width:0.264583">glibc</tspan></text>
+         style="stroke-width:0.264583">gcc</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.365002;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-2-9-3-7-3-7-9"
@@ -185,7 +185,7 @@
          id="tspan1821-4-0-6-4-6-3-27"
          x="86.229675"
          y="284.10583"
-         style="stroke-width:0.264583">glibc</tspan></text>
+         style="stroke-width:0.264583">gdb</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.365002;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-2-9-3-7-3-7-9-2"
@@ -203,149 +203,70 @@
          id="tspan1821-4-0-6-4-6-3-27-1"
          x="146.92932"
          y="283.51971"
-         style="stroke-width:0.264583">MinGW</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.365002;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3128-6-9-2-9-3-7-3-7-9-0"
-       width="34.914444"
-       height="12.539809"
-       x="74.916695"
-       y="296.46808" />
+         style="stroke-width:0.264583">Makefile</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="88.730156"
-       y="305.06952"
-       id="text1823-8-5-3-7-3-5-1-9"><tspan
+       x="187.53049"
+       y="282.60272"
+       id="text1823-8-5-3-7-3-5-1-6-3"><tspan
          sodipodi:role="line"
-         id="tspan1821-4-0-6-4-6-3-27-3"
-         x="88.730156"
-         y="305.06952"
-         style="stroke-width:0.264583">WSL</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.365002;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3128-6-9-2-9-3-7-3-7-5"
-       width="34.914444"
-       height="16.372461"
-       x="16.106441"
-       y="300.09549" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="22.384151"
-       y="310.30148"
-       id="text1823-8-5-3-7-3-5-6"><tspan
-         sodipodi:role="line"
-         id="tspan1821-4-0-6-4-6-3-2"
-         x="22.384151"
-         y="310.30148"
-         style="stroke-width:0.264583">Linux Kernel</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.365002;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect3128-6-9-2-9-3-7-3-7-5-6"
-       width="40.249409"
-       height="16.372461"
-       x="75.439583"
-       y="316.65445" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="80.035477"
-       y="326.86044"
-       id="text1823-8-5-3-7-3-5-6-0"><tspan
-         sodipodi:role="line"
-         id="tspan1821-4-0-6-4-6-3-2-6"
-         x="80.035477"
-         y="326.86044"
-         style="stroke-width:0.264583">Windows Kernel</tspan></text>
+         id="tspan1821-4-0-6-4-6-3-27-1-6"
+         x="187.53049"
+         y="282.60272"
+         style="stroke-width:0.264583">....</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 78.886662,259.73635 33.940608,274.56046"
        id="path16262" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 34.487683,290.81587 -0.04917,9.15434"
-       id="path16264" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 78.886662,259.73635 91.98058,273.9213"
        id="path16266" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 92.133543,290.53492 0.02106,5.72673"
-       id="path16268" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 92.841386,309.14876 0.172471,7.86743"
-       id="path16270" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 78.886662,259.73635 74.071398,13.37877"
        id="path16272" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 153.79077,289.46652 -45.13414,26.90114"
-       id="path16274" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.59587px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="-1.4429492"
-       y="342.11957"
+       x="-22.677845"
+       y="281.24817"
        id="text1226-3-79-2-2-7-2-8"
-       transform="scale(1.052904,0.94975422)"><tspan
+       transform="scale(1.052904,0.94975421)"><tspan
          sodipodi:role="line"
-         id="tspan1224-6-2-1-0-5-8-7"
-         x="-1.4429492"
-         y="342.11957"
-         style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583">如果你完全安装一个Linux，没有Windows</tspan><tspan
-         sodipodi:role="line"
-         x="-1.4429492"
-         y="347.71542"
+         x="-22.677845"
+         y="281.24817"
          style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan16975">那么你用的是Linux自己的操作系统</tspan></text>
+         id="tspan16975">你在界面上要编译，IDE帮你用怎么参数调用gcc</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.59587px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="65.66243"
-       y="360.40808"
-       id="text1226-3-79-2-2-7-2-8-9"
+       x="59.344341"
+       y="284.19162"
+       id="text1226-3-79-2-2-7-2-8-7"
        transform="scale(1.052904,0.94975421)"><tspan
          sodipodi:role="line"
-         x="65.66243"
-         y="360.40808"
+         x="59.344341"
+         y="284.19162"
          style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan16975-0">如果你在Windows上启动一个Ubuntu，</tspan><tspan
-         sodipodi:role="line"
-         x="65.66243"
-         y="366.00394"
-         style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan21406">它用WSL（Windows Subsystem for Linux）</tspan><tspan
-         sodipodi:role="line"
-         x="65.66243"
-         y="371.59982"
-         style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan21408">模拟了一个Linux给你，所以你用是Windows，</tspan><tspan
-         sodipodi:role="line"
-         x="65.66243"
-         y="377.19568"
-         style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan21410">但gcc以为你用的是Linux</tspan></text>
+         id="tspan16975-5">你在界面上要调试，调用gdb进行调试</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.59587px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="134.0976"
-       y="313.73181"
-       id="text1226-3-79-2-2-7-2-8-9-2"
+       x="126.05772"
+       y="273.33035"
+       id="text1226-3-79-2-2-7-2-8-7-3"
        transform="scale(1.052904,0.94975421)"><tspan
          sodipodi:role="line"
-         x="134.0976"
-         y="313.73181"
+         x="126.05772"
+         y="273.33035"
          style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan21410-9">如果你用MinGW，那么MinGW自己假装自己是个glibc，</tspan><tspan
+         id="tspan16975-5-5">你有多个文件，IDE自动绑定生成Makefile</tspan><tspan
          sodipodi:role="line"
-         x="134.0976"
-         y="319.32767"
+         x="126.05772"
+         y="278.92621"
          style="font-size:3.26426px;fill:#0000ff;stroke-width:0.264583"
-         id="tspan22961">但其实它里面的实现是和Windows直接打交道。</tspan></text>
+         id="tspan24329">或者做一个Makefile类似的功能给你用。</tspan></text>
   </g>
 </svg>
