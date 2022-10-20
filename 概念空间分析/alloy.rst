@@ -22,8 +22,8 @@ Alloy是一个建模工具，它的主页在这里：
 `Alloy <https://www.csail.mit.edu/research/alloy>`_
 。
 
-它可以做很多纯逻辑模型的分析，比如比如Spetre/Meltdown的攻击模型，内存序模型等等。
-RISC-V的TSO就是用这种方法进行的分析，分析模型在这里：
+它可以做很多纯逻辑模型的分析，比如Spetre/Meltdown的攻击模型，内存序模型等等。
+RISC-V的内存序就是用这种方法进行的分析，分析模型在这里：
 `riscv-memory-model <https://github.com/daniellustig/riscv-memory-model>`_
 。
 
@@ -31,10 +31,10 @@ Alloy有Mac的Native版本，其他平台是java的，可以用java -jar运行�
 代码在github上开源：
 `Alloy Source <https://github.com/AlloyTools/org.alloytools.alloy/releases>`_
 
-作者为这本书写了一本书，叫《\ *Software Abstractions*\ 》，详细介绍了这个工具的
-用法。但如果不熟悉相关概念，纯从程序员的角度去理解它，很容易把自己绕晕。本文会
-通过澄清一些基本的概念来避免这个问题，澄清这些基本概念，也有助于我们理解前面提
-到的逻辑哲学论的理解问题。
+作者为这个工具写了一本书，叫《\ *Software Abstractions*\ 》，详细介绍了这个工具
+的用法。但如果不熟悉相关概念，纯从程序员的角度去理解它，很容易把自己绕晕。本文
+会通过澄清一些基本的概念来避免这个问题，澄清这些基本概念，也有助于我们理解前面
+提到的逻辑哲学论的基本概念。
 
 一阶谓词逻辑
 ============
@@ -44,8 +44,8 @@ Alloy的语法基础是一阶谓词逻辑。我们不用因为听到这种哲学
 知Alloy。
 
 一阶谓词逻辑的英文是First Order Logic，或者Predicate Logic，又或者
-Quantification logic，又或者First Order Predicate Calculus。我们把它的英文名提
-出来，有利于我们理解这个专业领域到底是研究什么问题的。
+Quantification logic，又或者First Order Predicate Calculus。把它的英文名提出来，
+有利于我们理解这个专业领域到底是研究什么问题的。
 
 我们平时说的逻辑，通常是不包含变量的，称为“命题逻辑”（Prepersition Logic）。比
 如我们说：
@@ -64,9 +64,9 @@ Logic），它强调的是“谓语”对集合的定义作用：把卡拉看作
 这个命题的解。
 
 这样以后，我们通过定义x这个集合的数量来描述命题的解的特征，比如我们常见的证明题：
-“存在多个x，使x是自然数，而且x>10而且，x<13”。这个描述集合大小的形容词，就成为
-这个谓词的解的范围的描述符了。这称为谓词逻辑的”量词“，所以，这种逻辑也称为”量词
-逻辑“(Quantification Logic）。
+“存在多个自然数x，而且x>10而且，x<13”。这个描述集合大小的形容词，就成为这个谓词
+的解的范围的描述符了。这称为谓词逻辑的”量词“，所以，这种逻辑也称为“量词逻辑
+(Quantification Logic）”。
 
 谓词逻辑的基础就是这个，更复杂的反正我也不懂，它是一个抽象谓词形式描述的系统的
 规律的系统，但要理解Alloy，我们只需要理解每个具体的具像，所以，我们理解到这个地
@@ -76,7 +76,8 @@ Logic），它强调的是“谓语”对集合的定义作用：把卡拉看作
 为谓词函数的参数），这个体系就称为Higher Order Logic。能叠加一层就是二阶谓词逻
 辑，能叠加两层就是三阶谓词逻辑。所以，一阶谓词逻辑很特别，它的集合和它的谓词函
 数是严格分离的，“卡拉是条狗”和“‘x是条狗'这句话有道理”中，‘x是条狗’是个独立的解，
-不能用作谓词。所以，它和”卡拉是条狗“这个定义是没有任何关系的。
+不能用作谓词。所以，它和”卡拉是条狗“这个定义是没有任何关系的（当然，你可以去定义
+它们的关系，但那个是额外定义出来的，不是因为有是条狗这个描述）。
 
 这个概念有助于我们理解逻辑哲学论中的Can be said clearly和Must be passed over in
 silence是什么。谓词就是Can be said clearly的，因为它是明确的集合，是可以运算的
@@ -98,8 +99,8 @@ silence的。
 
 非逻辑符号用于表示谓词，函数和常数。通常用f_n表示函数，用P_n表示谓词。
 
-针对某个问题的全部非逻辑符号称为一个signature，也就是我们前面提到的“解”的集合。
-它可以有限，无限，空，甚至不可数。
+针对某个问题的全部非逻辑符号称为signature，也就是我们前面提到的“解”的集合。它可
+以有限，无限，空，甚至不可数。
 
 如果变量被规定了quantify，那么它是绑定的，否则它就是free的。比如下面这个命题：
 
@@ -185,7 +186,22 @@ silence的。
 signature
 ---------
 
-signature定义了这个世界的所有解的全集的范围。
+signature定义了这个世界的所有解的全集的范围。比如上面的例子中：
+
+.. code-block:: none
+
+  abstract sig Person {
+    father: lone Man,
+    mother: lone Woman
+  }
+  sig Man extends Person {
+    wife: lone Woman
+  }
+  sig Woman extends Person {
+    husband: lone Man
+  }
+
+这里定义了Person，Man，Woman三个sig，这个世界中只由这三个sig的Atom们组成。
 
 我这里想特别强调如下几点：
 
@@ -196,8 +212,8 @@ signature定义了这个世界的所有解的全集的范围。
    World，是由Can be said clearly的所有Signature的Atom组成的。你认为世界是这样
    的，那这个世界就会有那么多的atom，atom间有关系，但atom不从属于任何东西而存在。
    所有的“从属”，只是一种概念上的“关系”。请仔细想明白这个问题，A认为世界上只有
-   {John, Peter和Kenneth}三个男人，B认为只有有{John, Peter}两个男人，这是两个独
-   立的“平行世界”，他们的“世界”并不相同。
+   {John, Peter和Kenneth}三个男人，B认为只有{John, Peter}两个男人，这是两个独立
+   的“平行世界”，他们的“世界”并不相同。
 3. 所以，定义signature，是定义一个所有解的一个范围，是一个解的集合，而Alloy的作
    用，是帮你把这个解找出来。
 4. 注意，在这个定义中，所有signature的集合都是有限的。这就是为什么维特根斯坦说
@@ -306,7 +322,7 @@ father的两人不能是夫妻”。
 
 我强调这一点，是想说：
 
-1. 不能认为模型就代码你建模的那个对象了。
+1. 不能认为模型就代表你建模的那个对象了。
 2. 我们对世界的认识其实本质也是这样一个模型，Can be said clearly的东西也只是Can
    be said而已，不代表事实。
 
@@ -368,16 +384,16 @@ Alloy这个Join操作符的设计很有意思，它一定程度说明白了集�
 relation。后者本质是Person->Person。如果Person和father是独立存放的，那么，我们
 说某个Person的father是谁怎么找呢？那当然应该是：
 
-  one p: Person | p in ThisPerson
+  one p: Person | p in ThisPerson.father[1]
 
-这样以来，p.father恰恰就是这个世界所有father的relation中，p的father了。所以，在
+这样一来，p.father恰恰就是这个世界所有father的relation中，p的father了。所以，在
 语义上，虽然join是个查表，但它同样符合p的father这个语义的，这个认识让我们更大程
 度上理解“某某的某某”到底本质上是什么。
 
 在Alloy中，p.father还可以写成：father[p]。这是个数组的表达，它的语义似乎可以理
 解为：所有father中，主语是p的对象组成的集合。最终它还是表示p的father。
 
-这样一来，对泛化的集合来说，对象关系本质就是数组查找关系。
+所以，对泛化的集合来说，对象关系本质就是数组查找关系。
 
 小结
 ----
@@ -387,8 +403,8 @@ relation。后者本质是Person->Person。如果Person和father是独立存放�
 模型来解释。但现在可以先简单解释一下：
 
 所谓动态变化的一个过程，其实本质就是时间上的两个集合，比如你的Man组成一个时刻的
-人的集合，那么Man'就是下一个时刻的集合，你说明这两个集合的关系就可以了。在逻辑
-的世界里，根本没有时间，时间只是关联（这也是维特根斯坦的定义）。
+所有男人的集合，那么Man'就是下一个时刻的集合，你说明这两个集合的关系就可以了。
+在逻辑的世界里，根本没有时间，时间只是关联（这也是维特根斯坦的定义）。
 
 RISCV的内存模型
 ===============
