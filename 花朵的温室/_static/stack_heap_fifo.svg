@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="282.08963mm"
+   height="135.31032mm"
+   viewBox="0 0 282.08963 135.31034"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="stack_heap_fifo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-2"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-9"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-2-0"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-9-9"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-2-0-6"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-9-9-2"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-7"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-4"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-7-3"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-4-0"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-5"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-3"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-1"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-9"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-36"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-5-0"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-3-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-6"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-9-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-1-8"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-0"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-3-3-0-1"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2182-6-1-6-5"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000080;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-56"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-37"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-4"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3243205"
+     inkscape:cx="553.11384"
+     inkscape:cy="235.97007"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1846"
+     inkscape:window-height="1136"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:pagecheckerboard="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(24.098904,-335.83842)">
+    <rect
+       style="fill:#800000;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5"
+       width="35.007366"
+       height="9.0732279"
+       x="25.05044"
+       y="387.95575" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7"
+       width="35.007366"
+       height="9.0732279"
+       x="25.050442"
+       y="397.02899" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-0"
+       width="35.007366"
+       height="9.0732279"
+       x="25.050442"
+       y="406.10223" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-75"
+       width="35.007366"
+       height="9.0732279"
+       x="25.050442"
+       y="415.17548" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-9"
+       width="35.007366"
+       height="9.0732279"
+       x="25.050442"
+       y="424.24872" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-0-1"
+       width="35.007366"
+       height="9.0732279"
+       x="25.050442"
+       y="433.32196" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="41.487793"
+       y="352.59824"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5"><tspan
+         sodipodi:role="line"
+         x="41.487793"
+         y="352.59824"
+         style="font-size:7.05556px;fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6">栈</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-14.242837"
+       y="396.16806"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6"><tspan
+         sodipodi:role="line"
+         x="-14.242837"
+         y="396.16806"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7">栈顶</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="243.98599"
+       y="451.00015"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-2"><tspan
+         sodipodi:role="line"
+         x="243.98599"
+         y="451.00015"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-06">头</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="25.946289"
+       y="371.72021"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-7"><tspan
+         sodipodi:role="line"
+         x="25.946289"
+         y="371.72021"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-0">只能从栈顶加，栈顶取</tspan></text>
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-3-3)"
+       d="m -2.7366204,395.08387 c 18.1723334,-0.10423 0.3647032,-7.36851 27.7870604,-7.12812"
+       id="path7706-7-9"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-3-3-0)"
+       d="m 239.73076,394.86109 c -18.17233,-0.10423 -0.3647,-7.36851 -27.78706,-7.12812"
+       id="path7706-7-9-3"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="242.94257"
+       y="396.37256"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-2-5"><tspan
+         sodipodi:role="line"
+         x="242.94257"
+         y="396.37256"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-06-4">尾</tspan></text>
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-3-3-0-1)"
+       d="m 239.73075,449.30054 c -18.17232,-0.10423 -0.36469,-7.36851 -27.78705,-7.12812"
+       id="path7706-7-9-3-7"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-14.242834"
+       y="450.60751"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-5"><tspan
+         sodipodi:role="line"
+         x="-14.242834"
+         y="450.60751"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-6">栈底</tspan></text>
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-3-3-5)"
+       d="m -2.7366184,449.52332 c 18.1723334,-0.10423 0.3647032,-7.36851 27.7870604,-7.12812"
+       id="path7706-7-9-2"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 48.051941,376.76733 v 11.39806"
+       id="path8910" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-6)"
+       d="m 196.49676,374.50092 v 11.39806"
+       id="path8910-9" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-9)"
+       d="M 53.028693,388.08351 V 376.68545"
+       id="path8910-2" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-79"
+       width="35.007366"
+       height="9.0732279"
+       x="91.879814"
+       y="387.72101" />
+    <rect
+       style="fill:#800000;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-2"
+       width="35.007366"
+       height="9.0732279"
+       x="91.879814"
+       y="396.79425" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-0-0"
+       width="35.007366"
+       height="9.0732279"
+       x="91.879814"
+       y="405.86749" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-75-2"
+       width="35.007366"
+       height="9.0732279"
+       x="91.879814"
+       y="414.94073" />
+    <rect
+       style="fill:#800000;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-9-3"
+       width="35.007366"
+       height="9.0732279"
+       x="91.879814"
+       y="424.01398" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-0-1-7"
+       width="35.007366"
+       height="9.0732279"
+       x="91.879814"
+       y="433.08722" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="108.31717"
+       y="352.36349"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-5"><tspan
+         sodipodi:role="line"
+         x="108.31717"
+         y="352.36349"
+         style="font-size:7.05556px;fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-9">堆</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="129.55772"
+       y="401.8837"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-7-8"><tspan
+         sodipodi:role="line"
+         x="129.55772"
+         y="401.8837"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-0-9">随便从什么地方加，</tspan><tspan
+         sodipodi:role="line"
+         x="129.55772"
+         y="407.17535"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan25283">什么地方取</tspan></text>
+    <rect
+       style="fill:#ffff00;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-79-1"
+       width="35.007366"
+       height="9.0732279"
+       x="176.93633"
+       y="387.73297" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-2-9"
+       width="35.007366"
+       height="9.0732279"
+       x="176.93633"
+       y="396.80621" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-0-0-4"
+       width="35.007366"
+       height="9.0732279"
+       x="176.93633"
+       y="405.87946" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-75-2-7"
+       width="35.007366"
+       height="9.0732279"
+       x="176.93633"
+       y="414.9527" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-9-3-8"
+       width="35.007366"
+       height="9.0732279"
+       x="176.93633"
+       y="424.02594" />
+    <rect
+       style="fill:#ff0000;stroke:#000000;stroke-width:0.27208;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-9-3-7-3-7-5-7-0-1-7-4"
+       width="35.007366"
+       height="9.0732279"
+       x="176.93633"
+       y="433.09918" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="160.79262"
+       y="351.60986"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-5-5"><tspan
+         sodipodi:role="line"
+         x="160.79262"
+         y="351.60986"
+         style="font-size:7.05556px;fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-9-0">FIFO(First-In First-Out)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-37)"
+       d="m 194.28973,441.80527 v 11.39806"
+       id="path8910-5" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="184.63792"
+       y="369.41443"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-7-2"><tspan
+         sodipodi:role="line"
+         x="184.63792"
+         y="369.41443"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-0-5">只能从尾巴加</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="183.45346"
+       y="460.79736"
+       id="text1823-8-5-3-7-3-5-1-9-1-3-5-5-6-7-2-4"><tspan
+         sodipodi:role="line"
+         x="183.45346"
+         y="460.79736"
+         style="fill:#0000ff;stroke-width:0.264583"
+         id="tspan28077-6-7-0-5-7">只能从头取</tspan></text>
+  </g>
+</svg>
