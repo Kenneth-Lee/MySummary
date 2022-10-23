@@ -281,7 +281,7 @@ https://gitee.com/Kenneth-Lee-2012/card24
 
 进入code以后，它的界面大概包括这些部分：
 
-.. figure:: vscode.svg
+.. figure:: _static/vscode.svg
 
 其中导航窗口主要是从不同的角度看整个工程的状态，主工作窗口做主要的工作（比如编
 辑程序），状态窗口用来做辅助性的工作，而状态栏用于看导航窗口和主工作窗口的状态。
