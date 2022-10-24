@@ -84,4 +84,8 @@
    C++编程入门10
    C++编程入门11
 
+注1：C++编程入门转移到如下项目：
+`C++辅助教程 <https://gitee.com/Kenneth-Lee-2012/cpp_aux_tutorial>`_
+。这里未来不再更新。过一段时间也会把原来的内容删除。
+
 .. vim: tw=80 fo+=mM
