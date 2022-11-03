@@ -257,6 +257,16 @@ father = {(Peter, John) (Rose, Peter)}
 的”。这说起来很绕，本质原因是我们的“世界”是一个抽象，有很多Must be passed over
 in silence的东西并没有被加入到世界中。
 
+.. note::
+
+   其实认真想想这里的Relation的概念，你会发现，所有的属性，其实不过是sig的关联，
+   这也是为什么维特根斯坦的理论可以用关联图来表示所有的逻辑，而且声称“世界是五
+   色的”，颜色只是sig，而某种对象有颜色，我们只是认为这个颜色和那个对象有关联而
+   已。
+
+   想明白这一点，不但有助于我们理解维特根斯坦，也有助于我们想明白怎么用Alloy去
+   建模现实的模型。
+
 fact
 ----
 
@@ -432,9 +442,17 @@ HART内部的，依赖关系在硬件上就能保证。而这种计算上的依�
 
 为了简化问题，很多研究都把问题化简为：系统只有Hart的程序序和内存子系统的生效序。
 我们忽略了内存子系统作为一个分布式的多Cache系统会给不同Hart呈现不同的顺序，我们
-认为内存子系统可以为所有人保证这个序。这样，整个模型就变成：内存子系统有一个虚拟
-的switch，它按特定的规则接通其中一个Hart，这段时间内，Hart用它的内存序更新内存
-子系统，然后switch再选择下一个Hart，做那个Hart内存序操作。
+认为内存子系统可以为所有人保证这个序。这样，整个模型就变成：内存子系统有一个虚
+拟的switch，它按特定的规则接通其中一个Hart，这段时间内，Hart用它的内存序更新内
+存子系统，然后switch再选择下一个Hart，做那个Hart内存序操作。
+
+.. note::
+
+   在Vijay等人的《A Primer on Memory Consistency and Cache Coherence （2nd
+   Edition）》中，把内存序模型分成两种：
+   1. Consistency-agnostic coherence
+   2. Consistency-directed coherence
+   前者常见于CPU，后者常见于GPU。我们这里讨论的模型是前一个模型。
 
 很多研究都用一个称为SEQUENTIAL CONSISTENCY的模型（简称SC）来作为设计基准。SC模
 型中，程序序等于内存序。这是效率最低的一个模型，但也最容易理解。其他模型（比如
@@ -445,5 +463,210 @@ RISCV支持的RVWMO和TSO）都在一定程度上放松这个限制，它们会�
 这样就带来一个问题了：这些定义有没有可能是自相矛盾的？比如说，我们说a会发生在b
 前面，但另一个规则却说a必须发生在b的后面？
 
+为了理解这个推理的具像我们还是简单理解一下TSO和WMO到底是什么样的规则。
+
+我们知道，SC的规则是程序序就是内存序。如果细分一下，可以认为有四条规则：
+
+* LL，Load后Load是保序的
+* SS，Store后Store是保序的
+* LS，Load后Store是保序的
+* SL，Store后Load是保序的
+
+这个规则有一个效果：如果A核写x读y，B核写y读x，那么无论怎么组合，不可能读出来的x
+和y都等于初值。考虑下面这个程序：::
+
+   x, y是内存地址，初值为0
+          A核              |            B核
+       store x, 1          |          store y, 1
+       load y, r1          |          load x, r1
+
+如果是SC，因为内存序和程序序总是一致的，两个核只有这些组合：::
+
+  (x, y初值为0）
+           A:store x, 1 | A:store x, 1 | A:store x, 1 | B:store y, 1 | B:store y, 1
+           A:load y, r1 | B:store y, 1 | B:store y, 1 | A:store x, 1 | B:load x, r1
+           B:store y, 1 | A:load y, r1 | B:load x, r1 | B:load x, r1 | A:store x, 1
+           B:load x, r1 | B:load x, r1 | A:load y, r1 | A:load y, r1 | A:load y, r1
+  (A.r1,B.r1)= (0,1)    |    (1,1)     |     (1,1)    |     (1,1)    |     (1,0)   
+
+没有两者都是0的组合。但其实软件很少需要做这种通讯的，所以TSO放松了其中一个要求，
+它不保证SL。之所以叫Total Store Order，是因为它用了叫Write Buffer的FIFO队列来保
+存写到内存去的队列，如果读的内容在读列中，就从队列读，否则才到内存系统上去排队。
+这样一组合，你会发现，LL和LS是在内存上排队的，自然可以保证，SS是在FIFO中排队后
+到内存上排队的，也可以保证，只有SL是无法保证的。但核间通讯的大部分场景是A核SS，
+B核LL的（A核写数据再写flag，B核读flag，在flag变化以后读数据），不保证这一点大部
+分时候并没有问题。不保证SC那个交叉访问得到(0, 0）几乎不会遇到什么问题。实在要用，
+就用Fence去强制FIFO刷新，也能达成目的。
+
+而WMO放得更松，它认为，很多其他约束其实也是不必要的，比如你写10个数据在设置一个
+flag，那是个数据也不需要in-order啊（SS规则）。你可以简单认为WMO的WB不是FIFO的，
+而是随机发射出去的。当然它也不是只有这一种实现方法，但无论是什么方法，它大部分
+内存序都是靠fence刷中间状态来保序的，反正不论玩什么妖蛾子，一旦刷到内存子系统上，
+内存子系统（比如CC总线），就自然保证了顺序了。
+
+所以，其实如果你只有最基本的Load，Store，Fence，这没有什么需要推理的，反正它什
+么保证都没有，说的语义就是那个语义，其他都看你软件怎么组合。
+
+但一旦开始发展，它又有了很多不同的Load，Store，比如RISCV就有AMO的定义，有LR/SC
+的定义，这些行为都是承诺的有顺序保证的。
+
+那么你对AMO承诺了一组顺序上的要求，在LR/SC上又承诺了一组顺序要求，那我把这些约
+束组合到一起用，这些要求还能保证可以承诺吗？
+
+那么这个模型应该怎么建呢？程序序是程序员指定的，这是一个完全的自由度，我们成为
+po，program order。RISCV的语法约束是RISCV构架承诺的，这是另一个自由度，我们称为
+ppo，Preserved Program Order。最终反映出来的顺序都出现在内存上，这个我们称为gmo，
+Global Memory Order。这就是这个模型的基础，我们要表达当程序员写成一个po的时候，
+无论是什么样的组合（世界），在我们额外的约束ppo下，是否能兑现最终呈现在gmo上的
+承诺。
+
+Alloy定义这种时间上的关系，总是把每个状态看作是一个sig的成员，顺序是sig之间的关
+系。所以RISCV的基础模型是这样的：
+
+1. 所有操作，包括内存操作，都是sig Event，不同的操作就叫不同的子sig。比如内存操作
+   就是一个MemoryEvent（继承Event）。Event带属性po，这个关联表示它们的程序序。
+   （注意Event不是指令，而是指令的执行行为，同一个指令不同时空执行是不同的Event）。
+2. 如果你承诺了其他顺序，在MemoryEvent上在放起来属性（也是Event），这样可以建立
+   更多的顺序的承诺。address也是MemoryEvent的属性，用于控制那些对于相同内存的行
+   为的承诺。
+3. Hart定义为另一种sig，它在这个问题上的本质是对所有po的区分（成为不同的线程），
+   所以它就一个start属性，而且只有一个。当我们构造世界的时候，为每个构造的Hart
+   构造唯一的一个开始Event，这个Hart上的后续Event就由这个Event的po决定了。这样
+   所有的po就有唯一的线程根源了。
+
+在这个基础上它建立了一组子集，比如所有的AMO指令，所有的LoadNormail，StoreNormal
+执行等等。然后补充明显的fact，比如这个：::
+
+  //gmo是MemoryEvent的属性，和po一样，定义内存序，这里不看它的定义
+  pred acyclic[rel: Event->Event] { no iden & ^rel }
+  pred total[rel: Event->Event, bag: Event] {
+    all disj e, e': bag | e->e' in rel + ~rel
+    acyclic[rel]
+  }
+  fact { total[^gmo, MemoryEvent] } // gmo is a total order over all MemoryEvents
+
+这组定义用于在逻辑世界中定义gmo的本质：对于任意找到的两个不同的内存事件，它们必
+然有一个全局的先后顺序。
+
+在定义中，我们严格区分了两个集合：gmo的集合和MemoryEvents的集合。两个集合在其他
+地方都是独立定义的。但我们无论你怎么定义，我把你说好的两个内存操作拿出来，在gmo
+的定义中找到它们，它们比如在gmo的某个顺序中可以找到。这就是我们对gmo的基础要求。
+
+之后你可以继续补充其他的不同内存事件类型，说明什么事情下的gmo要求是什么样的，但
+那些要求不能导致gmo的这个约束逻辑不成立。
+
+我们再看看它的ppo是怎么定义和使用的：::
+
+  // Preserved Program Order
+  fun ppo : Event->Event {
+    // same-address ordering
+    po_loc :> Store
+    + (AMO + StoreConditional) <: rfi
+    + rdw
+  
+    // explicit synchronization
+    + ppo_fence
+    + Acquire <: ^po :> MemoryEvent
+    + MemoryEvent <: ^po :> Release
+    + RCsc <: ^po :> RCsc
+    + pair
+  
+    // syntactic dependencies
+    + addrdep
+    + datadep
+    + ctrldep :> Store
+  
+    // pipeline dependencies
+    + (addrdep+datadep).rfi
+    + addrdep.^po :> Store
+  }
+  
+  // the global memory order respects preserved program order
+  fact { ppo in ^gmo }
+
+ppo的定义原则就是：我承诺了什么，我就加到集合中，然后我保证：ppo承诺的顺序，在
+gmo里面也承诺。
+
+我们打开其中一个子集看，比如这个same-address ordering，它包括几个要素：
+
+1. 同一个地址是的Store，承诺保序。
+2. AMO和SC指令，如果属于rfi（从写中读），承诺保序。
+3. rdw（同一个地址的两个读），承诺保序。
+
+其实可以看到，这些约束只是建模者自己能找到的所有观察事实，它不见得都在指令
+Specification中（但大部分在），你不能认为有了这个模型，整个定义就万无一失了。
+
+有了这些定义以后，就会有类似这样的一些测试了：::
+
+  // 给定一个内存事件，求gmo和po都在它前面的同地址写
+  fun candidates[r: MemoryEvent] : set MemoryEvent {
+    (r.~^gmo & Store & same_addr[r])
+    + (r.^~po & Store & same_addr[r])
+  }
+
+  // 给定一个event集合，求每个事件gmo在它前面的集合
+  fun latest_among[s: set Event] : Event { s - s.~^gmo }
+  
+  // 一对写读操作，如果符合read-from的条件，那么写在gmo和po上都在读前面。
+  // 反之依然：如果写gmo和po都在读前面，那么它必然符合read-from的条件。
+  pred LoadValue {
+    all w: Store | all r: Load |
+      w->r in rf <=> w = latest_among[candidates[r]]
+  }
+  
+  // 对于Store的LR操作，没有同地址的另一个Hart的Store，使得这个Store是一个Read-From
+  // 同时，
+  pred Atomicity {
+    all r: Store.~pair |            // starting from the lr,
+      no x: Store & same_addr[r] |  // there is no store x to the same addr
+        x not in same_hart[r]       // such that x is from a different hart,
+        and x in r.~rf.^gmo         // x follows (the store r reads from) in gmo,
+        and r.pair in x.^gmo        // and r follows x in gmo
+  }
+
+  run MP {
+    some disj a, b, c, d : MemoryEvent, disj x, y: Address |
+      a in Store & x.~address and
+      b in Store & y.~address and
+      c in Load & y.~address and
+      d in Load & x.~address and
+      a->b + c->d in ppo and
+      b->c in rf and
+      d->a in fr and
+      RISCV_mm
+  } for 8
+
 todo：未写完。
 
+
+附录
+====
+
+Alloy集合操作符速查
+-------------------
+
+* p->q：关联操作，求p，q两个集合的所有对应关系。想象p，q是男女的集合，p->q是所
+  有婚姻的组合可能。
+* p.q：join操作，用关联p的值域对消q的定义域生成新的关联。想象q是p的属性关联，
+  p.q是求所有属性的集合。
+* []：数组关系，join的另一个写法
+* ~p：转置，p的值域和定义域对掉
+* ^p：可达性闭包，求关联中的所有可达的对应关系。想象一张连通图上，所有可以经过
+  其他节点关联起来的两个节点都对应起来。
+* \*p：反身转换闭包，就是^p + iden。即加上自己到自己的关联。
+* p <: q：定义域过滤，把q的定义域限制在p的范围内
+* p :> q：值域过滤，把p的值域限制在q的范围内
+* p ++ q：重载，用q中定义域和p相同的记录替换p中的记录，想象q是p的斟误表。
+* p + q：合集
+* p - q：删除子集
+* p & q：交集
+
+这些操作有一些常见的组合套路：
+
+* p.~p：p中所有值相同的输入。设想p是一个名字到地址关系的地址本，p.~p就是所有住
+  在一起的人的组合。如果p.~p in iden，就说明映射是单调的，不同的输入没有相同的
+  输出。
+* p.^~e：发生在p之前的所有事件。Alloy常常用同一个sig的关联表示时间上的关系。比
+  如一个线程的一系列事件，或者一个程序在操作前和操作后的状态。如果把这个事件定
+  义为p，后面的时间定义为它的属性e（关联），那么p.^~e是发生在p前的所有事件，而
+  p.^e是发生在它之后的所有事件。如果这些操作中把^换成\*，那就包括p自己。
