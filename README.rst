@@ -37,10 +37,10 @@ Linux主线内核跟踪
 本工程用Python Sphinx进行管理，所有的文本都是reStructuredText文档，这是一种文字
 安排有特殊设置的文本文件，可以被很多git托管服务所解释，所以阅读者可以在如gitee
 ，github这样的代码托管服务上直接阅读每个独立的文件。但如果文档之间有相互引用，
-这种引用是看不到的。为此我不定期会对文档进行编译，把epub或者html版本作为本项目
-的二进制发布，读者可以在这里下载阅读：
+或者文档中使用了数学公式，这种引用是看不到的。我为此申请了readthedocs的自动生成
+服务，读者可以直接在这里阅读生成后的版本：
 
-        https://gitee.com/Kenneth-Lee-2012/MySummary/releases
+        `MySummary <https://mysummary.readthedocs.io/zh/latest/README.html>`_
 
 另外，2020底，我开始把道德经直译转化为一本书，项目在这里：
 
