@@ -334,11 +334,11 @@ a是bound的，b是free的。free的变量在计算的时候不会对结果产�
 
 .. math::
 
-   (1) {\forall x \mid P(x)} \equiv {!\exists x \mid !P(x)}
+   (1) {\forall x \mid P(x)} \iff {!\exists x \mid !P(x)}
 
 .. math::
 
-   (2) {\exists x \mid P(x) } \equiv {!\forall x \mid !P(x)}
+   (2) {\exists x \mid P(x) } \iff {!\forall x \mid !P(x)}
 
 关联
 ----
