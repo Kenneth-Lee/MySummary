@@ -709,7 +709,7 @@ Woman1，所以，Woman1是Man0的奶奶，Man0是Woman的丈夫。所以Man0是
 
 .. figure:: _static/owngrandpa2.jpg
 
-这个用了7男2女，具体是个什么关系，请读者自己分析吧。
+这个用了8男2女，具体是个什么关系，请读者自己分析吧。
 
 最后，让我们再深入探讨一下fact，fun和pred到底有什么区别。fact是直接作用在世界上
 的，直接认为不符合fact的不是世界的一种可能性。而fun和pred只是划定了一个范围，并
