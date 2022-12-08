@@ -398,19 +398,26 @@ y都有x），自反（Reflexive，每个成员至少和自己关联），传递
 Anti-symmetric），矩阵可逆（invertible），等价（Equivalence）等等，为此也有很多
 的定理，单独研究这种函数的问题。
 
-这样研究这个问题，会带来很多新的方法论。比如把集合用一个函数的结果分成多个正交
+这样研究这个问题，会带来很多新的方法论。比如研究有序的集合，可以发展出数论的很多理解，
+发现很多同构、等价的等的模型：
+
+.. figure:: _static/partial_order.svg
+
+又比如把集合用一个函数的结果分成多个正交
 的子集，每个自己就是原集合的一个类。对于不同的分类方法就对应不同的分类函数。这
-些函数又会有一些特征。这称为对一个集合的Partition。比如我们用对2的同余可以把自然
-数分成奇数和偶数。
+些函数又会有一些特征。这称为对一个集合的Partition。比如我们用对2的同余可以把自
+然数分成奇数和偶数。
 
 Partition也是一个集合，一个集合的集合，比如对于集合{a, b, c, d, e}的一个
 Partition可以是：{{a, b, c}, {d}, {e}}。
 
 如果一个Partition A的任一成员是另一个Partition B的任一成员的子集，那么我们把A称
 为B的“细化”（Finer）,B称为A的“粗化”（Coarser）。分类的结果叫做父分类对于分类函
-数的商。在每个子集中挑一个成员出来作为这个子集的特征代表，这个选择的函数就叫
-Choice Function。这些概念和引申出来的公理和定理，可以帮助我们把一个大的问题，分
-解成一层层的小问题，然后用一个规则的方式去处理它。
+数的商。在每个子集中挑一个成员出来作为这个子集的特征代表（Representative），形
+成一个特征集集合。Choice Function。这些概念和引申出来的公理和定理，可以帮助我们
+把一个大的问题，分解成一层层的小问题，然后用一个规则的方式去处理它。
+
+.. figure:: _static/partition.svg
 
 .. warning::
 
@@ -1346,16 +1353,18 @@ Alloy集合操作符速查
 * p.q：join操作，用关联p的值域对消q的定义域生成新的关联。想象q是p的属性关联，
   p.q是求所有属性的集合。
 * []：数组关系，join的另一个写法
-* ~p：转置，p的值域和定义域对掉
-* ^p：可达性闭包，求关联中的所有可达的对应关系。想象一张连通图上，所有可以经过
-  其他节点关联起来的两个节点都对应起来。
-* \*p：反身转换闭包，就是^p + iden。即加上自己到自己的关联。
-* p <: q：定义域过滤，把q的定义域限制在p的范围内
-* p :> q：值域过滤，把p的值域限制在q的范围内
-* p ++ q：重载，用q中定义域和p相同的记录替换p中的记录，想象q是p的斟误表。
-* p + q：合集
-* p - q：删除子集
-* p & q：交集
+* ~p：转置(transpose)，p的值域和定义域对掉
+* ^p：可达性闭包（transitive closure），求关联中的所有可达的对应关系。想象一张
+  连通图上，所有可以经过其他节点关联起来的两个节点都对应起来。
+* \*p：反身转换闭包（reflexive-transitive closure），就是^p + iden。即加上自己
+  到自己的关联。
+* p <: q：定义域过滤（domain restriction），把q的定义域限制在p的范围内
+* p :> q：值域过滤（range restriction），把p的值域限制在q的范围内
+* p ++ q：重载(range override），用q中定义域和p相同的记录替换p中的记录，想象q是
+  p的斟误表。
+* p + q：合集（union）
+* p - q：减集（difference）
+* p & q：交集（intersection）
 
 完整的cheatsheet可以参考这里：
 `Alloy_Cheatsheet <https://homepage.cs.uiowa.edu/~tinelli/classes/181/Fall17/Notes/alloy-cheatsheet.pdf>`
