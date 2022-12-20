@@ -137,6 +137,18 @@ VMA一直用的rbtree保存的，rbtree是二叉平衡树，插入后需要重�
 锁住整棵树进行重平衡，这样可以配合RCU使用无锁算法，当前的修改大概包含70个补丁，
 而且预计稳定需要相当长的时间。但升级成功了，多核的性能应该能提升不少吧。
 
+mapple的代码在lib/mapple_tree.c中。主要函数大致是这样的：::
+
+  void mt_init(struct maple_tree *mt);
+  void mtree_destroy(struct maple_tree *mt);
+
+  int mtree_insert(struct maple_tree *mt, unsigned long index, void *entry, gfp_t gfp);
+  void *mtree_erase(struct maple_tree *mt, unsigned long index)
+  void *mtree_load(struct maple_tree *mt, unsigned long index);
+
+  mt_for_each(__tree, __entry, __index, __max)
+
+树本身不提供LRU保护，但你可以独立为不同的子树建立独立的LRU进行保护。
 
 参考
 ====
