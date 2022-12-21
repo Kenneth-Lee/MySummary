@@ -53,6 +53,8 @@ user_events:[name]的记录。用户接口是ioctl，mmap和read/write。通过�
 
 原理没有看明白。主要是在调整一些包含的位置和CONFIG宏的判断。
 
+.. _`linux_fortify`:
+
 CONFIG_FORTIFY_SOURCE
 ---------------------
 

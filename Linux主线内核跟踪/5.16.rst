@@ -16,6 +16,8 @@
 大特性
 ======
 
+.. _`linux-folios`:
+
 Memory Folios
 -------------
 
