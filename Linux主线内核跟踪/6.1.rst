@@ -8,8 +8,8 @@
 6.1
 ***
 
-本文主要基于kernelnewbies.org的基础信息，加上查阅相关感兴趣的文档和代码写成。
-[1]_
+这个系列的文档是我用来强迫自己保持对Kernel版本变化的敏感而写的。它主要基于
+kernelnewbies.org\ [1]_\ 的基础信息，加上查阅相关感兴趣的文档和代码补充而成。
 
 Linux Kernel 6.1版本发布时间：2022年12月11日。
 
@@ -22,7 +22,7 @@ Rust支持
 内核开始支持Rust了！
 
 相关代码在rust目录中。根据文档，现在只有x86支持。编译器用的是LLVM的，以后要扩展
-更多功能，估计也会以来LLVM，这意味这未来编译内核不能仅有GCC了。
+更多功能，估计也会依赖LLVM，这意味这未来编译内核不能仅有GCC了。
 
 我简单编译了一下，在我的机器可以运行rustc和cargo的情况下，make menuconfig中无法
 使能RUST支持。而按文档的说法执行make LLVM=1 rustavailable失败。我懒得一点点跟踪
@@ -39,12 +39,16 @@ Multi-Gen LRU
 在/sys/kernel/mm/lru_gen/中。调试信息在/sys/kernel/debug/lru_gen_full中。作者是
 Google的Zhao Yu。补丁上提到一些用户提到在高内存压力下这个性能比原来好很多。
 
-在我的双核虚拟机中这两个配置文件的呈现是这样的： ::
+在我的双核虚拟机中这配置和调试文件默认呈现是这样的： ::
 
+  root@debian:/sys/kernel/mm/lru_gen# cat enabled
+  0x0007                                                 <--- 三个配置选项都是enable
+  root@debian:/sys/kernel/mm/lru_gen# cat min_ttl_ms
+  0
   root@debian:/sys/kernel/debug# cat lru_gen
-  memcg     0
-   node     0
-            0     130465          0       10326
+  memcg     0                                            <--- control group
+   node     0                                            <--- NUMA node
+            0     130465          0       10326          <--- tie - age_in_ms - nr_anon_pages nr_file_pages
             1     130465        228           0
             2     130465          0           0
             3     130465       9997       22724
@@ -79,7 +83,31 @@ Google的Zhao Yu。补丁上提到一些用户提到在高内存压力下这个�
 
 算法的特征就是名字是说的Multi-Generational LRU。原来的LRU只有两层（tier），
 active和inactive，少用的页就慢慢退火成为Inactive的，然后清掉，多用的就继续保持
-在active里面。Multi-Gen LRU算法提供更多的层，具体怎么样的我没有看了。
+在active里面。Multi-Gen LRU算法提供更多的层（上面这个例子是4层），给定独立的退
+火时间，具体怎么样的我没有看了。
+
+老实说，我一看到这个cg就头大。这些配置基本上没有什么规律，只能就事论事。对于我
+这种做平台的人来说，这种很难在平台层总结规律的事情都是很恶心的。我觉得未来这个
+地方应该有所改变才对。CG这个问题基本上是这样的：我有很多很多的，不同类别的资源，
+我又想共享它们，又想保证某些人总是有实际的资源可用。所以就给不同的维度设置不同
+的cg类型，每种类型分成不同的cg，每个cg设定不同的不同层面的limit（比如简单的soft
+limit和hardlimit），硬的就必须预留，软一些的就可以一定程度分出去，等有的时候再
+给你。
+
+为了能够一层层分配下去，它还把cg分成了很多的层，每层还可以向下分配。
+
+但这只是从提供者的角度说的，提供者是很容易做了，但综合起来能否解决问题呢？就很
+难说了，因为使用者会被提供设置在不同的提供者的cg中，我可能永远不知道我的需求是
+否得到满足。这个问题就好像你发烧了去看医生，医生告诉你“发烧不是正常提问”，“物理
+降温有80%可能降低温度”，但就是不回答你“我该吃药还是多喝水？”。你说他没给你治也
+不对，你说他治了，好像也说不过去。
+
+所以，我觉得这应该有一个更好的使用者的角度，比如说，我们不应该有那么多的CG，而
+应该是一组使用对象，我们单独设置这些使用对象的每种资源的分配数量，该几个CPU就几
+个CPU，你被给我搞什么先切割CPU的百分比，你就告诉我给某个使用这硬的CPU的百分比和
+软的百分比就好了。我没兴趣先给你调好分配然后再去想使用者怎么用这个分配。这样组
+合的逻辑我们才知道我们的需求被满足了没有。
+
 
 KMSAN
 -----
@@ -211,6 +239,54 @@ Stall Information，配置项是CONFIG_PSI（默认不开）。接口在/proc/pr
 
 新版本增加了一些对SOFTIRQ的跟踪内容，但接口没有改变。
 
+Memory Tiering
+==============
+
+IBM的Aneesh Kumar上传了一个特性叫mm/demotion，这个特性开始建立memory-tiering的
+概念。
+
+相关的抽象在mm/memory-tiers.c中实现，数据结构这样抽象的：::
+
+  struct memory_tier {
+	  struct list_head list; // tier链表
+	  struct list_head memory_types; // 多个类型
+	  int adistance_start; //距离
+	  struct device dev; //支持设备
+	  nodemask_t lower_tier_mask; //下一层tier的node
+  };
+
+这个模块有自己独立的subsys_initcall(memory_tier_init)，注册了一个
+memory_tie_subsys（可以从/sys/device/virtual/memory_tiering访问），然后把上面的
+数据结构加入到NUMA的node中。初始化的时候然后按每个内存节点的属性决定它和CPU的距
+离，比如属于CPU+DRAM的就认为距离比较近，单独只有内存的节点（很可能是远端的内存）
+就认为距离比较远。建立一个降级的表，在vmscan里面根据这张表对内存进行降级，新分
+配的内存就在距离近的节点中分配，时间长了没有使用，就开始向距离远的节点上迁移。
+
+具体算法我就不看了，反正遇到新的情形总是要变的。
+
+代码中举了三个例子做为场景的参考，我直接拷贝出来帮助理解：::
+
+ 例一：Node 0 & 1 are CPU + DRAM nodes, node 2 & 3 are PMEM nodes.
+ node   0    1    2    3
+    0  10   20   30   40
+    1  20   10   40   30
+    2  30   40   10   40
+    3  40   30   40   10
+ 
+ 例二：Node 0 & 1 are CPU + DRAM nodes, node 2 is memory-only DRAM node.
+ node   0    1    2
+    0  10   20   30
+    1  20   10   30
+    2  30   30   10
+ 
+ 例三：Node 0 is CPU + DRAM nodes, Node 1 is HBM node, node 2 is PMEM node.
+ 
+ node   0    1    2
+    0  10   20   30
+    1  20   10   40
+    2  30   40   10
+
+
 其他有趣的东西
 ==============
 
@@ -221,11 +297,6 @@ Stall Information，配置项是CONFIG_PSI（默认不开）。接口在/proc/pr
 2. Intel的Huangying在NUMA平衡算法上一些调整，优化在多种不同速度内存的时候，慢速
    内存的热点的迁移策略，把pmbench的不同测试项有不同程度的提升，部分可以达到25%
    以上。
-
-3. IBM的Aneesh Kumar上传了一个特性叫mm/demotion，引入了一个Tiering的概念，在
-   NUMA角度，把内存分成了多层（有一个头文件叫memory-tiers.h，里面的核心数据结构
-   就叫文件名这个名字），支持memory-only node。了解最近内存发展趋势的都知道这两
-   个概念意味着什么。这应该是个大特性，我晚点找时间深入再分析一下。
 
 4. madvise()增加了一个参数MADV_COLLAPSE，用于主动把进程的一段变成了大页。这个修
    改让我想到了：页对应用程序，越来越不是透明的了。调用原型如下：::
