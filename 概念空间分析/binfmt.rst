@@ -3,6 +3,8 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 
+:index:`binfmt`
+
 binfmt概念空间建模
 ******************
 

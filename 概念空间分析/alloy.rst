@@ -8,6 +8,8 @@
 Alloy
 *****
 
+:index:`alloy`
+
 介绍
 ====
 
