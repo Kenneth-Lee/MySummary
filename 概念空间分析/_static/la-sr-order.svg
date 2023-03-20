@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="219.9334mm"
-   height="109.26912mm"
-   viewBox="0 0 219.93339 109.26912"
+   width="224.1096mm"
+   height="148.2373mm"
+   viewBox="0 0 224.1096 148.2373"
    version="1.1"
    id="svg8"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -290,15 +290,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.93643601"
-     inkscape:cx="391.91146"
-     inkscape:cy="227.99209"
+     inkscape:zoom="1.872872"
+     inkscape:cx="576.38749"
+     inkscape:cy="230.92875"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1136"
+     inkscape:window-width="2240"
+     inkscape:window-height="1329"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -323,75 +323,96 @@
      inkscape:label="图层 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-2.8020363,-436.09138)">
-    <path
-       style="fill:none;stroke:#0000ff;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-3-6-9-4-6)"
-       d="m 119.82842,486.55952 -0.13235,-17.69339"
-       id="path5950-2-8-6"
-       sodipodi:nodetypes="cc" />
+     transform="translate(0.03718855,-420.10712)">
     <path
        style="fill:none;stroke:#0000ff;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-3-6-9-4-6-0)"
-       d="m 105.45798,448.69795 -24.716301,0.25794 0.307336,59.97201"
+       d="m 105.45798,448.77511 -24.716301,0.0859 0.307336,19.97076"
        id="path5950-2-8-6-6"
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#0000ff;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-3-6-9-4-6-0-0)"
-       d="m 130.66731,533.6437 24.7163,-0.25794 -0.84703,-63.73447"
+       d="m 130.66731,533.6437 24.7163,-0.25794 -0.20965,-22.33973"
        id="path5950-2-8-6-6-2"
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#0000ff;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-3-6-9-4-6-1)"
-       d="m 120.41978,495.50504 0.30471,12.47358"
+       d="m 109.10124,468.77864 c 16.14629,5.43918 -1.16157,32.74808 14.14528,41.88515"
        id="path5950-2-8-6-7"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="14.664258"
-       y="470.58847"
+       x="184.37982"
+       y="512.02191"
        id="text1226-6-4-5-91-7-4"><tspan
          sodipodi:role="line"
          id="tspan1224-1-5-4-2-8-5"
-         x="14.664258"
-         y="470.58847"
+         x="184.37982"
+         y="512.02191"
          style="font-size:4.9389px;stroke-width:0.264583">Load Acquire</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 46.709485,468.77864 H 212.73543"
+       style="fill:none;stroke:#000000;stroke-width:0.162195px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 46.709485,468.77864 H 109.10124"
        id="path1044" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.162195;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.32439, 0.162195;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 118.75885,433.81752 V 558.34443"
+       id="path1044-3" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="12.564969"
-       y="511.04932"
+       x="9.7257442"
+       y="470.83441"
        id="text1226-6-4-5-91-7-4-3"><tspan
          sodipodi:role="line"
          id="tspan1224-1-5-4-2-8-5-6"
-         x="12.564969"
-         y="511.04932"
+         x="9.7257442"
+         y="470.83441"
          style="font-size:4.9389px;stroke-width:0.264583">Store Release</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="109.52348"
-       y="492.54309"
+       x="120.31971"
+       y="490.94495"
        id="text1226-6-4-5-91-7-4-3-5"><tspan
          sodipodi:role="line"
          id="tspan1224-1-5-4-2-8-5-6-3"
-         x="109.52348"
-         y="492.54309"
-         style="font-size:4.9389px;stroke-width:0.264583">内存操作</tspan></text>
+         x="120.31971"
+         y="490.94495"
+         style="font-size:4.9389px;stroke-width:0.264583">同步</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="56.994141"
+       y="434.43143"
+       id="text1226-6-4-5-91-7-4-3-5-6"><tspan
+         sodipodi:role="line"
+         id="tspan1224-1-5-4-2-8-5-6-3-7"
+         x="56.994141"
+         y="434.43143"
+         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">Hart a</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="158.7005"
+       y="434.03848"
+       id="text1226-6-4-5-91-7-4-3-5-6-5"><tspan
+         sodipodi:role="line"
+         id="tspan1224-1-5-4-2-8-5-6-3-7-3"
+         x="158.7005"
+         y="434.03848"
+         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">Hart b</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="109.13896"
-       y="534.95551"
+       x="65.153328"
+       y="535.43231"
        id="text1226-6-4-5-91-7-4-3-5-5"><tspan
          sodipodi:role="line"
          id="tspan1224-1-5-4-2-8-5-6-3-6"
-         x="109.13896"
-         y="534.95551"
-         style="font-size:4.9389px;stroke-width:0.264583">内存操作</tspan></text>
+         x="65.153328"
+         y="535.43231"
+         style="font-size:4.9389px;stroke-width:0.264583">之后的内存操作不能越过LA</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -402,10 +423,10 @@
          id="tspan1224-1-5-4-2-8-5-6-3-9"
          x="108.53967"
          y="450.24005"
-         style="font-size:4.9389px;stroke-width:0.264583">内存操作</tspan></text>
+         style="font-size:4.9389px;stroke-width:0.264583">之前的内存操作不能越过SR</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 46.584687,509.23949 H 212.61063"
+       style="fill:none;stroke:#000000;stroke-width:0.177605px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 123.24652,510.66379 h 56.76627"
        id="path1044-7" />
   </g>
 </svg>

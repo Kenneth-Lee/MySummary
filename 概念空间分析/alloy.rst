@@ -1,14 +1,14 @@
 .. Kenneth Lee 版权所有 2022
 
 :Authors: Kenneth Lee
-:Version: 1.1
-:Date: 2022-12-07
+:Version: 1.2
+:Date: 2023-03-20
 :Status: Released
 
 Alloy
 *****
 
-:index:`alloy`
+关键字：\ :index:`alloy`
 
 介绍
 ====
@@ -1077,9 +1077,8 @@ RISCV是两种都支持，让实现者自己选择用TSO还是WMO。
 但因为fence和内存访问是互相独立的动作，这样不一定能满足原子性的要求。所以无论
 TSO还是WMO，都会加上一些额外的约束，以保证编程语言在原子性能方法的语义要求。
 
-比如典型的用于C++内存模式的Acquire/Release语义，它要求在一对指定的指令（称为
-Load Acquire和Store Release）。要求po上安排在这对指令中间的指令在ppo上不能越过
-这对指令的界限：
+比如典型的Acquire/Release语义，可以保证一个核写的数据，全部生效以后，另一个核
+才能读到它：
 
 .. figure:: _static/la-sr-order.svg
 
