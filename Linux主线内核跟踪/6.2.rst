@@ -1,0 +1,197 @@
+.. Kenneth Lee 版权所有 2023
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2023-04-14
+:Status: Draft
+
+6.2
+***
+
+这个系列的文档是我用来强迫自己保持对Kernel版本变化的敏感而写的。它主要基于
+kernelnewbies.org\ [1]_\ 的基础信息，加上查阅相关感兴趣的文档和代码补充而成。
+
+Linux Kernel 6.2版本发布时间：2023年2月19日
+
+大特性
+======
+
+RetBleed防攻击
+--------------
+
+RetBleed是一种去年苏黎世联邦理工学院发布的Cache侧信道攻击漏洞，它攻击Google原
+来使用的Retpline方法来修复Spectre侧信道方法（参考：
+:doc:`../软件构架设计/给程序员解释Spectre和Meltdown漏洞`
+），这个方案依赖返回指令是不做分支预测的。但前面提到的研究表明，在特定的情况下，
+Intel和AMD都有预测的情况发生，导致攻击者可以通过系统调用构造攻击（AMD CPU
+family 0x15–0x17和an Intel Core generation 6–8都发现了相关攻击的可能性，比如
+Intel有一个Return Stack Buffer的硬件在做这种预测执行）。
+
+攻击发生在RSB溢出的时候，Linux现在的预防手段大致是在RSB超出一定的范围的时候就
+通过特定的行为清掉它，这种修复纯是个就事论事的代码调整，我不是做安全的，就不考
+虑它了。
+
+我只能说，以后我们做预测执行的时候，好好多推理几种场景，能少点漏洞就少点吧。
+
+Runtime Verification工具
+------------------------
+
+这个特性6.0引入的，我之前没有跟踪到，在这个版本中对整个特性做一个初步认识。
+
+从文档（内核Documentation/trace/rc）上来说，这是个穷举式的形式验证工具，用执行
+的trace去和一个标准的定义模型做比较，验证代码执行的正确性。实现代码在
+kernel/trace/rv目录中，其中核心是两个角色：
+
+* Monitor实现特定的场景的时间跟踪
+* Reaction实现Monitor的跟踪事件输出（主要是一个tracefs的文件）
+
+用户接口通过在sysfs的tracing接口上提供，和ftrace的tracer功能完全是一样的使用模式：
+
+1. available_monitor中给出一组monitor的名字，可以把名字echo到enable_monitor中
+   （和tracer不同的是它可以设置多个monitor），从而激活不同的monitor。
+
+2. 提供monitor_on, reactor_on两个控制文件用于功能临时开启和关闭。
+
+3. monitors目录下可以对每种monitor单独进行参数控制。
+
+现在实现了两个monitor：
+
+1. wip：Wakeup In Preemptive
+2. wwnr：Wakeup While Not Running monitor
+
+两个功能都非常简单，前面就是跟踪prompt_enable和prompt_disable两个行为，后面也
+只是跟踪调度的进入和退出的行为。我基本上看不懂这是在搞什么。
+
+然后文档中还提到一个这个论文：
+`A Taxonnomy for Classifying Runtime Verification Tools`_
+不过这东西要给钱看，我没到要给这个钱的时候。所以从搜索结果中还找到这两个来自
+Redhat的介绍文档：
+
+.. _`A Taxonnomy for Classifying Runtime Verification Tools`: 
+   https://research.manchester.ac.uk/en/publications/a-taxonomy-for-classifying-runtime-verification-tools
+
+* `A Thread Model for the Real Time Linux Kernel`_
+* `Efficient Runtime Verification for Linux Kernel`_
+
+.. _`A Thread Model for the Real Time Linux Kernel`:
+   https://research.redhat.com/blog/article/a-thread-model-for-the-real-time-linux-kernel/
+
+.. _`Efficient Runtime Verification for Linux Kernel`:
+   https://research.redhat.com/blog/article/efficient-runtime-verification-for-the-linux-kernel/
+
+这样这个拼图才比较完整了：首先这个东西不是一个功能的形式化验证工具，它的目的是
+用来通过比如汽车的安全（Safty不是Security）验证要求，而且专门是针对实时性的。
+
+传统的实时性测试工具主要就是一组测试用例来运行系统，然后跟踪这组用例消耗的时延
+的统计来看实际的效果，但这样的测试没法证明是完整的。RV的方法是先用数学（离散事
+件仿真，Discrete Event System）方法定义RTLinux的状态级模型（包含9千多个状态和2
+万多条边），然后用.dot的格式画出来，再生成可能造成所有跳转的内核模块，在内核中
+运行的时候通过perf/ftrace跟踪所有的切换过程，从而判断所有的状态切换是否在定义
+的范围内。这个定义的算法本身我还没有深入了解，但原理基本上就是这么个原理了。所
+以，内核的拼图是不够的，实际上这个方案还有用户态的部分，在
+tools/verification的部分，而且这里好像还不包括全部的模型。wip和wwnr仅仅是其中
+两个最简单的状态级。我本来想编译一下这个工具运行一下看看的，但它在我的Ubuntu
+22.04上编译不了，需要更新版本的libtraceevent和libtracefs（1.5vs1.3,
+1.3vs1.2.5），我懒得另外装版本了，就看到这个程度吧，更多的信息，找其他同事帮我
+看。
+
+作者提交补丁的时候倒是提供了一个rv运行的效果，是这样的：::
+
+  # rv mon wwnr --trace
+          <TASK>-PID      [CPU]  TYPE       ID                    STATE x EVENT                    -> NEXT_STATE               FINAL
+              |   |          |     |        |                        |     |                           |                       |
+              rv-3613     [001] event     3613                  running x switch_out               -> not_running              Y
+            sshd-1248     [005] event     1248                  running x switch_out               -> not_running              Y
+          <idle>-0        [005] event       71              not_running x wakeup                   -> not_running              Y
+          <idle>-0        [005] event       71              not_running x switch_in                -> running                  N
+      kcompactd0-71       [005] event       71                  running x switch_out               -> not_running              Y
+          <idle>-0        [000] event      860              not_running x wakeup                   -> not_running              Y
+          <idle>-0        [000] event      860              not_running x switch_in                -> running                  N
+    systemd-oomd-860      [000] event      860                  running x switch_out               -> not_running              Y
+          <idle>-0        [000] event      860              not_running x wakeup                   -> not_running              Y
+          <idle>-0        [000] event      860              not_running x switch_in                -> running                  N
+    systemd-oomd-860      [000] event      860                  running x switch_out               -> not_running              Y
+          <idle>-0        [005] event       71              not_running x wakeup                   -> not_running              Y
+          <idle>-0        [005] event       71              not_running x switch_in                -> running                  N
+      kcompactd0-71       [005] event       71                  running x switch_out               -> not_running              Y
+          <idle>-0        [000] event      860              not_running x wakeup                   -> not_running              Y
+          <idle>-0        [000] event      860              not_running x switch_in                -> running                  N
+    systemd-oomd-860      [000] event      860                  running x switch_out               -> not_running              Y
+          <idle>-0        [001] event     3613              not_running x wakeup                   -> not_running              Y
+
+这个和ftrace非常接近，我估计就是ftrace输出的导出。从这个结果看，它就是在两个状
+态之间切换，和整个方案提到的八千多个状态还差很多monitor。
+
+其他有趣的东西
+==============
+
+1. 增加对IPv6 Protective Load Balance，这是Google用于数据中心的的一个包调度协
+   议，其实我不关心，不过它是个大特性，就记录一下吧。
+
+2. BPF支持定义用户对象，这个事情我其实也不关心，只是作为大特性记录一下。提交者
+   用的gmail，叫Kumar，应该是个印度人。
+
+3. Rust支持还在改进中，我打算等它到一个阶段点再去看进展。相关补丁都是Miguel
+   Ojeda提交的，我查不到他的单位信息，似乎是一个独立软件工程师：
+   https://ojeda.dev/\ 。
+
+4. 这个版本合入了一个stdz算法到内核中，我突然有点好奇往内核合这东西干嘛用的，
+   所以查了一下，发现它是ko的一个子特性，可以选择一种算法压缩ko文件，现在已经
+   支持GZIP, XZ, ZSTD三种算法了，make menuconfig的时候选择某种压缩算法，输出
+   的ko文件会变成ko.gz，ko.xz这样的形式，应该可以直接插入到内核中。这次修改的
+   作者来自FB。
+
+5. Google有人提交了一个补丁，加了一个控制文件/proc/sys/kernel/oops_limits，控
+   制发生多少次oop后就panic，说是一个安全手段。得个知字。我看了一下，默认值是
+   一万。
+
+6. 这个版本有人提交了一个OrangeFS的ACL支持补丁，我从来没有看过这个文件系统，所
+   以去看了一下，这是一个类似PVFS那样的分布式网络文件系统，用于高性能计算。还
+   是得个知字。
+
+7. ftrace就改进了一下符号查找，原来只调用
+   kallsyms_on_each_symbol()，现在在找不到的时候会再调用
+   module_kallsyms_on_each_symbol()，从而可以输出模块里面的符号。Trace Trigger
+   现在可以通过内核命令行指定，类似这样：::
+
+     trace_trigger="sched_switch.stacktrace if prev_state == 2"
+   
+   其他的小修改我不是特别关心，就不记了。
+
+8. perf改进了一些内容输出上的内容，比如perf list可以输出为json格式，perf stat
+   可以保持同一个输出页面（不会滚动）之类的。perf script多了一个tasks_analyzer，
+   可以跟踪整个切换的过程，这个东西我原来每次都要用ftrace的函数跟踪来干的，有
+   了这个功能以后省事多了。它看起来是这样的：::
+
+      $ perf script report tasks-analyzer
+          Switched-In      Switched-Out CPU      PID      TID             Comm    Runtime     Time Out-In
+      15576.658891407   15576.659156086   4     2412     2428            gdbus        265            1949
+      15576.659111320   15576.659455410   0     2412     2412      gnome-shell        344            2267
+      15576.659491326   15576.659506173   2       74       74      kworker/2:1         15           13145
+      15576.659506173   15576.659825748   2     2858     2858  gnome-terminal-        320           63263
+      15576.659871270   15576.659902872   6    20932    20932    kworker/u16:0         32         2314582
+      15576.659909951   15576.659945501   3    27264    27264               sh         36              -1
+      15576.659853285   15576.659971052   7    27265    27265             perf        118         5050741
+      [...]
+
+9. 有一个提交西班牙语翻译的补丁，我一直没有认真去看内核的多语言版本的文档，所
+   以我去看了一下中文的翻译。发现已经翻译的量已经很可观了，肉眼看能看到龙芯，
+   中兴等公司在投入，但我觉得你让我看我肯定是不看的，基本上看不懂。Linux内核文
+   档本身已经写得不怎么样了，大部分都点到为止，但因为用词和内核的变量语义接近，
+   还勉强能看懂在说了，如果再翻译一下，就不用看了。我个人不看好这个投入，宁愿
+   基于主题重新写都比翻译好。
+
+10. NV在把VFIO和IOMMUFD连起来，这让我有一些紧迫感，希望我们今年可以开始把我们
+    的方案推上去。
+
+11. 海思这个版本提的东西很少，主要就是Shameer提交的一个vfio驱动的功能，我没有
+    细看具体是干什么的，代码表面上都是解决热迁移的时候的虚拟设备的状态控制问题。
+    有一个补丁是对华为Watch的支持的（Watch上跑Linux，不是连接Watch的驱动），这
+    个有趣，而且补丁还不是华为提供的。
+
+12. todo：RV，网卡驱动，苹果支持的补丁
+
+参考
+====
+
+.. [1] https://kernelnewbies.org/LinuxChanges
