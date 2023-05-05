@@ -108,6 +108,85 @@ limit和hardlimit），硬的就必须预留，软一些的就可以一定程度
 软的百分比就好了。我没兴趣先给你调好分配然后再去想使用者怎么用这个分配。这样组
 合的逻辑我们才知道我们的需求被满足了没有。
 
+算法分析
+^^^^^^^^
+
+说远了，我们还是回到算法本身吧。
+
+LRU算法主要用于自动判断页未来还要用的记录有多大。如果页已经被应用程序标记有多
+大机会使用了，这就不需要LRU算法了。比如madvice的MADV_SEQUENTIAL和MADV_RANDOM
+（对应内核的VM_SEQ_READ和VM_RAND_READ等参数），我们不需要LRU算法，因为丢弃算法
+本身就知道这些页面具有局部性或者不具有局部性。
+
+如果没有这种来自应用层的主动说明，平台只能通过对页面DA bit的扫描，以及文件读写
+的通道，来决定是否某个页面是否热。
+
+MG-LRU不是一个可选的算法，它对回收流程的修改是推翻式的，现在的扫描流程走的是这
+样一个过程：::
+
+  __alloc_pages()
+   +->__alloc_pages_slowpath() <-- 在这之前会尝试走get_page_from_freelist()这个快速通道
+       +->__alloc_pages_direct_reclaim()
+           +->__perform_reclaim()
+               +->try_to_free_pages()
+                   +->do_try_to_free_pages()
+                       +->shrink_zones()
+                           +->shrink_node()
+                               +->shrink_node_memcgs()
+                                   +->shrink_lruvec()
+                                       +->shrink_list()
+                                           +->shrink_active_list()   <-- folio_check_references()也会走后面的流程
+                                               +->folio_referenced()
+                                                   +->folio_referenced_one()
+                                                       +->lru_gen_look_around()
+
+可以和看到，回收流程被控制在try_to_free_pages()流程内部了。算法独立根据收集的
+数据决定页的热度，在不同的冷热页链表上移动。
+
+算法在每个NUMA Node的memcg（mem_cgroup_per_node）上设置一个lruvec，然后分有名
+和无名页各创建active和inactive链表，这个分类我觉得有助于分离多个要素在算法上不
+同的期望：
+
+1. 不同node独立跟踪，避免高成本抛弃了本地页面
+2. 不同memcg独立跟踪，因为memcg的要求是不同的
+3. 有名和无名页独立跟踪，因为有名页没有访问局部性，而无名页有。
+
+在每个lruvec上，再用一个很复杂的matrix（所谓的MG算法主要体现在这里），我们可以
+简单看看它的数据结构：
+
+.. code-block:: C
+
+  struct lru_gen_folio {
+  	/* the aging increments the youngest generation number */
+  	unsigned long max_seq;
+  	/* the eviction increments the oldest generation numbers */
+  	unsigned long min_seq[ANON_AND_FILE];
+  	/* the birth time of each generation in jiffies */
+  	unsigned long timestamps[MAX_NR_GENS];
+  	/* the multi-gen LRU lists, lazily sorted on eviction */
+  	struct list_head folios[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
+  	/* the multi-gen LRU sizes, eventually consistent */
+  	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
+  	/* the exponential moving average of refaulted */
+  	unsigned long avg_refaulted[ANON_AND_FILE][MAX_NR_TIERS];
+  	/* the exponential moving average of evicted+protected */
+  	unsigned long avg_total[ANON_AND_FILE][MAX_NR_TIERS];
+  	/* the first tier doesn't need protection, hence the minus one */
+  	unsigned long protected[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS - 1];
+  	/* can be modified without holding the LRU lock */
+  	atomic_long_t evicted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+  	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+  	/* whether the multi-gen LRU is enabled */
+  	bool enabled;
+        ...
+  }
+
+注意一下中间的几个三维数组，这个算法不是简单的逻辑模型，已经有ML的成分了。没到
+要改算法前，我就不深入进去看了，它跟踪的参数可不少，而且这显然不是局限在一个
+NUMA Node上的（虽然数据结构属于某个NUMA节点）。反正旧的页不是一次跳到inactive
+上的，而是随着一个age的变化在多个层级间逐步退火的。
+
+其他的不看了。
 
 KMSAN
 -----
