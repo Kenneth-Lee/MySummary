@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="172.46584mm"
+   height="139.42349mm"
+   viewBox="0 0 172.46582 139.42351"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="学生语文二叉树.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker32698"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-60"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-7"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-5" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-1" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-9-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-1-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-3" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-1" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-3-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-3-5" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-8" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-3-35"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-3-6" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-3-3-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-3-5-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-76-6-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-57-9-2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-51" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-4-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-51-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-4-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-51-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker32698-2-4-5-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9807-2-51-7-3" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.454468"
+     inkscape:cx="261.60769"
+     inkscape:cy="315.92308"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="2240"
+     inkscape:window-height="1329"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:pagecheckerboard="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(52.123123,55.833212)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker32698-2)"
+       d="m 14.977524,-43.131966 c 18.041395,3.460907 -2.20936,4.007467 17.633049,8.621116"
+       id="path32330-9"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="fill:none;stroke:#ff0000;stroke-width:0.546113;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-7-8-1-2"
+       width="28.898203"
+       height="24.523912"
+       x="31.333319"
+       y="-34.417591" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-7"
+       width="27.714201"
+       height="5.2823801"
+       x="32.610573"
+       y="-34.510849" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="42.559814"
+       y="-29.224609"
+       id="text3465-9-8-6-0"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-34"
+         style="stroke-width:0.170496"
+         x="42.559814"
+         y="-29.224609">语文成绩</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6"
+       width="27.714201"
+       height="5.2823801"
+       x="32.610573"
+       y="-29.228472" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="42.559807"
+       y="-24.156818"
+       id="text3465-9-8-6-52-3"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6"
+         style="stroke-width:0.170496"
+         x="42.559807"
+         y="-24.156818">学生记录指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-3"
+       width="27.714201"
+       height="5.2823801"
+       x="32.610573"
+       y="-23.946091" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="38.781185"
+       y="-19.089025"
+       id="text3465-9-8-6-52-3-3"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-4"
+         style="stroke-width:0.170496"
+         x="38.781185"
+         y="-19.089025">成绩更好学生指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-3-0"
+       width="27.714201"
+       height="5.2823801"
+       x="32.610573"
+       y="-18.663712" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="38.781185"
+       y="-14.021235"
+       id="text3465-9-8-6-52-3-3-3"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-4-2"
+         style="stroke-width:0.170496"
+         x="38.781185"
+         y="-14.021235">成绩更差学生指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#ff0000;stroke-width:0.546113;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-7-8-1-2-3"
+       width="28.898203"
+       height="24.523912"
+       x="-4.3604894"
+       y="6.8964643" />
+    <rect
+       style="fill:none;stroke:#ff0000;stroke-width:0.546113;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-7-8-1-2-3-3"
+       width="28.898203"
+       height="24.523912"
+       x="-36.166138"
+       y="48.793308" />
+    <rect
+       style="fill:none;stroke:#ff0000;stroke-width:0.546113;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-7-8-1-2-3-7"
+       width="28.898203"
+       height="24.523912"
+       x="46.62413"
+       y="48.682499" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-7-7"
+       width="27.714201"
+       height="5.2823801"
+       x="-3.0832295"
+       y="6.8032064" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="5.35461"
+       y="10.411129"
+       id="text3465-9-8-6-0-0"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-34-0"
+         style="stroke-width:0.170496"
+         x="5.35461"
+         y="10.411129">语文成绩</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-34"
+       width="27.714201"
+       height="5.2823801"
+       x="-3.0832295"
+       y="12.085583" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="5.35461"
+       y="15.478921"
+       id="text3465-9-8-6-52-3-9"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-2"
+         style="stroke-width:0.170496"
+         x="5.35461"
+         y="15.478921">学生记录指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-3-7"
+       width="27.714201"
+       height="5.2823801"
+       x="-3.0832295"
+       y="17.367964" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="1.5759771"
+       y="20.546713"
+       id="text3465-9-8-6-52-3-3-4"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-4-25"
+         style="stroke-width:0.170496"
+         x="1.5759771"
+         y="20.546713">成绩更好学生指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-3-0-2"
+       width="27.714201"
+       height="5.2823801"
+       x="-3.0832295"
+       y="22.650343" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="1.5759771"
+       y="25.614504"
+       id="text3465-9-8-6-52-3-3-3-4"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-4-2-4"
+         style="stroke-width:0.170496"
+         x="1.5759771"
+         y="25.614504">成绩更差学生指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#ff0000;stroke-width:0.546113;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-7-8-1-2-38"
+       width="28.898203"
+       height="24.523912"
+       x="81.171448"
+       y="7.7169485" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-7-6"
+       width="27.714201"
+       height="5.2823801"
+       x="82.4487"
+       y="7.6236906" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="94.50827"
+       y="11.198283"
+       id="text3465-9-8-6-0-08"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-34-9"
+         style="stroke-width:0.170496"
+         x="94.50827"
+         y="11.198283">语文成绩</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-2"
+       width="27.714201"
+       height="5.2823801"
+       x="82.4487"
+       y="12.906067" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="94.508255"
+       y="16.266073"
+       id="text3465-9-8-6-52-3-2"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-3"
+         style="stroke-width:0.170496"
+         x="94.508255"
+         y="16.266073">学生记录指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-3-1"
+       width="27.714201"
+       height="5.2823801"
+       x="82.4487"
+       y="18.188448" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="90.729637"
+       y="21.333866"
+       id="text3465-9-8-6-52-3-3-8"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-4-3"
+         style="stroke-width:0.170496"
+         x="90.729637"
+         y="21.333866">成绩更好学生指针</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.248209;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2-4-1-8-4-8-6-3-0-4"
+       width="27.714201"
+       height="5.2823801"
+       x="82.4487"
+       y="23.470827" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="90.729637"
+       y="26.401657"
+       id="text3465-9-8-6-52-3-3-3-2"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-2-6-4-2-2"
+         style="stroke-width:0.170496"
+         x="90.729637"
+         y="26.401657">成绩更差学生指针</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.72794px;line-height:1.25;font-family:sans-serif;stroke-width:0.170496"
+       x="23.391068"
+       y="-41.660748"
+       id="text3465-9-8-6-0-3"
+       transform="scale(0.95937663,1.0423435)"><tspan
+         sodipodi:role="line"
+         id="tspan3463-0-5-37-34-4"
+         style="stroke-width:0.170496"
+         x="23.391068"
+         y="-41.660748">语文成绩二叉树</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker32698-2-4)"
+       d="M 34.328494,-21.230089 C 11.132533,-21.634113 -24.202898,2.2828153 -4.3604894,6.8964643"
+       id="path32330-9-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker32698-2-4-5)"
+       d="m 57.393723,-15.070504 c 20.528979,0.828155 3.935316,18.1738035 23.777725,22.7874525"
+       id="path32330-9-7-1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker32698-2-4-5-1)"
+       d="m 22.846406,25.895047 c 20.528979,0.828155 3.935316,18.173803 23.777725,22.787452"
+       id="path32330-9-7-1-3"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker32698-2-4-6)"
+       d="M 2.5228442,20.666757 C -20.673117,20.262733 -56.008548,44.179661 -36.166139,48.79331"
+       id="path32330-9-7-8"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>
