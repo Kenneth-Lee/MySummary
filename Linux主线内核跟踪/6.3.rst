@@ -1,0 +1,136 @@
+.. Kenneth Lee 版权所有 2023
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2023-08-02
+:Status: Draft
+
+6.3
+***
+
+这个系列的文档是我用来强迫自己保持对Kernel版本变化的敏感而写的。它主要基于
+kernelnewbies.org\ [1]_\ 的基础信息，加上查阅相关感兴趣的文档和代码补充而成。
+
+Linux Kernel 6.3版本发布时间：2023年4月23日
+
+大特性
+======
+
+rseq系统调用支持新ID
+--------------------
+
+这个特性涉及rseq系统调用，我还没有听说过这个系统调用，所以先调查一下这是什么功
+能。
+
+rseq在我的Ubuntu上连手册都查不到，改查Libc手册可以找到这个：
+
+  https://www.gnu.org/software/libc/manual/html_node/Restartable-Sequences.html
+
+按这里的说明，它属于librseq，但又说它是libc的一部分。信息还比较错乱，
+Ubuntu22.04上反正装不了用户态支持，不过它就是个简单的系统调用，所以也不用担心
+用不了。
+
+整体思路可以参考这个文档：
+
+  https://www.efficios.com/blog/2019/02/08/linux-restartable-sequences/
+
+思路就是仿照ARM的ldex/stex指令，只是换成了函数，rseq指定了三个回调：
+
+* start_ip：相当于ldex，表示开始执行
+* post_commit_ip：相当于stex成功，表示可以提交数据
+* abort_ip：相当于stex失败，表示你需要再做一次原来的操作
+
+rseq作用在每个线程上，如果你读了数据然后处理，中间没有其他线程来访问过这个数据，
+就直接提交，否则就abort。这样能保证锁住的时间不会很长。rseq的系统调用是这样的：
+
+.. code-block:: c
+
+   static int sys_rseq(volatile struct rseq *rseq_abi, uint32_t rseq_len,
+   			int flags, uint32_t sig)
+   {
+       return syscall(__NR_rseq, rseq_abi, rseq_len, flags, sig);
+   }
+
+其中rseq_abi的结构如下：
+
+.. figure:: _static/restartable-sequences-diagram.png
+
+这次修改就是调整这里的cpu_id，除了可以用cpu作用区分实体的ID，还可以用NUMA Node
+ID，Per-Memory map concurrency ID，和NUMA-aware concurrency ID。这个效果等我有
+时间去拿真设备去验一下再说。
+
+整个修改包含21个补丁，来自Mathieu Desnoyers <mathieu.desnoyers@efficios.com>。
+这个Effici OS似乎是一个外包公司，提供多核优化服务的。
+
+Netlink协议标准化
+-----------------
+
+这个版本把netlink的上层协议用yaml进行标准化定义。netlink是一个用于支持内核和用
+户态通讯的socket接口，Domain是AF_NETLINK，主要用SOCK_DGRAM形式通讯（包方式，而
+不是流方式），Family用于区分内核的模块，比如NETLINK_FIREWALL，NETLINK_CRYPTO等。
+
+所以它是个很自由的二进制接口，你喜欢让那个包是什么私有格式都可以。（但它本身使
+用一个统一的头。）定义成yaml只是用一种标准化的方法说明每个包的二进制域的组成是
+什么样的而已。
+
+.. code-block:: c 
+
+   struct nlmsghdr {
+     __u32 nlmsg_len;    /* Length of message including header */
+     __u16 nlmsg_type;   /* Type of message content */
+     __u16 nlmsg_flags;  /* Additional flags */
+     __u32 nlmsg_seq;    /* Sequence number */
+     __u32 nlmsg_pid;    /* Sender port ID */
+   };
+
+定义的描述在Documentments/usersapce-api/netlink/目录下，配套定义有一组工具在
+tools/net/yml/目录下，可以根据所述yaml文件生成代码。老实说，我个人最讨厌这样的
+方案了，这样生成的代码，后面再维护就回不去了，这让我很不爽。所以，就看到这里吧。
+
+其他有趣的东西
+==============
+
+1. BTRFS和eBPF性能优化在KernelNewbies中都被认为是大特性，不过对我都没有什么好
+   跟踪的，就在这里加一个记录吧。
+
+2. memfd支持MD_NOEXEC_SEAL属性，不让memfd的内存执行。
+
+3. IPv4支持Big TCP（64KB以上的TSO帧）
+
+4. 支持AMD两个新QoS特性：
+
+   * Slow Memory Bandwidth Allocation (SMBA)，这主要用来支持CXL连接的内存。
+   * Bandwidth Monitoring Event Configuration (BMEC)，这是PMU事件。
+
+5. 这个版本NFS的PRCSEC GSS Kerberos 5安全机制默认不用DES和SHA1加密，改为
+   AES-SHA2算法。
+
+6. BFQ IO调度器增加针对磁盘多ARM（不知道怎么翻译，就是磁盘磁头那个臂）设计的算
+   法优化。
+
+7. rust, nolibc（在\ :doc:`5.19`\ 中跟踪过），BTRFS，Folios，perf/ftrace等特性
+   加入了不少小改进。
+
+8. 这个版本增加了一下script/gdb的mm结构的支持，我原来不知道Kernel有这个脚本，
+   看了一下介绍。这东西的文档在
+   Documentations/dev-tools/gdb-kernel-debugging.rst中介绍，通过make
+   scripts_gdb可以在编译的结果目录中产生vmlinux-gdb.py。这样，你在这个目录下运
+   行gdb vmlinux的时候就能加载这个模块解释部分内核特有的数据结构了。
+
+9. io_uring提供一个新的flag支持：IORING_MSG_RING_FLAGS_PASS。没有看细节，表面
+   说法是支持跨ring传递参数。
+
+10. Documentations/admin-guide中增加了一个workload-tracing.rst文档，初步讲了一
+    下Linux性能压力分析的原理。这个文档推荐使用perf bench, stress-ng和paxtest
+    给系统制造压力。比如：stress-ng --netdev 1 -t 60 --metrics，或者paxtest
+    kiddie，（注意后者会产生一堆的崩溃报告）。
+
+11. 龙芯增加了一组基本设施的支持。但其实这个平台的发展很慢。之前有人告诉我说这
+    个平台的开源和闭源部分是分开的，所以用闭源方案不能编译内核可以考虑装开源发
+    行版，但实际上，相关的开源方案都只能用来玩，没有一个可以用作工作环境的，这
+    个平台还只能说是个玩具。
+
+参考
+====
+
+.. [1] https://kernelnewbies.org/LinuxChanges
