@@ -123,7 +123,7 @@ tools/net/yml/目录下，可以根据所述yaml文件生成代码。老实说�
 10. Documentations/admin-guide中增加了一个workload-tracing.rst文档，初步讲了一
     下Linux性能压力分析的原理。这个文档推荐使用perf bench, stress-ng和paxtest
     给系统制造压力。比如：stress-ng --netdev 1 -t 60 --metrics，或者paxtest
-    kiddie，（注意后者会产生一堆的崩溃报告）。
+    kiddie，不过后者只是一个内存泄漏检查工具，比较实用的还是stress-ng。
 
 11. 龙芯增加了一组基本设施的支持。但其实这个平台的发展很慢。之前有人告诉我说这
     个平台的开源和闭源部分是分开的，所以用闭源方案不能编译内核可以考虑装开源发
