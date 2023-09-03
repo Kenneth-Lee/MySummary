@@ -392,5 +392,27 @@
        d="m 98.509043,-25.720513 -0.31936,-18.873478"
        id="path33846-5-3-0"
        sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="112.51576"
+       y="24.290543"
+       id="text3465-0-3"><tspan
+         sodipodi:role="line"
+         id="tspan3463-6-6"
+         style="stroke-width:0.264583"
+         x="112.51576"
+         y="24.290543">B</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="17.231646"
+       y="24.71269"
+       id="text3465-0-3-1"><tspan
+         sodipodi:role="line"
+         id="tspan3463-6-6-8"
+         style="stroke-width:0.264583"
+         x="17.231646"
+         y="24.71269">C</tspan></text>
   </g>
 </svg>
