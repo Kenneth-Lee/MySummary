@@ -27,12 +27,6 @@ class DtagNode(Tags):
         super().__init__(content)
         self.docname = docname
 
-def visit_dtag_node(self, node):
-    pass
-
-def depart_dtag_node(self, node):
-    pass
-
 class DtagListNode(Tags):
     def __init__(self, content):
         super().__init__(content)
@@ -50,6 +44,7 @@ def process_dtags(app, doctree):
                     env.dtag_db[tag].append(node.docname)
             else:
                 env.dtag_db[tag] = [node.docname]
+        node.parent.remove(node)
 
 def _create_dtag_entries(tag, db, entries, builder, fromdocname):
     for docname in db[tag]:
@@ -95,9 +90,8 @@ def dtaglist_role(typ, rawtext, etext, lineno, inliner, options={}, content=[]):
     return [node], []
 
 def setup(app):
-    vd = visit_dtag_node, depart_dtag_node
-    app.add_node(DtagNode, html=vd, latex=vd, text=vd)
-    app.add_node(DtagListNode, html=vd, latex=vd, text=vd)
+    app.add_node(DtagNode)
+    app.add_node(DtagListNode)
 
     app.add_role("dtag", dtag_role)
     app.add_role("dtaglist", dtaglist_role)
@@ -106,7 +100,7 @@ def setup(app):
     app.connect('doctree-resolved', process_dtags_list)
 
     return {
-        'version': '0.1',
+        'version': '0.2',
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
