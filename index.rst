@@ -39,7 +39,7 @@ Linux主线内核跟踪
 或者文档中使用了数学公式，用这种方法阅读都是看不到的。我为此申请了readthedocs
 的自动生成服务，读者可以直接在这里阅读生成后的版本：
 
-        `MySummary <https://mysummary.readthedocs.io/zh/latest/README.html>`_
+        `MySummary <https://mysummary.readthedocs.io/zh/latest/index.html>`_
 
 另外，2020底，我开始把道德经直译转化为一本书，项目在这里：
 

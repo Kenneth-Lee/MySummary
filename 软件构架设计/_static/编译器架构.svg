@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="104.67178mm"
+   height="63.448753mm"
+   viewBox="0 0 104.67178 63.448753"
+   version="1.1"
+   id="svg1043"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="编译机架构.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1037">
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1083"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1077"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend-8"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1083-7"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend-8-5"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1083-7-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend-8-3"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1083-7-7"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       markerWidth="23.823124"
+       markerHeight="9.4656763"
+       refX="11.911562"
+       refY="4.7328382"
+       orient="auto"
+       id="marker2066">
+      <rect
+         style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.20836;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+         id="rect1968"
+         width="11.890918"
+         height="11.33369"
+         x="-5.5136189"
+         y="6.8333063"
+         transform="matrix(0.93728469,-0.34856478,0.92053323,0.39066426,0,0)"
+         inkscape:transform-center-x="-2.9074309"
+         inkscape:transform-center-y="0.044265248" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="199.82143"
+     inkscape:cy="129.10714"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="2240"
+     inkscape:window-height="1329"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:document-rotation="0"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:pagecheckerboard="0">
+    <sodipodi:guide
+       position="-4.1838789,39.47804"
+       orientation="1,0"
+       id="guide1966" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata1040">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-65.557762,-158.68628)">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5"
+       width="16.804756"
+       height="7.0946527"
+       x="77.659431"
+       y="164.01271" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="79.244247"
+       y="168.78099"
+       id="text1049-6-7-6-3-6-3"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5"
+         x="79.244247"
+         y="168.78099"
+         style="font-size:3.175px;stroke-width:0.264583">应用程序</tspan></text>
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-5"
+       width="16.804756"
+       height="7.0946527"
+       x="76.067108"
+       y="186.23819" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="79.856651"
+       y="190.91824"
+       id="text1049-6-7-6-3-6-3-8"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-2"
+         x="79.856651"
+         y="190.91824"
+         style="font-size:3.175px;stroke-width:0.264583">编译器</tspan></text>
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-5-0"
+       width="16.804756"
+       height="7.0946527"
+       x="86.963821"
+       y="204.6841" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="92.750656"
+       y="209.82812"
+       id="text1049-6-7-6-3-6-3-8-6"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-2-6"
+         x="92.750656"
+         y="209.82812"
+         style="font-size:3.175px;stroke-width:0.264583">硬件</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 83.128186,171.09419 c -0.12211,0.2576 -0.65,15.0323 -0.65,15.0323"
+       id="path1713" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.25157px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;inline-size:72.4982;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.154242"
+       x="97.324989"
+       y="197.98889"
+       id="text1049-6-7-6-3-2-7-6"
+       transform="matrix(0.31471948,0,0,0.27071803,52.275308,164.22952)"><tspan
+         x="97.324989"
+         y="197.98889"
+         id="tspan32853">编译器封装硬件接口</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 83.695956,193.18491 10.63932,11.71644"
+       id="path2128-9-9"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-9"
+       width="16.804756"
+       height="7.0946527"
+       x="125.7534"
+       y="163.67299" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="127.33822"
+       y="168.44127"
+       id="text1049-6-7-6-3-6-3-6"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-0"
+         x="127.33822"
+         y="168.44127"
+         style="font-size:3.175px;stroke-width:0.264583">应用程序</tspan></text>
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.43371;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-5-7"
+       width="45.52"
+       height="14.926291"
+       x="117.82273"
+       y="182.84674" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="145.82918"
+       y="186.97372"
+       id="text1049-6-7-6-3-6-3-8-0"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-2-1"
+         x="145.82918"
+         y="186.97372"
+         style="font-size:3.175px;stroke-width:0.264583">底软</tspan></text>
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-5-0-0"
+       width="16.804756"
+       height="7.0946527"
+       x="135.0578"
+       y="204.34438" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="140.84464"
+       y="209.4884"
+       id="text1049-6-7-6-3-6-3-8-6-1"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-2-6-3"
+         x="140.84464"
+         y="209.4884"
+         style="font-size:3.175px;stroke-width:0.264583">硬件</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 131.22216,170.75447 c -0.12211,0.2576 3.52213,12.12919 3.52213,12.12919"
+       id="path1713-7"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.25157px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;inline-size:72.4982;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.154242"
+       x="97.324989"
+       y="197.98889"
+       id="text1049-6-7-6-3-2-7-6-7"
+       transform="matrix(0.31471948,0,0,0.27071803,100.36928,163.8898)"><tspan
+         x="97.324989"
+         y="197.98889"
+         id="tspan32855">底软封装硬件接口</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.157528px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 135.87493,197.89612 6.59383,6.70139"
+       id="path2128-9-9-2"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-5-5"
+       width="16.804756"
+       height="7.0946527"
+       x="119.93487"
+       y="188.20781" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="123.72442"
+       y="192.88786"
+       id="text1049-6-7-6-3-6-3-8-2"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-2-0"
+         x="123.72442"
+         y="192.88786"
+         style="font-size:3.175px;stroke-width:0.264583">编译器</tspan></text>
+    <rect
+       style="vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.181678;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="rect1921-3-5-5-5-2"
+       width="16.804756"
+       height="7.0946527"
+       x="139.62248"
+       y="188.90063" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="143.41203"
+       y="193.58069"
+       id="text1049-6-7-6-3-6-3-8-2-9"><tspan
+         sodipodi:role="line"
+         id="tspan1047-7-5-3-6-7-5-2-0-0"
+         x="143.41203"
+         y="193.58069"
+         style="font-size:3.175px;stroke-width:0.264583">OS etc.</tspan></text>
+  </g>
+</svg>
