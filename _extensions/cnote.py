@@ -1,22 +1,14 @@
-# Kenneth Lee 版权所有 2021
+# Kenneth Lee 版权所有 2021-2023
 # 用于取代note的directive，可以自己决定标题。
 # 用法：
-# .. cnote:: 标题
+# .. cnote::
+#    :caption: 标题
 #
 #    内容
  
 from docutils import nodes
 from sphinx.util.docutils import SphinxDirective
 from docutils.parsers.rst import directives
-
-class cnote_node(nodes.Admonition, nodes.Element):
-    pass
-
-def visit_cnote_node(self, node):
-    self.visit_admonition(node)
-
-def depart_cnote_node(self, node):
-    self.depart_admonition(node)
 
 class cnote_directive(SphinxDirective):
 
@@ -25,7 +17,7 @@ class cnote_directive(SphinxDirective):
     option_spec = { 'caption' : directives.unchanged }
 
     def run(self):
-        node = cnote_node("cnote")
+        node = nodes.admonition()
         if 'caption' in self.options.keys():
             node += nodes.title(text=self.options['caption'])
         else:
@@ -36,8 +28,6 @@ class cnote_directive(SphinxDirective):
         return [node]
 
 def setup(app):
-    vd = visit_cnote_node, depart_cnote_node
-    app.add_node(cnote_node, html=vd, latex=vd, text=vd)
     app.add_directive("cnote", cnote_directive)
 
     return {
