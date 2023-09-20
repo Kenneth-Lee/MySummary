@@ -67,6 +67,7 @@ Linux主线内核跟踪
    Linux主线内核跟踪/README
    概念空间分析/README
    逻辑哲学论分析/README
+   分类索引
 
 Indices and tables
 ==================

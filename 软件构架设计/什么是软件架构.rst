@@ -4,6 +4,8 @@
 :Authors: Kenneth Lee
 :Version: 1.0
 
+:dtag:`架构设计定义`
+
 什么是软件架构
 **************
 

@@ -1,4 +1,4 @@
-.. Kenneth Lee 版权所有 2023
+. Kenneth Lee 版权所有 2023
 
 :Authors: Kenneth Lee
 :Version: 0.1
