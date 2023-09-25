@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="173.2245mm"
+   height="83.052925mm"
+   viewBox="0 0 173.22448 83.052948"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="电阻和二极管的伏安曲线对比.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1L"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-60"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-99" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-03"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-04"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-6" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-0-7"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-99-6" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-03-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-7-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend-03-0-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path9801-7-9-3" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-3"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-6"
+         transform="scale(-0.5)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.5171497"
+     inkscape:cx="307.49065"
+     inkscape:cy="138.84752"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="2240"
+     inkscape:window-height="1323"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:pagecheckerboard="0"
+     inkscape:snap-global="false"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-17.90302,-8.0184777)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L)"
+       d="M 17.90302,53.448511 H 88.730627"
+       id="path404" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L)"
+       d="M 53.358703,90.54986 V 9.6721214"
+       id="path406" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 26.384677,81.10043 83.738616,22.003515"
+       id="path1664" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="66.669373"
+       y="45.422207"
+       id="text1720"><tspan
+         sodipodi:role="line"
+         id="tspan1718"
+         style="font-size:2.82222px;fill:#0000ff;stroke-width:0.264583"
+         x="66.669373"
+         y="45.422207">电阻的伏安曲线是线性的,</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:2.82222px;fill:#0000ff;stroke-width:0.264583"
+         x="66.669373"
+         y="48.949982"
+         id="tspan1772">斜率就是它的电阻</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-3)"
+       d="m 110.69305,53.970056 h 70.82761"
+       id="path404-7" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-3)"
+       d="M 146.14873,91.071405 V 10.193666"
+       id="path406-5" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 114.51363,87.649097 c 0,0 4.56316,-30.532349 7.57578,-31.425441 4.09202,-1.213084 19.97198,0.308632 21.33459,-0.808355 0.81592,-0.66885 2.75663,-1.555246 2.75663,-1.555246 0,0 3.16786,0.350146 7.59685,-0.08403 5.49239,-0.53842 11.97527,-22.036862 11.48609,-33.133954"
+       id="path1664-3"
+       sodipodi:nodetypes="csscsc" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="147.35136"
+       y="61.976246"
+       id="text1720-5"><tspan
+         sodipodi:role="line"
+         style="font-size:2.82222px;fill:#0000ff;stroke-width:0.264583"
+         x="147.35136"
+         y="61.976246"
+         id="tspan1772-2">二极管的伏安曲线是非线性的,</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="120.38661"
+       y="76.737122"
+       id="text1720-5-3"><tspan
+         sodipodi:role="line"
+         style="font-size:2.82222px;fill:#0000ff;stroke-width:0.264583"
+         x="120.38661"
+         y="76.737122"
+         id="tspan1772-2-6">稳压区</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="129.53362"
+       y="51.159542"
+       id="text1720-5-3-6"><tspan
+         sodipodi:role="line"
+         style="font-size:2.82222px;fill:#0000ff;stroke-width:0.264583"
+         x="129.53362"
+         y="51.159542"
+         id="tspan1772-2-6-2">截止区</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="170.10747"
+       y="28.115654"
+       id="text1720-5-3-6-1"><tspan
+         sodipodi:role="line"
+         style="font-size:2.82222px;fill:#0000ff;stroke-width:0.264583"
+         x="170.10747"
+         y="28.115654"
+         id="tspan1772-2-6-2-8">饱和区</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="84.97081"
+       y="60.373188"
+       id="text5859"><tspan
+         sodipodi:role="line"
+         id="tspan5857"
+         style="stroke-width:0.264583"
+         x="84.97081"
+         y="60.373188">U</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="182.94655"
+       y="61.84053"
+       id="text5859-0"><tspan
+         sodipodi:role="line"
+         id="tspan5857-9"
+         style="stroke-width:0.264583"
+         x="182.94655"
+         y="61.84053">U</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="57.022034"
+       y="11.176412"
+       id="text5859-9"><tspan
+         sodipodi:role="line"
+         id="tspan5857-1"
+         style="stroke-width:0.264583"
+         x="57.022034"
+         y="11.176412">I</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="151.47789"
+       y="11.203929"
+       id="text5859-9-2"><tspan
+         sodipodi:role="line"
+         id="tspan5857-1-7"
+         style="stroke-width:0.264583"
+         x="151.47789"
+         y="11.203929">I</tspan></text>
+    <ellipse
+       style="fill:#ffff00;stroke:none;stroke-width:0.465;-inkscape-stroke:none;stop-color:#000000;opacity:0.40755208"
+       id="path8966"
+       cx="117.38235"
+       cy="67.786507"
+       rx="6.4869881"
+       ry="18.214191" />
+    <ellipse
+       style="opacity:0.407552;fill:#00ffff;stroke:none;stroke-width:0.465;-inkscape-stroke:none;stop-color:#000000"
+       id="path8966-0"
+       cx="133.92377"
+       cy="55.483444"
+       rx="11.445948"
+       ry="3.1262686" />
+    <ellipse
+       style="opacity:0.407552;fill:#00ffff;stroke:none;stroke-width:0.465;-inkscape-stroke:none;stop-color:#000000"
+       id="path8966-0-6"
+       cx="160.83888"
+       cy="34.448471"
+       rx="8.1554403"
+       ry="16.014429" />
+  </g>
+</svg>
