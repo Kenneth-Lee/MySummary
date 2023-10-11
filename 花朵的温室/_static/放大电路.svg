@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="175.06168mm"
-   height="123.99422mm"
-   viewBox="0 0 175.06166 123.99425"
+   width="186.31946mm"
+   height="117.87843mm"
+   viewBox="0 0 186.31944 117.87846"
    version="1.1"
    id="svg8"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="三极管例题1.svg"
+   sodipodi:docname="放大电路.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -295,8 +295,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.7798936"
-     inkscape:cx="320.80569"
-     inkscape:cy="252.54319"
+     inkscape:cx="352.83008"
+     inkscape:cy="195.23639"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -329,7 +329,7 @@
      inkscape:label="图层 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-4.73278,12.421165)">
+     transform="translate(3.7593518,9.2084308)">
     <rect
        style="font-variation-settings:normal;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.673366;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
        id="rect3128-6-9-2-54"
@@ -394,7 +394,7 @@
        id="path1738" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker3117)"
-       d="M 35.266665,71.151009 H 54.126208 V 51.792092 l -13.01569,0"
+       d="M 35.266665,71.151009 H 54.126208 V 51.792092 h -13.01569"
        id="path1740"
        sodipodi:nodetypes="cccc" />
     <text
@@ -488,6 +488,28 @@
          y="29.29472">B</tspan></text>
     <text
        xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583;fill:#0000ff"
+       x="-3.8948183"
+       y="24.090097"
+       id="text1958-1-0-6-3-3"><tspan
+         sodipodi:role="line"
+         id="tspan1956-2-9-0-7-6"
+         style="stroke-width:0.264583;fill:#0000ff"
+         x="-3.8948183"
+         y="24.090097">信号源，比如喇叭</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583;fill:#0000ff"
+       x="153.21043"
+       y="-5.6355004"
+       id="text1958-1-0-6-3-3-3"><tspan
+         sodipodi:role="line"
+         id="tspan1956-2-9-0-7-6-5"
+         style="stroke-width:0.264583;fill:#0000ff"
+         x="153.21043"
+         y="-5.6355004">放大的输出信号</tspan></text>
+    <text
+       xml:space="preserve"
        style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
        x="93.101837"
        y="11.566812"
@@ -549,5 +571,22 @@
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2)"
        d="M 127.66147,-0.82520969 H 108.57722"
        id="path3332-9" />
+    <ellipse
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.564999;stop-color:#000000"
+       id="path13023"
+       cx="35.29628"
+       cy="32.567886"
+       rx="6.8286648"
+       ry="7.0144787" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 30.895336,32.582925 c 3.002356,-7.129935 5.535542,6.738162 8.007216,0"
+       id="path13131"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:0.665001;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 155.35313,3.5973606 c 2.49139,-17.5445206 4.59347,16.5804914 6.64449,0"
+       id="path13131-5"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
