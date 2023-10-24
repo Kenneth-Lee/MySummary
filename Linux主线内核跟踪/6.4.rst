@@ -1,0 +1,50 @@
+.. Kenneth Lee 版权所有 2023
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2023-10-20
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2023-06-25
+
+6.4
+***
+
+大特性
+======
+
+Intel线性地址Mask
+-----------------
+
+todo：就是在用户态可以把地址的高位用作其他用途。
+
+用户态trace event接口
+---------------------
+
+todo：可以在用户态放tracepoint了。
+
+两个Scalable并行优化
+--------------------
+
+todo：per-VM lock和更多的切换锁
+
+
+其他有趣的东西
+==============
+
+1. PSI（Pressure Stall Information）支持用户态访问
+
+2. todo：更安全的KSM接口（原来用madvice）
+
+3. todo：新BPF特性
+
+4. todo：关闭动态关闭SELinux的功能
+
+华为和海思的提交
+================
+
+1. 陈祥和John合了一个支持SAS驱动支持poll的特性
+2. 有人用gmail邮箱和了一个机顶盒的随机数生成器驱动的补丁

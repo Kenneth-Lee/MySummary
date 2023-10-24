@@ -1,0 +1,52 @@
+.. Kenneth Lee 版权所有 2023
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2023-10-20
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2023-08-27
+
+6.5
+***
+
+大特性
+======
+
+移动mount
+---------
+
+todo： 把一个mount移动到另一个位置上，避免原来的mount不能umount
+
+用户态读Cache状态
+-----------------
+
+todo：cachestat()系统调用
+
+支持unaccepted内存
+------------------
+
+todo：虚拟机功能
+
+
+
+其他有趣的东西
+==============
+
+1. todo：默认开启secret memory
+   
+2. todo：启动USB4.0支持
+
+3. todo：MIDI2.0支持
+
+4. 
+
+
+华为和海思的提交
+================
+
+1. 鲲鹏加了uncore的PMU事件
+2. Hi3798加了一个USB2.0的驱动（用的gmail的账户）
