@@ -16,15 +16,22 @@
 大特性
 ======
 
-Intel线性地址Mask
+Intel LAM特性使能
 -----------------
 
-todo：就是在用户态可以把地址的高位用作其他用途。
+LAM, Linear Address Masking。就是在用户态可以把地址的高位用作其他用途。相当于
+ARM的Top-Byte ignore或者PAuth特性，19年AMD也有一个upper address ignore特性，不
+过没有推到Linux中。
+
+Intel这次推进来的特性不包含最高位，叫LAM_U57和LAM_U48，分别掩掉62-57和62-48位。
+这样应该是为了避免有符号数的判定算法出问题。这个Patch涉及的小修改挺多的，主要
+是一堆的页表处理需要在这些bit上进行特殊处理。
 
 用户态trace event接口
 ---------------------
 
-todo：可以在用户态放tracepoint了。
+这个版本开始，可以在用户态放tracepoint了。接口是
+ioctl(/sys/kernel/tracing/user_events_data, user_reg)。
 
 两个Scalable并行优化
 --------------------
