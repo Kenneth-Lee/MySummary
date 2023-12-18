@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="123.64272mm"
+   height="56.11702mm"
+   viewBox="0 0 123.64272 56.11702"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="硬件模块图.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.6819304"
+     inkscape:cx="144.47685"
+     inkscape:cy="264.27966"
+     inkscape:window-width="2240"
+     inkscape:window-height="1323"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker1406"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1404"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1342"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1292"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1290"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1250"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1248"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L"
+         transform="scale(-0.5)" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-20.818291,-39.410203)">
+    <rect
+       style="fill:#ffd5d5;stroke:#000000;stroke-width:0.465;stroke-dasharray:none;stop-color:#000000"
+       id="rect234"
+       width="25.888445"
+       height="25.243843"
+       x="39.927071"
+       y="59.304386" />
+    <rect
+       style="fill:#ffd5d5;stroke:#000000;stroke-width:0.465;stroke-dasharray:none;stop-color:#000000"
+       id="rect234-3"
+       width="25.888445"
+       height="25.243843"
+       x="97.918289"
+       y="70.05088" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L)"
+       d="M 23.938669,45.134046 H 52.483551 V 57.905184"
+       id="path979" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1250)"
+       d="M 52.517349,45.111805 H 110.63823 V 68.525456"
+       id="path981" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="31.710732"
+       y="42.957733"
+       id="text1037"><tspan
+         sodipodi:role="line"
+         id="tspan1035"
+         style="stroke-width:0.264583"
+         x="31.710732"
+         y="42.957733">时钟</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="23.783091"
+       y="62.999569"
+       id="text1037-6"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7"
+         style="stroke-width:0.264583"
+         x="23.783091"
+         y="62.999569">输入</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="75.550964"
+       y="61.769428"
+       id="text1037-6-2"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-9"
+         style="stroke-width:0.264583"
+         x="75.550964"
+         y="61.769428">第一层输出</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1292)"
+       d="M 66.188068,65.807528 H 82.274387 V 76.733767 H 95.88239"
+       id="path1288" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342)"
+       d="M 20.818291,66.174992 H 38.455654"
+       id="path1338" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1406)"
+       d="m 124.07896,76.95191 h 18.30871"
+       id="path1396" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342)"
+       d="m 124.26146,88.967637 h 18.54591"
+       id="path1398" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="129.55046"
+       y="74.365852"
+       id="text1037-6-5"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-3"
+         style="stroke-width:0.264583"
+         x="129.55046"
+         y="74.365852">输出1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="129.77914"
+       y="86.961662"
+       id="text1037-6-5-5"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-3-6"
+         style="stroke-width:0.264583"
+         x="129.77914"
+         y="86.961662">输出2</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1292)"
+       d="M 97.675568,90.902918 H 57.764474 v -5.291054"
+       id="path1657" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="71.057281"
+       y="89.484413"
+       id="text1037-6-2-1"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-9-2"
+         style="stroke-width:0.264583"
+         x="71.057281"
+         y="89.484413">处理反馈</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="51.409515"
+       y="66.779976"
+       id="text1037-6-7"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-0"
+         style="stroke-width:0.264583"
+         x="51.409515"
+         y="66.779976">模块1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="107.50601"
+       y="76.566544"
+       id="text1037-6-7-9"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-0-3"
+         style="stroke-width:0.264583"
+         x="107.50601"
+         y="76.566544">模块2</tspan></text>
+  </g>
+</svg>

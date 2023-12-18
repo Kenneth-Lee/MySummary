@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="181.90154mm"
+   height="70.171417mm"
+   viewBox="0 0 181.90153 70.171418"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="简单CPU.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.6819304"
+     inkscape:cx="447.1053"
+     inkscape:cy="78.183972"
+     inkscape:window-width="2240"
+     inkscape:window-height="1323"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker1342"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1342-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340-0"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1342-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340-02"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1342-2-9"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340-02-2"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1342-2-9-1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340-02-2-2"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1342-2-9-1-8"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1340-02-2-2-4"
+         transform="scale(-0.5)" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(59.186404,-88.588126)">
+    <rect
+       style="fill:#ffd5d5;stroke:#000000;stroke-width:0.465;stroke-dasharray:none;stop-color:#000000"
+       id="rect234"
+       width="25.888445"
+       height="25.243843"
+       x="-39.691723"
+       y="113.44337" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="-56.221603"
+       y="117.08448"
+       id="text1037-6"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7"
+         style="stroke-width:0.264583"
+         x="-56.221603"
+         y="117.08448">内存</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342)"
+       d="m -59.186404,120.2599 h 17.637363"
+       id="path1338" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="-12.066704"
+       y="117.64053"
+       id="text1037-6-3"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-7"
+         style="stroke-width:0.264583"
+         x="-12.066704"
+         y="117.64053">解码信号</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342-2)"
+       d="M -13.643372,120.62792 H 3.9939908"
+       id="path1338-5" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="-34.294571"
+       y="122.17498"
+       id="text1037-6-7"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-0"
+         style="stroke-width:0.264583"
+         x="-34.294571"
+         y="122.17498">取指单元</tspan></text>
+    <rect
+       style="fill:#ffd5d5;stroke:#000000;stroke-width:0.465;stroke-dasharray:none;stop-color:#000000"
+       id="rect234-8"
+       width="25.888445"
+       height="25.243843"
+       x="5.6877146"
+       y="113.36311" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="11.084867"
+       y="122.09472"
+       id="text1037-6-7-7"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-0-9"
+         style="stroke-width:0.264583"
+         x="11.084867"
+         y="122.09472">译码单元</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="33.427769"
+       y="117.36646"
+       id="text1037-6-3-2"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-7-8"
+         style="stroke-width:0.264583"
+         x="33.427769"
+         y="117.36646">执行信号</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342-2-9)"
+       d="M 31.851102,120.35384 H 49.488465"
+       id="path1338-5-9" />
+    <rect
+       style="fill:#ffd5d5;stroke:#000000;stroke-width:0.465;stroke-dasharray:none;stop-color:#000000"
+       id="rect234-8-7"
+       width="25.888445"
+       height="25.243843"
+       x="51.182186"
+       y="113.08904" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="56.579342"
+       y="121.82065"
+       id="text1037-6-7-7-3"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-0-9-6"
+         style="stroke-width:0.264583"
+         x="56.579342"
+         y="121.82065">执行单元</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="78.839775"
+       y="116.6389"
+       id="text1037-6-3-2-9"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-7-8-3"
+         style="stroke-width:0.264583"
+         x="78.839775"
+         y="116.6389">完成信号</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342-2-9-1)"
+       d="m 77.263105,119.62628 h 17.63737"
+       id="path1338-5-9-1" />
+    <rect
+       style="fill:#ffd5d5;stroke:#000000;stroke-width:0.465;stroke-dasharray:none;stop-color:#000000"
+       id="rect234-8-7-9"
+       width="25.888445"
+       height="25.243843"
+       x="96.594185"
+       y="112.36148" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="101.99134"
+       y="121.09308"
+       id="text1037-6-7-7-3-4"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-0-9-6-7"
+         style="stroke-width:0.264583"
+         x="101.99134"
+         y="121.09308">回写单元</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342-6)"
+       d="m -30.350728,113.49798 -0.05547,-17.592135 -26.007205,-0.124827"
+       id="path1338-6"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="-36.452797"
+       y="92.161057"
+       id="text1037-6-26"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-1"
+         style="stroke-width:0.264583"
+         x="-36.452797"
+         y="92.161057">指令地址</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1342-2-9-1-8)"
+       d="m 104.3675,137.58413 0.2917,19.59659 -158.937864,0.92121"
+       id="path1338-5-9-1-5"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="24.24341"
+       y="155.31952"
+       id="text1037-6-0"><tspan
+         sodipodi:role="line"
+         id="tspan1035-7-3"
+         style="stroke-width:0.264583"
+         x="24.24341"
+         y="155.31952">更新存储的值</tspan></text>
+  </g>
+</svg>
