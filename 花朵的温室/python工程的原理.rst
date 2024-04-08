@@ -1,8 +1,8 @@
 .. Kenneth Lee 版权所有 2024
 
 :Authors: Kenneth Lee
-:Version: 0.1
-:Date: 2024-03-30
+:Version: 0.2
+:Date: 2024-04-07
 :Status: Released
 
 python工程的原理
@@ -15,12 +15,13 @@ Python是一种解释型语言，也就是说，它不是靠编译器把你写�
 句读进你的指令，然后一句句执行的。
 
 换句话说，你用C写一个程序，这个程序编译成一个机器代码（本地程序），然后这个本
-地程序就和你原来的C代码没有什么关系了，它可以在你的机器上直接运行和编译器已经
-没有什么关系了，你用这个程序的时候不需要编译器。
+地程序就和你原来的C代码没有什么关系了，它是一个可以直接在你的机器上直接运行的
+机器代码组成的程序，它运行的时候不需要编译器在，因为它里面已经没有C的代码了，
+只有机器代码。
 
 而Python自己是一个本地程序，它用自己的源代码（很多都是C写的）编译出来的，编译
-出来以后的VM可以解释你输进来的每个Python指令，所以你写的Python程序不能直接在运
-行的，它是用Python这个本地程序解释后，让Python这个程序（VM）执行的。
+出来以后的VM可以解释你输进来的每个Python指令，所以你写的Python程序不能直接运行
+的，它是用Python这个本地程序解释后，让Python这个程序（VM）执行的。
 
 所以Python本身是一个本地程序，不同版本的Python是不同的程序，你可以在一个机器上
 装很多个Python的，只要它们使用不同的路径，那就是不同的Python。
@@ -85,7 +86,7 @@ Python是一种解释型语言，也就是说，它不是靠编译器把你写�
   /usr/lib/python3/dist-packages/numpy/_globals.py
   /usr/lib/python3/dist-packages/numpy/...
 
-  # 这配合有C的程序
+  # 这配套有C的程序
   /usr/lib/python3/dist-packages/numpy/distutils/checks/cpu_asimd.c
   /usr/lib/python3/dist-packages/numpy/distutils/checks/cpu_asimddp.c
   /usr/lib/python3/dist-packages/numpy/distutils/checks/cpu_asimdfhm.c
@@ -119,11 +120,11 @@ Python是一种解释型语言，也就是说，它不是靠编译器把你写�
 它同样会认为没有的。
 
 理解这两点，我们就还可以注意到另外两点。第一，我们前面说了，Python是解释型语言，
-所以，它的代码是python这个程序解释执行的，所以，它理论上可以跨平台，不同的机器，
-无论它的底层汇编语言是ARM的还是x86的，都可以解释一样的Python语言。但我们看到这
-里numpy里面其实是包含了C的，所以，如果你用的是numpy这个库，这个库是不跨平台的。
-x86的numpy就只能用在x86上，ARM的numpy就只能用在ARM上。所以，这种库必须和
-python VM这个二进制一样，要找到正确的平台版本才能用。
+它的代码是python这个程序解释执行的，所以，它理论上可以跨平台，不同的机器，无论
+它的底层汇编语言是ARM的还是x86的，都可以解释一样的Python语言。但我们看到这里
+numpy里面其实是包含了C的，所以，如果你用的是numpy这个库，这个库是不跨平台的。
+x86的numpy就只能用在x86上，ARM的numpy就只能用在ARM上。所以，这种库必须和python
+VM这个二进制一样，要找到正确的平台版本才能用。
 
 第二个问题。我不知道你注意到没有，我们一开始看Python二进制在哪里的时候，我们发
 现它叫Python3.11，你其实还可以安装Python3.10，Python3.9，甚至Python2.12这样的
@@ -136,7 +137,7 @@ python VM这个二进制一样，要找到正确的平台版本才能用。
 Python2.xx兼容（两者其实语法都不完全一样）。所以你可以选择不同的Python3.xx版本，
 但都可以用同一个numpy。
 
-从这里就可以看到了，版本兼容是意见很麻烦的事情。比如Python2可以写这种语法：
+从这里就可以看到了，版本兼容是一件很麻烦的事情。比如Python2可以写这种语法：
 
 .. code:: python
 
@@ -327,27 +328,31 @@ IDE当作编辑器，运行的时候用自己的命令行好了。IDE只使用�
 miniconda，这是一个没有那么多商业特性的版本，我们尽量用这个，方案比较独立，毕
 竟我们需要的是基本的功能。
 
-安装这个Python前，尽量删掉Windows默认的那个，省得以后不知道自己用的是哪个，或
-者造成互相影响。miniconda默认安装是不修改PATH环境变量的，所以你在命令行中是运
-行不了python的，要在windows菜单上找miniconda设置过的命令行运行。你当然可以把
-miniconda加到你的路径中，但这样很容易导致其他程序误用这个版本的Python，所以推
-荐是不要设置这个路径，但这样vscode的Python插件就需要修改一下才能用这个Python了。
+miniconda默认安装是不修改PATH环境变量的，所以你在命令行中是运行不了python的，
+要在windows菜单上找miniconda设置过的命令行运行。你当然可以把miniconda加到你的
+路径中，但这样很容易导致其他程序误用这个版本的Python，所以推荐是不要设置这个路
+径，但这样vscode的Python插件就需要修改一下配置才能用这个Python了。
 
-miniconda的最大特点是默认就带了venv这个方案。你从菜单上启动一个miniconda的
+miniconda的最大特点是默认就带了类似venv这个方案。你从菜单上启动一个miniconda的
 Python，它默认就有一个叫base的虚拟环境，你随时可以用conda create -n myvenv来创
 建新的目录，然后如下方法激活和反激活它：::
 
   conda activate myvenv
   conda deactivate myvenv
 
-其他用法就和前面的venv是一样的了。
+其他用法就和前面的venv是一样的了。conda每个沙箱里面就带着python.exe这个命令，
+如果你用于vscode，你可以直接修改python的配置，把路径设置上这个路径上就可以了。
+（其实我个人更建议直接用命令行。）
 
-这个很麻烦吧，对这种麻烦有切身的认识，就开始理解软件是个什么工作了。
+miniconda很流行，所以不用担心这个方案不通用，在MacOS或者Linux下也可以装，只是
+在Linux下通常我们不需要装，因为venv已经够用了。
+
+无论如何，这个很麻烦吧，对这种麻烦有切身的认识，就开始理解软件是个什么工作了。
 
 Python的库到底是什么
 ====================
 
-我们再介绍一下python的库到底是各什么东西，我们写一个程序：
+我们再介绍一下python的库到底是个什么东西，我们写一个程序：
 
 .. code:: python
 
