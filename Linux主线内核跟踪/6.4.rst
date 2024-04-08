@@ -36,19 +36,31 @@ ioctl(/sys/kernel/tracing/user_events_data, user_reg)。
 两个Scalable并行优化
 --------------------
 
-todo：per-VM lock和更多的切换锁
+1. 增加per-VMA的lock，在部分场景取代mm_struct的全局mmap_lock，提升Scalability。
+   Oracle，Google等多个组织提供的补丁。现在是和原来的功能共存的，通过
+   CONFIG_PER_VMA_LOCK配置项激活。
 
+2. 优化了调度算法，使用户和内核线程的切换在大型系统上有更高的Scalability。特性
+   的名字叫CONFIG_MMU_LAZY_TLB_REFCOUNT，大致的意思是如果内核线程在很多CPU上都
+   用，就尽量留着相关的TLB项，不要刷掉，从而保证用户进程切换不要动这部分TLB。
+   我原来比较好奇的是：这不是本来就是这样的吗？但考虑到部分平台内核和用户态用
+   同一个页表指针，也许进程退出的时候，要更新一下TLB，这也大概可以理解。这个等
+   要用的时候再来看吧。
 
 其他有趣的东西
 ==============
 
 1. PSI（Pressure Stall Information）支持用户态访问
 
-2. todo：更安全的KSM接口（原来用madvice）
+2. 支持更安全的KSM（Kernel Same-page Merge）接口，原来只有
+   madvice(MADV_MERGEABLE)接口，只能以进程内的地址空间为分割，现在加上了
+   prctl(PR_SET/GET_MEMORY_MERGE)接口。
 
-3. todo：新BPF特性
+3. BPF特性继续加新特性，但我不关心。
 
-4. todo：关闭动态关闭SELinux的功能
+4. 关闭动态关闭SELinux的功能的功能，这是为安全加的小修改。
+
+5. rust一直在增加基础binding。
 
 华为和海思的提交
 ================

@@ -1,0 +1,83 @@
+.. Kenneth Lee 版权所有 2024
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2024-4-8
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2024-01-07
+
+6.7
+***
+
+大特性
+======
+
+Bcachefs
+---------
+
+一个包含ZFS/Btrfs先进特新的新文件系统，主页在bcachefs.org，特性包括：
+
+* COW （同时支持Nocow mode）
+* Full data and metadata checksumming
+* 多设备支持
+* Replication（RAID一类的特性）
+* Erasure coding (not stable)
+* Caching, data placement（RAID5/6用到的特性）
+* 压缩和加密（比如：bcachefs format --encrypted /dev/sda1，bcachefs unlock
+  /dev/sda1 这样用）
+* Snapshots（比如：bcachefs subvolume create/destroy/snapshot这样）
+* Reflink
+* Extended attributes, ACLs, quotas
+* Scalable （测试过可以超过100+TB，理论上还可以加）
+* High performance, low tail latency
+* 支持io_uring。
+
+功能初步稳定。
+
+futex2
+------
+
+这是futex的升级换代，系统调用从原来的一个升级成了3个：
+
+.. code:: c
+
+  // 原来的：
+  long syscall(SYS_futex, uint32_t *uaddr, int futex_op, uint32_t val,
+               const struct timespec *timeout,   /* or: uint32_t val2 */
+               uint32_t *uaddr2, uint32_t val3);
+
+  // 现在的：
+  int futex_wait(void *addr, unsigned long val, unsigned long mask,
+                 unsigned int flags, struct __kernel_timespec *timeout,
+                 clockid_t clockid);
+
+  int futex_wake(void *addr, unsigned long mask, int nr, unsigned int flags);
+
+  int futex_requeue(struct futex_waitv *waiters, unsigned int flags, int nr_wake,
+                    int nr_requeue);
+
+原来不同功能是放在futex_op中的，现在分成三个了，不需要那么多参数。实际上就是原
+来的FUTEX_WAIT, FUTEX_WAKE，FUTEX_REQUEUE等功能。但现在开始有FUTEX2_NUMA这样的
+flag，用来提供NUMA场景的优化。
+
+这个功能还是个开始（这个版本已经修改了很多平台的代码了），作者是Intel的Peter
+Zijlstra（但他用的是infradead.org域名的邮件）。
+
+其他有趣的东西
+==============
+
+1. BTRFS支持stripe tree
+2. io_uring继续在升级
+3. 允许关闭x86 32位模拟功能（减少攻击面）
+4. nbcon（Non-BKL（Big Kernel Lock）console）换了一个新的基础实现。
+5. 通过/proc/bootconfig提供bootloader给的Kernel启动参数
+6. rust还在加binding，升级版本，但还没有看到有实际的驱动
+
+华为和海思的提交
+================
+
+1. 删掉了zlib和gzip的支持。

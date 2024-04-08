@@ -108,9 +108,9 @@ poorly documented。
 
 6. Linaro加了一个温度相关的库到tools/lib/thermal里面
 
-7. 这个版本nolibc加入了RISCV的不少支持代码。这东西在tools/include/nolibc目录下，
-   我不知道它的背景是什么，从实现上看，似乎是一组最简单的libc的实现，全部实现成
-   了头文件。
+7. 这个版本\ :index:`nolibc`\ 加入了RISCV的不少支持代码。这东西在
+   tools/include/nolibc目录下，我不知道它的背景是什么，从实现上看，似乎是一组
+   最简单的libc的实现，全部实现成了头文件。
 
 8. Makefile加个一个选项W=e可以在warnning的时候直接退出编译。应该是设置那个
    Warning当Error的选项了吧。

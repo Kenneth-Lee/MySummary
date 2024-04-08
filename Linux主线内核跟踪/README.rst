@@ -43,6 +43,7 @@ Linux主线内核跟踪
    6.3
    6.4
    6.5
+   6.7
    others
 
 .. vim: tw=80 fo+=mM
