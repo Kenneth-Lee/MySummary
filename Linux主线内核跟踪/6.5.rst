@@ -16,37 +16,228 @@
 大特性
 ======
 
-移动mount
----------
+Mount Beneath
+-------------
 
-todo： 把一个mount移动到另一个位置上，避免原来的mount不能umount
+这个特性我喜欢：它可以让你在一个Mount Point上叠加一个Mount Point，下面是补丁中
+举的一个使用例子：::
 
-用户态读Cache状态
------------------
+    > mount -t ext4 /dev/sda /mnt
+      |
+      └─/mnt    /dev/sda    ext4
 
-todo：cachestat()系统调用
+    > mount --beneath -t xfs /dev/sdb /mnt
+      |
+      └─/mnt    /dev/sdb    xfs
+        └─/mnt  /dev/sda    ext4
+
+    > umount /mnt
+      |
+      └─/mnt    /dev/sdb    xfs
+
+简单总结就是你可以在已有的Mount下面（Beneath）换一个Mount，然后把顶上的Mount
+Unmount掉。这可以很灵活换掉正在使用的某个Mount而不怎么影响使用。不过预计还是有
+不少小问题的：如果你已经打开了顶上这层的文件，它同样是umount不掉的，得有个办法
+把这些依赖都解掉。
+
+分析这个问题让我才注意到原来现在的mount也已经可以做mount --move olddir newdir
+的。但被移动的mount不能是shared的。要理解这个shared呢，又涉及一个所谓
+propagation的概念，它决定了mount的信息是否在多个mount point之间共享的问题，从
+而需要使用peer group。这个又进了一个专门的领域了，我现在不用就不进去分析了。我
+用虚拟机创建了几个虚拟硬盘试着移动了一下，基本上都失败了。用：::
+
+  findmnt -o TARGET,PROPAGATION
+
+看到的mount都是shared的，用mount --make-private以后也move不动。
+
+特性通过move_mount()系统调用增加新的flag MOVE_MOUNT_BENEATH实现。mount本来就支
+持mount的叠加（称为tucked），新的功能复用相同的概念空间。
+
+用户态读文件Cache状态
+---------------------
+
+这个没啥可看的，知道接口就行了：
+
+.. code:: c
+
+    struct cachestat {
+        __u64 nr_cache;
+        __u64 nr_dirty;
+        __u64 nr_writeback;
+        __u64 nr_evicted;
+        __u64 nr_recently_evicted;
+    };
+
+    int cachestat(unsigned int fd, off_t offset, size_t len,
+                  size_t cstat_size, struct cachestat *cstat);
+
+总觉得这个东西不应该开给应用程序的，一旦用了这种功能，基本上cache的算法特征就
+和程序的功能绑定了。不过OS技术这么多年也没有什么进步，一点性能收益大家都要去抢
+的，这愤世嫉俗也没用。
 
 支持unaccepted内存
 ------------------
 
-todo：虚拟机功能
+现在的安全虚拟机技术，比如Intel的TDX\ [#tdx]_\ 或者AMD的SEV-SNP\ [#sev-snp]_\
+，对内存的能力有要求，这个补丁支持虚拟机对内存的使用提要求。
 
+.. [#tdx] Trust Domain eXtension
+.. [#sev-snp] Secure Encrypted Virtuliazation and Secure Nested Paging
 
+这个功能需要安全BIOS配合（UEFI2.9开始支持），让安全VM对内存提要求。具体要求没
+有看协议不知道细节，我猜是硬件可以根据BIOS设置的参数对不同VM使用不同的内存范围。
+从补丁看，这个范围是靠bitmap定义的，每个bit的大小大于一个Pagei，比如2MB。特性
+的名字叫unaccepted内存，所以这个bitmap可能指定的是不接受的部分。
+
+UEFI提供两个helper：
+
+* accept_memory()
+* range_contains_unaccepted_memory()
+
+补丁主要来自Intel。
+
+:index:`RTLA`\ 继续升级
+=======================
+
+这个版本并不是引入了这个特性，只是我第一次注意有这个特性，所以我看一下有些啥东
+西。
+
+RTLA，Real Time Linux Analyse，是一个类似perf那样直接放到内核源代码中的用户态
+工具。命令的名字就叫rtla。风格也和perf很像。rtla只是基础命令，后面带不同子命令
+调用不同功能。现在就两个功能：
+
+* osnoise：这个在\ :doc:`6.2`\ 里面跟踪过了，这个跟踪OS噪声。
+* timerlat：这个跟踪IRQ和线程的timer时延。
+
+两个功能做是基于Tracer做的，所以基本上可以认为是trace基础功能上封装的针对实时
+性分析的工具。
+
+基于范围的资源管理
+==================
+
+这有点像个Rust或者C++一类的语言特性，允许变量离开定义范围以后自动释放资源。
+
+它依赖gcc和llvm的一个语言扩展，你可以这样定义类型：
+
+.. code:: c
+
+  cleanup_func(&my_var) {
+    free_my_var(my_var);
+  }
+  type my_var __attribute__((__cleanup__(cleanup_func)));
+
+就是你指定一个类型的释放函数，当这个类型的实例离开范围的时候，实例的指针会传给
+你的施放函数，你用你的方法清除它就可以了。
+
+用法看例子：
+
+.. code:: c
+
+  // 释放函数
+  static inline void snd_card_unref(struct snd_card *card)
+  {
+  	put_device(&card->card_dev);
+  }
+
+  // 绑定类型
+  DEFINE_FREE(snd_card_unref, struct snd_card *, if (_T) snd_card_unref(_T))
+  
+  static int snd_ctl_led_set_id(int card_number, struct snd_ctl_elem_id *id,
+  			      unsigned int group, bool set)
+  {
+  	struct snd_card *card __free(snd_card_unref) = NULL; // 定义类型
+        ...
+  
+  	card = snd_card_ref(card_number);                    // 分配
+        ...
+  	if (!kctl)
+  		return -ENOENT;                              // 这里会自动释放
+        ...
+  	return 0;                                            // 这里也会自动释放
+                                                             // 如果要返回card本身，用return_ptr(card)
+  }
+
+这是基础方法，高级用法是封装成类：::
+
+ * DEFINE_CLASS(name, type, exit, init, init_args...):
+ *	helper to define the destructor and constructor for a type.
+ *	@exit is an expression using '_T' -- similar to FREE above.
+ *	@init is an expression in @init_args resulting in @type
+ *
+ * EXTEND_CLASS(name, ext, init, init_args...):
+ *	extends class @name to @name@ext with the new constructor
+ *
+ * CLASS(name, var)(args...):
+ *	declare the variable @var as an instance of the named class
+  
+更高级的封装是基础上的自动锁：::
+
+ * DEFINE_GUARD(name, type, lock, unlock):
+ *	trivial wrapper around DEFINE_CLASS() above specifically
+ *	for locks.
+ *
+ * DEFINE_GUARD_COND(name, ext, condlock)
+ *	wrapper around EXTEND_CLASS above to add conditional lock
+ *	variants to a base class, eg. mutex_trylock() or
+ *	mutex_lock_interruptible().
+ *
+ * guard(name):
+ *	an anonymous instance of the (guard) class, not recommended for
+ *	conditional locks.
+ *
+ * scoped_guard (name, args...) { }:
+ *	similar to CLASS(name, scope)(args), except the variable (with the
+ *	explicit name 'scope') is declard in a for-loop such that its scope is
+ *	bound to the next (compound) statement.
+ *
+ *	for conditional locks the loop body is skipped when the lock is not
+ *	acquired.
+ *
+ * scoped_cond_guard (name, fail, args...) { }:
+ *      similar to scoped_guard(), except it does fail when the lock
+ *      acquire fails.
 
 其他有趣的东西
 ==============
 
-1. todo：默认开启secret memory
+1. 默认开启memfd_secret(2)支持，这个系统调用可以创建一个安全内存文件，其内容只
+   有本进程能看到，其他进程（包括root）都无法访问。代码实现在mm/secretmem.c中。
+   我以为它是基于加密内存的，但从代码上看仅仅就是权限管理上的。
    
-2. todo：启动USB4.0支持
+2. 启动USB4.0支持，Intel的工作，大部分代码在drivers/thunderbolt里面。
+3. 启动MIDI2.0支持
+4. nolibc又合入了很多测试用例，最近是它的密集开发期。
+5. rust升级到1.68.2
 
-3. todo：MIDI2.0支持
+6. ARM8.8提供了一个在用户态拷贝内存的指令（需要开启内核特性），指令是这样的：::
 
-4. 
+      static void mops_sigill(void)
+      {
+        	char dst[1], src[1];
+        	register char *dstp asm ("x0") = dst;
+        	register char *srcp asm ("x1") = src;
+        	register long size asm ("x2") = 1;
+        
+        	/* CPYP [x0]!, [x1]!, x2! */
+        	asm volatile(".inst 0x1d010440"
+        		     : "+r" (dstp), "+r" (srcp), "+r" (size)
+        		     :
+        		     : "cc", "memory");
+      }
+
+7. Intel修复了GDS（Gather Data Sampling）安全漏洞，这个问题是向量指令在做
+   reduce的时候如果遇到异常，会把reduce的数据送到目标寄存器上造成泄漏。我没有
+   看细节。我只是大致定性一下这是什么类型的错误。详细可以看：
+   Documentation/admin-guide/hw-vuln/gather_data_sampling.rst。这个东西不是直
+   接修复，因为修复的方法仅仅是允许你通过sysfs关掉它。
 
 
 华为和海思的提交
 ================
 
-1. 鲲鹏加了uncore的PMU事件
-2. Hi3798加了一个USB2.0的驱动（用的gmail的账户）
+1. Jonathan Cameron提交了一组CXL3.0的PMU补丁，包括修改PMU对象（加了一个parent
+   的属性），以便建立设备树的时候可以可以连上pmu的父设备。
+
+2. 鲲鹏加了uncore的PMU事件
+
+3. Hi3798加了一个USB2.0的驱动（用的gmail的账户）
