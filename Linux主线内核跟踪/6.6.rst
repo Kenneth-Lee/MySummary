@@ -1,0 +1,59 @@
+.. Kenneth Lee 版权所有 2024
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2024-4-9
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2024-10-29
+
+6.6
+***
+
+大特性
+======
+
+:index:`EEVDF`
+--------------
+
+CFS的下一代调度算法，据说时延特性更好。2022年的论文：Earliest
+Eligible\ [#eligible]_ Virtual Deadline First : A Flexible and Accurate
+Mechanism for Proportional Share Resource Allocation。
+
+.. [#eligible] 有资格当选的，['elidʒibl]
+
+我觉得这个方案最大的特点是：不装了，你要实时响应，主动说出来吧。过去都是用nice
+来说自己的优先级，但那个只是要时长，不是要时延。所以现在加上了一个Latency Nice，
+有什么用，就不用我说了吧。
+
+这再次证明那个简单的真理：底层猜半天上面要什么，不如让上面痛快地说出来。
+
+todo：我简单扫了一下论文，很长，很多公式，大致算法依靠每次调度请求的时候给定一
+个虚拟的时长和Deadline要求，用虚拟时间计算（虚拟时间是用权重占比算的时间），我
+估计得花点时间看。我先看完其他特性再看吧。
+
+Intel Shadow Stack支持
+----------------------
+
+这个特性的原理是这样的：在正常堆栈之外设置一个不能直接修改的影子堆栈，在函数返
+回的时候比较真实堆栈和影子堆栈的内容，如果不同就抛异常。
+
+这看着是个Intel的特性，但涉及pte标记，实际上每个平台的代码都需要修改，只有一点
+点，但这个不需要这些平台的maintainer signoff。
+
+其他有趣的东西
+==============
+
+1. unbound workqueue支持NUMA特性。
+2. XFS开始初步支持运行时做ckfs。
+3. rust升级到1.71.1，这样一方面说明rust的维护者很负责任，但另一方面，这样没人
+   敢用啊。
+
+华为和海思的提交
+================
+
+1. 上传了HCCS的驱动，我看了一下，主要的注册了一个pcc mbox，可能是用来配置HCCS
+   的总线参数的。
