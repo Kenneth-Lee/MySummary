@@ -79,5 +79,6 @@
    CSS布局
    软件如何在CPU上运行起来的
    python工程的原理
+   操作系统实验
 
 .. vim: tw=80 fo+=mM

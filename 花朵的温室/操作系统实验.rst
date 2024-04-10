@@ -1,0 +1,111 @@
+.. Kenneth Lee 版权所有 2024
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2024-04-10
+:Status: Draft
+
+操作系统实验
+************
+
+介绍
+====
+
+本文介绍几个操作系统的实验，用于操作系统的初学者对操作系统的完整组成有一个感性
+的理解。
+
+实验1：理解调度器
+=================
+
+这个实验的背景我写在别的地方了，参考这里：
+https://cpp-aux-tutorial.readthedocs.io/zh-cn/latest/18.html
+。
+
+实验的目的主要就是看一次调度程序，知道调度器的程序是怎么写的，然后简单修改一下
+几个调度任务，看看调度的效果是什么样的。
+
+进一步的实验是修改调度程序，分别实现：
+
+1. 以优先级为先后进行调度。
+2. 以调度时间公平进行调度。
+
+实验2：安装Debian Linux
+=======================
+
+这个实验的目的是理解一个完整操作系统的文件系统中到底具体包含一些什么东西，我们
+用比较原始的方法来完成这个安装。
+
+实验步骤：
+
+1. 在Windows上安装virtualbox。VirtualBox是一个开源的，可以在Windows上模拟一台
+   物理计算机的软件。主页在www.virtualbox.org，上去下载安装即可。
+
+2. 下载Debian Linux安装映像。这是一个可以制作启动光盘或者U盘的文件，可以通过一
+   些工具制作启动盘（比如Windows下可以用：
+   :ref:`uubyte <https://www.uubyte.com/download/uubyte-bootable-usb-creator.exe>`
+   ，Linux下更简单，直接用cp debian.img /dev/sdX把映像拷贝到设备上就可以了）。
+   但我们这里不需要，因为我们的机器就是软件模拟出来的，我们可以用virtualbox直
+   接模拟这个光盘。
+
+3. 在VirtualBox中创建一台虚拟机器，用Debian Linux安装映像启动。
+
+4. 选择直接进入控制台，手工找到对应磁盘进行安装：::
+
+      mount target_partintion /mnt             # 加载目标分区
+      mkdir -p /mnt/boot/efi; mount efi_partition /mnt/boot/efi
+      debootstrap stable /mnt                  # 整个命令后面还可以加镜像地址，比如https://mirrors.tuna.tsinghua.edu.cn/debian
+      mount -t proc none /mnt/proc             # OS运行信息文件
+      mount --rbind /dev /mnt/dev              # 设备文件
+      mount --rbind /sys /mnt/sys              # 另一部分OS运行信息文件
+      cp /etc/resolve.conf /mnt/etc/rsolve.conf  # DNS
+      chroot /mnt /bin/bash                    # 用目标系统作root
+
+      echo 'deb https://mirrors.tuna.tsinghua.edu.cn/debian stable main contrib non-free' \
+            > /etc/apt/source.list             # 配置软件安装位置
+      apt update                               # 更新软件列表
+      apt install vim sudo                     # 安装最基本的软件
+      cp /proc/mounts > /etc/fstab             # 设置要mount的系统目录，有必要的话更新一下
+      cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime    # 设置时区
+      useradd -m -Gusers,audio,lp,cdrom,sudo -s /bin/bash kenny  # 创建用户
+      passwd kenny                                               # 设置密码
+      passwd root                              # 设置root的密码。这个尽量设置一下，应急，宁愿以后再删除
+      apt install locales                      # 多语言支持
+      dpkg-reconfigure locales                 # 设置默认语言
+      vi /etc/locale.gen                       # 设置支持的语言（默认之外的）
+      locale-gen                               # 生成所支持的语言数据
+      apt install linux-image-amd64 grub-efi-amd64     # 安装bootloader和内核
+      grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck   #安装bootloader
+      grub-mkconfig -o /boot/grub/grub.cfg     # 创建bootloader菜单（可以用grub-update代替）
+    
+      apt install gnome                        # 安装图形界面
+
+6. 重启虚拟机器
+
+
+实验3：编译和运行Linux Kernel
+=============================
+
+这个实验我们的主要目的是理解Kernel和文件系统是怎么结合起来的，我们用比较简单的
+CPU（RISCV）来理解这个过程。
+
+1. 在WSL上安装qemu-system-riscv64（这是另一个功能更灵活的虚拟机）
+
+2. 下载Linux kernel源代码，make menuconfig，make内核
+
+3. 下载buildroot源代码，make menuconfig，make文件系统
+
+4. 用qemu运行OS：::
+
+     qemu-system-riscv64 \
+     	-smp 1 -m 128m \
+     	-nographic \
+     	-snapshot \
+     	-machine virt \
+     	-kernel arch/riscv/boot/Image \
+     	-append "root=/dev/vda ro console=ttyS0 nokaslr earlycon loglevel=8" \
+     	-drive file=buildroot/output/images/rootfs.ext4,format=raw,id=hd0 \
+          	-device pcie-root-port,id=root_port,bus=pcie.0 \
+     	-device e1000,netdev=n1 -netdev type=user,id=n1,ipv6=off \
+        -fsdev local,id=p9fs,path=.,security_model=mapped \
+	-device virtio-9p-pci,fsdev=p9fs,mount_tag=p9
+     	-device virtio-blk-device,drive=hd0
