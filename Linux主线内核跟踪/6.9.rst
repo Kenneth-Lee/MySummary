@@ -1,0 +1,49 @@
+.. Kenneth Lee 版权所有 2024
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2024-06-03
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2024-05-12
+
+6.9
+***
+
+大特性
+======
+
+x86 FRED支持
+------------
+
+FRED，Fast Return and Delivery，是IDT，Interrupt Description Table，的升级。终
+于有人对这个老不死动刀了，真好。过去的x86中断向量表是基于中断号从向量表中找一
+个处理入口，判断权限，修改特权级，然后跳过去的，一共有0-3四个特权级。但几乎所
+有系统都只用0和3两个特权级，1和2都不知道可以拿来干什么。
+
+新的版本只承认ring 0和3，你就只能在这两者之前切换，同时，作为CICS指令，它干脆
+把大部分工作给代理了，新的方案在切换特权级的时候自动更新GS段寄存器（用于TLS），
+关键数据（堆栈地址，PC等）全部用Shadow寄存器给你保存了（支持4层递归迭代）。中
+断返回分成两条指令：ERETS和ERETU，分别用于主动返回到ring 0和ring 3。
+
+Spec在这里：
+`FRED <https://www.intel.cn/content/www/cn/zh/content-details/
+780121/flexible-return-and-event-delivery-fred-specification.html>`_\ 。
+
+其他有趣的东西
+==============
+
+1. BPF在用户态和内核态通讯上多支持了一个叫Arenas的东西，用来支持稀疏数据通讯。
+
+2. FUSE做了一个初步的升级，允许Passthough：传统的FUSE是先从用户态请求到内核上，
+   然后基于钩子找用户态进程，然后从用户态进程再做实际的动作——这通常是从令一个
+   通道重新进入内核。现在允许FUSE进程把钩子实现成BPF，直接在内核中转到另一个子
+   系统中。
+
+3. Timer算法有一点点优化，只要是尽量把Timer（不包括Hrtimer）移到忙的CPU上，免
+   得需要唤醒已经Idle的CPU。
+
+4. 海思鲲鹏的内置网卡HNS3有几个维护修改，支持200G链路，看来是产品线的人改的。
