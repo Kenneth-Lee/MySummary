@@ -40,48 +40,249 @@ https://cpp-aux-tutorial.readthedocs.io/zh-cn/latest/18.html
 1. 在Windows上安装virtualbox。VirtualBox是一个开源的，可以在Windows上模拟一台
    物理计算机的软件。主页在www.virtualbox.org，上去下载安装即可。
 
-2. 下载Debian Linux安装映像。这是一个可以制作启动光盘或者U盘的文件，可以通过一
+2. 下载Ubuntu Linux安装映像。这是一个可以制作启动光盘或者U盘的文件，可以通过一
    些工具制作启动盘（比如Windows下可以用：
-   :ref:`uubyte <https://www.uubyte.com/download/uubyte-bootable-usb-creator.exe>`
+   `uubyte <https://www.uubyte.com/download/uubyte-bootable-usb-creator.exe>`_
    ，Linux下更简单，直接用cp debian.img /dev/sdX把映像拷贝到设备上就可以了）。
    但我们这里不需要，因为我们的机器就是软件模拟出来的，我们可以用virtualbox直
    接模拟这个光盘。
 
-3. 在VirtualBox中创建一台虚拟机器，用Debian Linux安装映像启动。
+   请注意，这个实验是用Ubuntu Linux的Live CD来安装Debian Linux，如果我们直接用
+   Debian的安装盘来安装Debian Linux，这个很简单，就像我们平时安装Windows一样，
+   顺着菜单一步步按确定就行了，我们这次是手工安装Debian，知道菜单背后是在干什
+   么。所以我们的行为是不一样的。这里用Ubuntu是因为Ubuntu有Live CD，实际上
+   Debian也有Live CD，所以你也可以选在使用Debian的Live CD，只要能用光盘直接启
+   动一个Linux都可以。
 
-4. 选择直接进入控制台，手工找到对应磁盘进行安装：::
+3. 在VirtualBox中创建一台虚拟机器，用Ubuntu Linux Live CD启动。
 
-      mount target_partintion /mnt             # 加载目标分区
-      mkdir -p /mnt/boot/efi; mount efi_partition /mnt/boot/efi
-      debootstrap stable /mnt                  # 整个命令后面还可以加镜像地址，比如https://mirrors.tuna.tsinghua.edu.cn/debian
+4. 启动以后退出安装程序，从菜单中选择“控制台”程序，从命令行开始，手工安装
+   Debian Linux。
+
+手工安装Debian的过程
+--------------------
+
+我们现在解释一下计算机的启动过程，它一般是这样的步骤：
+
+1. 机器加电，计算机启动，计算机内置了一个很小的软件，传统上叫BIOS，Basic
+   Input/Output System，现在用得比较多的叫UEFI，Unified Extensible Firmware
+   Interface。它是个比较通用的标准，标准叫EFI，但这个标准组织做了一个实现，让
+   大家（做计算机的），都可以直接拿着代码来用，所以叫UEFI。你也可以自己做一个
+   叫XEFI，YEFI，ZEFI。所以这些符合这个标准的实现，都叫EFI。
+
+2. BIOS或者UEFI会按你设置好的参数，去找光盘，硬件或者可以保存程序的程序来启动。
+   这个在光盘或者硬盘上的程序，一般会称为Boot Loader。严格来说，你可以直接启动
+   你的操作系统内核，但操作系统内部通常很大，所以会先启动个小的，比如Windows会
+   提供一个叫WBM，Windows Boot Manager。Linux是个开源软件，有很多Boot Loader可
+   以用，但现在用得最多的，是Grub。
+
+3. Grub启动以后，就可以开始去找操作系统内核了，然后它会启动操作系统内核。
+
+4. 操作系统内核会找它的根文件系统，然后根据根文件系统上的文件，启动指定的Shell。
+   这样你就有了一个可以控制操作系统的界面了，之后你再使用，就是在使用你的操作
+   系统了。
+
+所以我们这个安装主要在做这些事情：
+
+1. 我们已经用Ubuntu的光盘启动了一个以光盘为根的操作系统了，我们现在需要在我们
+   的磁盘上安装操作系统的文件系统。
+
+2. 然后我们需要配置一下这个文件系统，让它符合我们的要求。
+
+3. 然后我们要在文件系统中放上我们的操作系统内核。
+
+4. 最后我们要装上我们的Bootloader，Grub。
+
+这样，我们就装好了，把光盘退出来，然后我们重新启动机器，这样我们就不再用原来的
+光盘（或者U盘）来启动我们的机器了，我们开始用我们刚才安装的Grub启动，我们磁盘
+上的内核，然后用这个内核启动我们安装的Debian。
+
+下面我们看具体怎么操作：
+
+首先我们用光盘启动机器，在桌面上点右键，打开“Open In Terminal”，得到一个命令行
+界面。Ubuntu默认的用户是ubuntu，这个是普通用户，很多权限没有的，我们切换到root：
+::
+
+  sudo su
+
+然后我们尝试找到我们的磁盘是哪一个：::
+
+  lsblk
+
+这个命令显示所有的磁盘，找到类型是disk，大小和你在虚拟机中创建的磁盘的大小一样
+的，那个就是你的磁盘，比如可能是/dev/sda。
+
+磁盘就好像一个数组，可以顺序放数据。按惯例，我们需要分成多个“区”（Partition）
+来用。分区的信息也放在磁盘上。分区有很多种格式，传统的格式叫DOS，以前的BIOS都
+用这个格式，现在UEFI常用的格式是EFI格式。我本来想建议用EFI分区的，但我自己验证
+用这种分区部分虚拟机支持有问题，所以，我们这次用DOS格式来分区：::
+
+  fdisk /dev/sda
+
+进去以后可以运行很多单字符的命令，m是帮助，可以先看看帮助。用o表示用DOS格式分
+区，用g表示用EFI方式分区。我们可以用o。如果你已经用g，再向用o它会拒绝，怕你写
+错命令把分好的分区内存覆盖了。这种情况你要用这个命令进fdisk：::
+
+  fdisk --wipe=always /dev/sda
+
+这样你再用o命令，它还是会报错，但这时是可以成功的。然后你就可以创建分区了。我
+们简单些，这次就创建一个分区：用n(new）创建，选在是第一个分区，用它建议的开始
+和结束位置，这样就会用掉整个磁盘作为分区。
+
+如果你用EFI，EFI的bootload是要求你必须有一个EFI分区的，这样你至少要两个分区。
+下面是一个DOS分区和EFI分区的磁盘上的数据布局的对比：
+
+.. figure:: _static/fdisk后磁盘格式.svg
+
+可以用下面命令直接看看你的磁盘的分区分布：::
+
+  fdisk -l /dev/sda
+
+磁盘前面有个分区表，读磁盘的程序就能知道磁盘的格式，从而找到每个分区。但分区只
+是把整个分区都给了某个程序，并不说明里面的文件怎么保存，我们还需要对分区进行格
+式化。Linux的格式化程序叫mkfs（Make FileSystem），格式EFI（这个格式模式是vfat，
+微软的一种简单格式）的格式化程序叫mkfs.vfat。Linux操作系统可以支持很多种文件系
+统，比如ext2, ext3, ext4, xfs, zfs, btrfs……但用得最多的还是ext4，我们就用这个
+格式，它的格式化程序叫mkfs.ext4。我们这样格式化每个分区：::
+
+  mkfs.ext4 /dev/sda1
+
+这里我提醒一下：整个磁盘叫/dev/sda，它的第一个分区叫/dev/sda1，第二个分区叫
+/dev/sda2。
+
+好了，现在我们要访问分区里面的内容了，我们需要把这个分区加入到我们的文件树。
+这称为mount。我们现在不是用光盘启动的吗？我们的目录树是这样的：::
+
+  /（光盘）--bin
+       +-----sbin
+       +-----home
+       |      +---ubuntu
+       +-----dev
+       |      +---sda
+       |      +---sda1
+       |      +---sda2
+       |      +---...
+       +-----mnt
+       +-----...
+
+按着这棵树，我们怎么都访问不了我们的磁盘，这里看到的sda，sda1，都只是单个的，
+表示那个磁盘和分区的“文件”，不是磁盘或者分区里面的内容。要把它们变成内容，就需
+要mount到这个目录树中：::
+
+  mount /dev/sda2 /mnt
+
+mount可以把一个设备挂到你想要的地方，我这里选择了/mnt（这个习惯上用作临时
+mount）。现在我们的目录树是这样的：::
+
+  /（光盘）--bin
+       +-----sbin
+       +-----home
+       |      +---ubuntu
+       +-----dev
+       +-----mnt（sda1)
+       +-----...
+
+好了现在我们要修改的磁盘已经在我们的目录树中了，我们可以拷贝文件进去了：::
+
+  apt install debootstrap
+  debootstrap stable /mnt https://mirrors.163.com/debian
+
+Ubuntu的Live CD里面默认没有debootstrap这个软件，我们用apt安装一下。这个软件的
+作用就是从网络上把debian的基本文件拷贝到你指定的目录中，我们上面的命令就是把
+Debian的stable版本（Debian默认有三个版本：unstable，testing，stable，一个比一
+个稳定，前面不稳定的软件比较新，我们只是做实验，所以装一个稳定版本。）拷贝到
+/mnt目录下，最后一个参数是从那个网站下载软件，可以不写，不写会用默认的服务器，
+也是可以的，但如果用国内的镜像，会更快而已。
+
+.. note::
+
+  debootstrap就是个sh脚本，如果你关心它怎么拷贝的，打开看看就知道了。
+
+这个步骤要花点时间，取决于你的网络有多快。
+
+这样，我们就装完最基本的系统了，我们要配置我们的系统。做这种配置，常常我们需要
+运行命令，但这些命令都是改当前的root为基础的目录的，所以我们最好改成用我们的
+sda2作为root，但我们的root不是当前的内核认可的root，所以有些动态生成的文件不在
+里面，我们在我们的root中也加上这些动态目录：::
+
       mount -t proc none /mnt/proc             # OS运行信息文件
       mount --rbind /dev /mnt/dev              # 设备文件
       mount --rbind /sys /mnt/sys              # 另一部分OS运行信息文件
       cp /etc/resolve.conf /mnt/etc/rsolve.conf  # DNS
       chroot /mnt /bin/bash                    # 用目标系统作root
 
-      echo 'deb https://mirrors.tuna.tsinghua.edu.cn/debian stable main contrib non-free' \
-            > /etc/apt/source.list             # 配置软件安装位置
-      apt update                               # 更新软件列表
-      apt install vim sudo                     # 安装最基本的软件
-      cp /proc/mounts > /etc/fstab             # 设置要mount的系统目录，有必要的话更新一下
-      cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime    # 设置时区
-      useradd -m -Gusers,audio,lp,cdrom,sudo -s /bin/bash kenny  # 创建用户
-      passwd kenny                                               # 设置密码
-      passwd root                              # 设置root的密码。这个尽量设置一下，应急，宁愿以后再删除
-      apt install locales                      # 多语言支持
-      dpkg-reconfigure locales                 # 设置默认语言
-      vi /etc/locale.gen                       # 设置支持的语言（默认之外的）
-      locale-gen                               # 生成所支持的语言数据
-      apt install linux-image-amd64 grub-efi-amd64     # 安装bootloader和内核
-      grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck   #安装bootloader
-      grub-mkconfig -o /boot/grub/grub.cfg     # 创建bootloader菜单（可以用grub-update代替）
-    
-      apt install gnome                        # 安装图形界面
+前面三个mount都是在我们的/mnt目录中加上内核自动生成的文件系统，最后一个是借用
+一下我们的Live CD中自动找到的DNS，拷贝到我们的操作系统中。
 
-6. 重启虚拟机器
+然后最后一个chroot命令用/mnt作为root运行一个shell：/bin/bash。
 
-这个实验重点要关注这些要点：
+现在在这儿shell中，我们的root改成了原来的/mnt了。现在我们再用apt安装软件，就不
+是装到光盘上了——光盘其实没法写内容，这里其实是用了一些内存临时放那些改动。但无
+论如何，我们原来是用光盘启动的，所以如果你运行apt，它是安装到光盘那个系统中的。
+现在我们chroot到了/mnt，以后再运行apt，就是我们/mnt中的apt命令，也安装到我们
+/mnt这个root中了。
+
+为了使用apt，我们需要配置一个apt使用的下载网站，修改这个文件：
+/etc/apt/source.list，加上这一句：::
+
+  deb https://mirrors.163.com/debian stable main
+
+如果你前面运行debootstrap的时候已经指定这个镜像了，这就已经设置好了，什么都不
+用改了。
+
+然后就是标准的apt命令了：::
+
+  apt update                               # 更新软件列表
+  apt install linux-image-amd64            # 安装操作系统内核
+  apt install grub                         # 安装bootloader
+  apt install vim sudo                     # 安装最基本的软件
+
+核心就是这个内核和grub，我们前面解释过了，一个是内核，一个是bootloader。
+
+最后安装vim和sudo，是因为我习惯用这两个工具，如果你需要其他工具，也可以安装更
+多的。
+
+grub不是拷贝了就能用的，它需要修改分区表，而且我们需要告诉它内核在哪里，所以我
+们还需要做这个动作：::
+
+  grub-install /dev/sda                   # 把bootloader安装到/dev/sda的分区表中
+  update-grub                             # 更新grub的配置让它启动我们刚安装的内核
+
+这样这个系统就可以启动了，但仅仅是启动内核，我们还需要做更多的配置让内核知道谁
+是我们系统的root：::
+
+  cp /proc/mounts /etc/fstab
+
+/proc/mounts是操作系统内部中说明的所有mount，我们拷贝完可以编辑一下/etc/fstab，
+留下sda1和sda2两个mount就够了，其他都是内核自动挂载的。
+
+然后我们设置操作系统使用的时区：::
+
+  cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime    # 设置时区
+
+/usr/share/zoneinfo目录下分地区有很多而时区配置文件（二进制的，没法直接看），
+拷贝你的地区到/etc/localtime上，就可以了。
+
+然后我们创建一个用户：::
+
+  useradd kenny                            # 创建用户
+  passwd kenny                             # 可以修改密码，如果前面你没有指定密码的话。
+  passwd root                              # 设置root的密码。这个尽量设置一下，应急，宁愿以后再删除
+
+下面这一步如果你只是做实验，可以不做：::
+
+  apt install locales                      # 多语言支持
+  dpkg-reconfigure locales                 # 设置默认语言
+  vi /etc/locale.gen                       # 设置支持的语言（默认之外的）
+  locale-gen                               # 生成所支持的语言数据
+
+  apt install gnome                        # 安装图形界面
+  exit                                     # 退出chroot的shell
+
+这样就装好了，重启虚拟机器就可以了。
+
+这个实验重点要关注的要点
+------------------------
 
 1. 在磁盘上安装一个操作系统和简单拷贝一些文件进去有什么区别（注意bootloader的
    安装）

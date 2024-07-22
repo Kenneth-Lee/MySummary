@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="181.93295mm"
+   height="107.16044mm"
+   viewBox="0 0 181.93294 107.16045"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="fdisk后磁盘格式.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1L"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-36"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-0"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-3-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1259-5-2"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-9"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-3"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-6"
+         transform="scale(-0.5)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3243205"
+     inkscape:cx="297.13351"
+     inkscape:cy="183.49033"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="831"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(17.551635,-108.23113)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="125.12981"
+       y="94.823822"
+       id="text1226-3-79"
+       transform="scale(0.7929728,1.2610773)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2"
+         x="125.12981"
+         y="94.823822"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区表（EFI格式）</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="174.69115"
+       y="101.78106"
+       id="text1226-3-79-5"
+       transform="scale(0.7929728,1.2610773)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-6"
+         x="174.69115"
+         y="101.78106"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区1：类型：EFI</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="167.29189"
+       y="124.98697"
+       id="text1226-3-79-5-2"
+       transform="scale(0.7929728,1.2610773)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-6-7"
+         x="167.29189"
+         y="124.98697"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区2：类型：Linux File System</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9"
+       width="41.838345"
+       height="99.127609"
+       x="76.657944"
+       y="114.9506" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3"
+       width="41.606556"
+       height="20.767014"
+       x="76.567978"
+       y="115.29303" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-5"
+       width="41.606556"
+       height="23.014627"
+       x="76.792351"
+       y="138.3947" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-5-3"
+       width="41.606556"
+       height="49.914207"
+       x="76.75489"
+       y="162.43169" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-6"
+       width="11.463543"
+       height="4.5756016"
+       x="96.289627"
+       y="122.67075" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-6-7"
+       width="11.463543"
+       height="4.5756016"
+       x="96.283386"
+       y="127.0142" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="76.726753"
+       y="112.4292"
+       id="text1226-3-79-2"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1"
+         x="76.726753"
+         y="112.4292"
+         style="font-size:4.9389px;stroke-width:0.264583">磁盘存储（使用EFI分区）</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L)"
+       d="m 104.80673,124.68267 h 30.24759 v 14.47137 l -16.14927,0.3426"
+       id="path1131" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-2)"
+       d="m 103.70104,129.04215 26.66416,-0.19979 0.42767,35.318 -11.6973,0.17794"
+       id="path1131-1"
+       sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="6.6678448"
+       y="95.720573"
+       id="text1226-3-79-3"
+       transform="scale(0.7929728,1.2610773)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-5"
+         x="6.6678448"
+         y="95.720573"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区表（DOS格式）</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="56.229187"
+       y="102.67781"
+       id="text1226-3-79-5-6"
+       transform="scale(0.7929728,1.2610773)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-6-2"
+         x="56.229187"
+         y="102.67781"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区1：类型：EFI</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-2"
+       width="41.838345"
+       height="99.127609"
+       x="-17.279169"
+       y="116.08147" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-7"
+       width="41.606556"
+       height="20.767014"
+       x="-17.369135"
+       y="116.4239" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-5-0"
+       width="41.606556"
+       height="73.67025"
+       x="-17.144762"
+       y="139.52559" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-6-3"
+       width="11.463543"
+       height="4.5756016"
+       x="2.3525133"
+       y="123.80163" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-6-7-6"
+       width="11.463543"
+       height="4.5756016"
+       x="2.3462725"
+       y="128.14508" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-17.21036"
+       y="113.56007"
+       id="text1226-3-79-2-0"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-1-6"
+         x="-17.21036"
+         y="113.56007"
+         style="font-size:4.9389px;stroke-width:0.264583">磁盘存储（使用DOS分区）</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-3)"
+       d="m 10.869617,125.81355 h 30.24759 v 14.47137 l -16.14927,0.3426"
+       id="path1131-2" />
+  </g>
+</svg>
