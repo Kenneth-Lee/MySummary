@@ -6,7 +6,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="acyclic_po_watch.svg"
+   sodipodi:docname="acyclic_po_watch_init.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -353,63 +353,6 @@
          id="arrow1L-29-7"
          transform="scale(-0.5)" />
     </marker>
-    <marker
-       style="overflow:visible"
-       id="Arrow1L-61-53"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Arrow1L"
-       markerWidth="8.75"
-       markerHeight="5"
-       viewBox="0 0 8.75 5"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="arrow1L-29-5"
-         transform="scale(-0.5)" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Arrow1L-61-53-2"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Arrow1L"
-       markerWidth="8.75"
-       markerHeight="5"
-       viewBox="0 0 8.75 5"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="arrow1L-29-5-9"
-         transform="scale(-0.5)" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Arrow1L-61-53-6"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Arrow1L"
-       markerWidth="8.75"
-       markerHeight="5"
-       viewBox="0 0 8.75 5"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="arrow1L-29-5-0"
-         transform="scale(-0.5)" />
-    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -419,7 +362,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.66216025"
-     inkscape:cx="372.26638"
+     inkscape:cx="373.77659"
      inkscape:cy="323.18461"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -584,38 +527,10 @@
        cy="311.26825"
        rx="4.0730214"
        ry="4.087069" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="26.892628"
-       y="276.24261"
-       id="text1226-6-4-5-3"><tspan
-         sodipodi:role="line"
-         id="tspan1224-1-5-4-6"
-         x="26.892628"
-         y="276.24261"
-         style="font-size:4.9389px;stroke-width:0.264583">init</tspan></text>
-    <ellipse
-       style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
-       id="path1081-2-7"
-       cx="18.631809"
-       cy="276.53009"
-       rx="4.0730214"
-       ry="4.087069" />
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61)"
        d="m 21.997117,315.02854 0.315789,30.09239"
        id="path5950-2-8-1-3"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-53)"
-       d="m 18.524622,280.30577 3.278271,23.92237"
-       id="path5950-2-8-1-3-6"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-53-2)"
-       d="M 23.892646,277.8273 C 160.22585,312.87791 129.90661,367.25921 82.424782,423.63127"
-       id="path5950-2-8-1-3-6-1"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#0000ff;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-5)"
@@ -638,17 +553,6 @@
          x="83.235893"
          y="373.53473"
          style="font-size:4.9389px;stroke-width:0.264583">上下文2</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="125.86411"
-       y="327.09042"
-       id="text1226-6-4-5-93-3-2-1-2"><tspan
-         id="tspan1224-1-5-4-60-5-7-9-7"
-         x="125.86411"
-         y="327.09042"
-         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583"
-         sodipodi:role="line">rf</tspan></text>
     <circle
        id="path1979"
        style="fill:#0000ff;stroke:#0000ff;stroke-width:0.264583"
@@ -667,21 +571,5 @@
        cx="121.25801"
        cy="352.79135"
        r="0.13377027" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-53-6)"
-       d="M 74.515488,428.19587 C 6.2932907,407.79525 -61.945842,371.72508 16.266862,314.89042"
-       id="path5950-2-8-1-3-6-6"
-       sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="-13.784082"
-       y="395.04016"
-       id="text1226-6-4-5-93-3-2-1-2-2"><tspan
-         id="tspan1224-1-5-4-60-5-7-9-7-6"
-         x="-13.784082"
-         y="395.04016"
-         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583"
-         sodipodi:role="line">fr</tspan></text>
   </g>
 </svg>
