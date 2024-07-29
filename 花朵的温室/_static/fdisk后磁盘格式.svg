@@ -133,6 +133,25 @@
          id="arrow1L-6"
          transform="scale(-0.5)" />
     </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-3-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-6-7"
+         transform="scale(-0.5)" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -142,7 +161,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3243205"
-     inkscape:cx="297.13351"
+     inkscape:cx="297.88862"
      inkscape:cy="183.49033"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -289,15 +308,27 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="56.229187"
-       y="102.67781"
+       x="52.381073"
+       y="102.08371"
        id="text1226-3-79-5-6"
        transform="scale(0.7929728,1.2610773)"><tspan
          sodipodi:role="line"
          id="tspan1224-6-2-6-2"
-         x="56.229187"
-         y="102.67781"
-         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区1：类型：EFI</tspan></text>
+         x="52.381073"
+         y="102.08371"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区1：类型：Linux File System</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.72289px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="47.099495"
+       y="128.07635"
+       id="text1226-3-79-5-6-3"
+       transform="scale(0.7929728,1.2610773)"><tspan
+         sodipodi:role="line"
+         id="tspan1224-6-2-6-2-5"
+         x="47.099495"
+         y="128.07635"
+         style="font-size:2.75502px;fill:#0000ff;stroke-width:0.264583">分区2：类型：Swap</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-2"
@@ -316,9 +347,16 @@
        style="fill:none;stroke:#000000;stroke-width:0.365;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-3-5-0"
        width="41.606556"
-       height="73.67025"
+       height="42.877926"
        x="-17.144762"
        y="139.52559" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.365;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3128-6-9-3-5-0-3"
+       width="41.606556"
+       height="22.380146"
+       x="-17.032227"
+       y="186.03061" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3128-6-9-3-6-3"
@@ -348,5 +386,10 @@
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-3)"
        d="m 10.869617,125.81355 h 30.24759 v 14.47137 l -16.14927,0.3426"
        id="path1131-2" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-3-6)"
+       d="m 11.089571,131.39487 h 24.748745 l 0,56.79599 -10.45307,0.3426"
+       id="path1131-2-5"
+       sodipodi:nodetypes="cccc" />
   </g>
 </svg>

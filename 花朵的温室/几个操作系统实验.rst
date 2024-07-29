@@ -112,6 +112,9 @@ https://cpp-aux-tutorial.readthedocs.io/zh-cn/latest/18.html
 这个命令显示所有的磁盘，找到类型是disk，大小和你在虚拟机中创建的磁盘的大小一样
 的，那个就是你的磁盘，比如可能是/dev/sda。
 
+.. note:: /dev/sda是串行硬件，很多虚拟机会模拟这种硬盘，但也有一些可以模拟虚拟
+   硬盘，这种情况下通常叫/dev/vda, /dev/vdb, /dev/vdc这样的。
+
 磁盘就好像一个数组，可以顺序放数据。按惯例，我们需要分成多个“区”（Partition）
 来用。分区的信息也放在磁盘上。分区有很多种格式，传统的格式叫DOS，以前的BIOS都
 用这个格式，现在UEFI常用的格式是EFI格式。我本来想建议用EFI分区的，但我自己验证
@@ -125,9 +128,9 @@ https://cpp-aux-tutorial.readthedocs.io/zh-cn/latest/18.html
 
   fdisk --wipe=always /dev/sda
 
-这样你再用o命令，它还是会报错，但这时是可以成功的。然后你就可以创建分区了。我
-们简单些，这次就创建一个分区：用n(new）创建，选在是第一个分区，用它建议的开始
-和结束位置，这样就会用掉整个磁盘作为分区。
+这样你再用o命令，它还是会报错（不是Error，而是Warning），但这时是可以成功的。
+然后你就可以创建分区了。我们简单些，这次就创建一个分区：用n(new）创建，选在是
+第一个分区，用它建议的开始和结束位置，这样就会用掉整个磁盘作为分区。
 
 如果你用EFI，EFI的bootload是要求你必须有一个EFI分区的，这样你至少要两个分区。
 下面是一个DOS分区和EFI分区的磁盘上的数据布局的对比：
@@ -149,6 +152,8 @@ https://cpp-aux-tutorial.readthedocs.io/zh-cn/latest/18.html
 
 这里我提醒一下：整个磁盘叫/dev/sda，它的第一个分区叫/dev/sda1，第二个分区叫
 /dev/sda2。
+
+.. note:: 如果创建了swap分区，可以用mkfs.swap来格式化。
 
 好了，现在我们要访问分区里面的内容了，我们需要把这个分区加入到我们的文件树。
 这称为mount。我们现在不是用光盘启动的吗？我们的目录树是这样的：::
@@ -236,6 +241,7 @@ sda2作为root，但我们的root不是当前的内核认可的root，所以有�
   apt install linux-image-amd64            # 安装操作系统内核
   apt install grub                         # 安装bootloader
   apt install vim sudo                     # 安装最基本的软件
+  apt install network-manager              # 这个是网卡的配置工具，最好装上避免用自己的系统启动后没有网卡
 
 核心就是这个内核和grub，我们前面解释过了，一个是内核，一个是bootloader。
 
@@ -254,7 +260,15 @@ grub不是拷贝了就能用的，它需要修改分区表，而且我们需要�
   cp /proc/mounts /etc/fstab
 
 /proc/mounts是操作系统内部中说明的所有mount，我们拷贝完可以编辑一下/etc/fstab，
-留下sda1和sda2两个mount就够了，其他都是内核自动挂载的。
+留下sda1和sda2两个mount就够了，其他都是内核自动挂载的。下面是一个里面内容的示
+例：::
+
+  # 分区    mount到哪里   格式   mount参数   出错的时候是否备份文件系统 启动是否检查文件系统
+  /dev/sda1 /             ext4   defaults    0                          1
+  /dev/sda2 none          swap   sw          0                          0
+
+如果你只有一个分区，那第一项就可以了，这里的第二项是交换分区，用于用一部分磁盘
+用来交换部分内存来用。
 
 然后我们设置操作系统使用的时区：::
 
@@ -279,7 +293,11 @@ grub不是拷贝了就能用的，它需要修改分区表，而且我们需要�
   apt install gnome                        # 安装图形界面
   exit                                     # 退出chroot的shell
 
-这样就装好了，重启虚拟机器就可以了。
+这样就装好了，重启虚拟机器就可以用了。
+
+重启前主要你现在的机器配置是不是用磁盘启动，启动以后看看普通用户和密码能否登录。
+用su加root的密码看看能否切换到根用户。如果用的是图形登录界面，直接用root登录，
+然后看看你安装的系统的各个目录都有些什么内容。
 
 这个实验重点要关注的要点
 ------------------------
@@ -294,41 +312,199 @@ grub不是拷贝了就能用的，它需要修改分区表，而且我们需要�
 实验3：编译和运行Linux Kernel
 =============================
 
-这个实验我们的主要目的是理解Kernel和文件系统是怎么结合起来的，我们用比较简单的
-CPU（RISCV）来理解这个过程。
+这个实验我们的主要目的是理解Kernel和文件系统（的内容）的关系。大部分操作系统都
+是分成Kernel和Shell两个部分，这好像一个核桃：
 
-1. 在WSL上安装qemu-system-riscv64（这是另一个功能更灵活的虚拟机）
+.. figure:: _static/kernel-shell.svg
 
-2. 下载Linux kernel源代码，make menuconfig，make内核
+里面是核（Kernel），外面是一层外壳（Shell），我们只能使用Shell的功能，接触不到
+Kernel，Kernel掌握着所有的硬件资源，比如内存，硬盘，网卡，鼠标等等，这些东西
+Shell都是不能直接用的，必须通过向内核请求，才能使用，这种请求，叫做系统调用。
 
-3. 下载buildroot源代码，make menuconfig，make文件系统
+这是简单的理解。但其实Shell通常只是指我们能接触到的部分（用户界面），还有一些
+我们接触不到的，比如我们运行一个排序算法程序，这个程序没有输入输出，把数据读出
+来，排完就送回去了，这种程序和Shell一样，都不能直接使用内核的资源（需要经过系
+统调用。Shell仅仅是管理这些程序而已。我们把所有这些在Kernel之外的程序，都叫“用
+户程序”。这样，前面这个核桃应该画成这样：
 
-4. 用qemu运行OS：::
+.. figure:: _static/kernel-user.svg
 
-     qemu-system-riscv64 \
-     	-smp 1 -m 128m \
-     	-nographic \
-     	-snapshot \
-     	-machine virt \
-     	-kernel arch/riscv/boot/Image \
-     	-append "root=/dev/vda ro console=ttyS0 nokaslr earlycon loglevel=8" \
-     	-drive file=buildroot/output/images/rootfs.ext4,format=raw,id=hd0 \
-          	-device pcie-root-port,id=root_port,bus=pcie.0 \
-     	-device e1000,netdev=n1 -netdev type=user,id=n1,ipv6=off \
-        -fsdev local,id=p9fs,path=.,security_model=mapped \
-	-device virtio-9p-pci,fsdev=p9fs,mount_tag=p9
-     	-device virtio-blk-device,drive=hd0
+Shell只是一个（或者多个）和人交互的用户程序，我们还有更多的用户程序，如果我们
+运行一个叫/home/user/test的排序算法，Shell只是告诉内核要从“文件系统”找到这个叫
+/home/user/test的文件，然后把它送到内存中执行，之后这个test程序就直接和kernel
+通话了，shell只是一个代理，帮助用户启动更多的程序，这些程序运气起来后，就直接
+和内核打交道，访问硬件也好，申请内存也罢，都是它和Kernel的事情了。
+
+Kernel也是一个程序，只是它的权限比较高。这里我们谈到“权限”，和我们平时说的root
+权限，kenny用户权限，ubuntu用户权限是不同的。在操作系统的角度，就两个权限：
+kernel和user权限。但kernel为了管理不同的使用者，它给使用者分配了另一个权限（我
+们这里称为登录权限：你的机器启动的时候，先启动bootload，然后启动内核，这时都是
+kernel权限，然后kernel会启动一个“登录程序”，让你用某个“登录用户”登录，登录到一
+个Shell上，这个Shell的权限就是一种“登录权限”，比如你用root登录，这时你的登录权
+限就是root，如果你用kenny登录，你的登录权限就是kenny。之后你在这个shell里面发
+起一个系统调用，找kernel做点什么，kernel根据你的登录权限决定让不让你干。所以登
+录权限只是kernel为了管理方便而做的权限，而不是我们这里说的操作系统的Kernel和
+user的权限。
+
+我们原来kernel这个程序是放在文件系统里面的，这样机器启动的时候其实没法知道它在
+哪里，所以我们在磁盘的分区表中先装了一个bootload（grub），机器启动的时候固定从
+磁盘启动，找到分区表，找到grub，grub找到内核的位置，然后先启动内核，grub还会配
+置内核的参数，这个参数告诉内核文件系统在哪里，需要启动那个shell，这样操作系统
+就能执行自己的代码后，启动第一个用户进程，然后一步步启动到shell了。
+
+我们的实验做这些工作：
+
+1. 下载Linux Kernel的源代码，编译出内核这个“程序”。
+2. 用虚拟机启动这个内核
+3. 用这个内核运行启动我们前面安装的Debian的文件系统。
+
+实验步骤
+--------
+
+编译Linux Kernel最好在Linux系统上做，因为大部分时候它是在这种平台上调试的，我
+们这里使用WSL（Ubuntu或者Debian）来完成这个编译。我们首先需要安装编译工具（比
+如gcc）：::
+
+  apt-get install build-essential bc flex bison git libncurses-dev
+  apt-get install qemu-system
+
+这里你看不到gcc，但其实gcc依赖biuld-essential所以装这个就会连gcc一起装了，还会
+包含make这些基本的工具。bc是个计算器，Linux编译用到这个命令了。flex和bison是一
+个编译器辅助工具，Linux Kerenl编译的时候用这个工具自动处理一些代码了，所以也需
+要装一下，libncurses-dev是一个Linux Kernel配置工具要用的库。
+
+qemu-system是我们一会儿运行内核要用的虚拟机。
+
+然后我们下载编译Linux内核的源代码：::
+
+  git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+  cd linux
+  make oldconfig
+  make menuconfig
+  make -j
+
+现在我们有了一个Linux的内核了，它的位置在这里：arch/x86_64/boot/bzImage。
+
+上面的make menuconfig会提供一个菜单（这就是前面安装libncurse-dev的作用了，它可
+以用来画这个菜单），允许你修改用内核的什么功能，不要什么功能，每个配置可以是：
+
+* N（标记为空）：不编译这个功能
+* M（标记为M）：用这个功能，但不和内核一起放置，等内核启动以后再动态加载进去
+* Y（标记为*）：用这个功能，而且和内核放在一起。
+
+由于我们一开始没有文件系统，所以所有我们需要的功能，都要用Y的方式编译到内核中，
+我这里建议开这些配置：
+
+* Device Driver
+
+  * Network device support
+
+    * Ethernet driver support
+
+      * 把Intel相关的网卡都选了
+
+    * Virtio network driver 虚拟网卡
+
+  * Serial ATA and Parallel ATA driver (libata)
+
+    * 把Intel的驱动都选了
+
+  * File System
+
+    * The Extend 4 (ext4) filesystem  （选择ext4文件系统支持）
+
+* Kernel hacking
+
+  * Kernel debugging
+
+  * Miscellaneous debug code
+
+我们直接就可以用qemu-system（以下简称qemu，它表示Quick Emulator）运行它了：::
+
+  qemu-system-x86_64 -kernel arch/x86_64/boot/bzImage
+
+内核启动到最后会告诉你没有root文件系统，然后它就停了。你也没有shell可以输入任
+何东西了。
+
+现在我们把我们在实验2中用virtualbox安装的文件系统拿过来当作root用。virtualbox
+用来模拟磁盘的文件格式是vdi，如果你装了一个debian.vdi，我们现在把它转化为裸磁
+盘的格式：::
+
+  vboxmanage clonemedium debian.vdi debian.img --format raw
+
+qemu的虚拟磁盘一般用qcow2格式，但它也可以直接认识裸磁盘（就是和真的磁盘一样放，
+没有额外的文件头说明自己的格式）的格式。有了这个磁盘，我们其实可以直接用qemu去
+启动它的：::
+
+  qemu-system-x86_64 -hda debian.img
+
+我们之前其实完全可以直接用qemu来安装我们的debian的，只是qemu只能在WSL上运行，
+WSL自己已经是个模拟器了，再用它运行另一个模拟器，效率比较低，问题也多。所以我
+们先简单点，用virtualbox。
+
+但virtualbox不能直接运行内核，要做我们现在这个实验，就只能用qemu了。
+
+现在我们加足够多的参数来控制qemu来运行我们的内核和root文件系统：::
+
+  qemu-system-x86_64 -drive file=debian.img,format=raw,index=0,if=virtio \
+	-snapshot \
+	-machine ubuntu-q35 \
+	-smp 2 \
+	-m 1024m \
+	-kernel arch/x86_64/boot/bzImage \
+	-append "rw root=/dev/sda1" \
+	-nic user,hostfwd=tcp::2422-:22
+
+解释一下参数的函数的含义：
+
+* -drive 说明了一个虚拟的磁盘
+* -snapshot 说明不要真的修改虚拟磁盘，所有修改只是临时保存在内存中，避免破坏磁盘
+* -machine 说明机器类型
+* -smp 说明模拟几个CPU
+* -m 说明模拟多少内存
+* -kernel 说明使用什么内核启动
+* -append 内核参数，这里rw表示根文件系统是可读写的，root表示根文件系统是谁
+* -nic 创建一一个网卡，并且如果通过本地的tcp:2422端口访问可以转入内部的22号端口
+
+这样就可以看到用这个内核运行，并且mount你的磁盘，用它作为root来工作了。
+
+Kernel也是一个普通的程序，有了虚拟机，我们其实可以直接调试它，为此，我们把上述
+参数简单调整一下：::
+
+  qemu-system-x86_64 -drive file=debian.img,format=raw,index=0,if=virtio \
+        -S -s \
+	-snapshot \
+	-machine ubuntu-q35 \
+	-smp 2 \
+	-m 1024m \
+	-kernel arch/x86_64/boot/bzImage \
+	-append "nokaslr rw root=/dev/sda1" \
+	-nic user,hostfwd=tcp::2422-:22
+
+qemu增加了两个参数：-S -s，前者表示启动以后不要运行，等待调试器连入；后者表示
+启动内置的调试器。
+
+内核增加了一个nokaslr参数，这是内核不要做反跟踪，如果没有这个参数，内核会故意
+改变自己在内存中的位置，让调试器无法找到正确的信息。
+
+然后我们到kernel编译的目录中找到vmlinux这个文件，然后用gdb连接它：::
+
+  bash> gdb vmlinux          # 调试vmlinux程序（这是内核运行程序的符号文件）
+  gdb> target remote:1234    # 连接远端的gdb
+  gdb> break start_kernel    # 在start_kernel函数上设置一个断点
+  gdb> cont                  # 让内核继续运行
+  gdb> next                  # 现在开始可以单步跟踪内核的运行了
+
+这样我们可以单步看看内核启动会经过多少个步骤。
+
+这个实验重点要关注的要点
+------------------------
 
 这个实验在前面知道一个操作系统的磁盘的形态后，理解内核和这个磁盘的关系是什么。
 我们重点学会：
 
 1. Linux内核如何编译和安装。
-
-2. 大概知道一下buildroot这样的东西的存在。从它下载和编译的过程，理解一下那么多
-   的开源代码是如何组织在一起的。如果有条件，理解一下如何用编译器来编译编译器。
-
-3. 理解内核的文件系统是如何结合在一起的。
-
-4. 理解qemu这种仿真器是如何用不同构架的机器去模拟另一种架构的机器的。
-
-5. 看一次Kernel启动过程的打印，理解操作系统启动主要会做些什么事情。
+2. 理解内核的文件系统是如何结合在一起的。
+3. 从qemu的参数理解虚拟机是怎么模拟一个硬件的
+4. 看一次Kernel启动过程的打印，理解操作系统启动主要会做些什么事情。
+5. 理解内核是怎么调试的。
