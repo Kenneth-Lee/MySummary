@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="151.12389mm"
-   height="156.98064mm"
-   viewBox="0 0 151.12387 156.98063"
+   width="250.44037mm"
+   height="190.73076mm"
+   viewBox="0 0 250.44036 190.73075"
    version="1.1"
    id="svg8"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   sodipodi:docname="acyclic_po_watch_init.svg"
+   sodipodi:docname="rcu-link.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -336,7 +336,7 @@
     </marker>
     <marker
        style="overflow:visible"
-       id="Arrow1L-61-3"
+       id="Arrow1L-61-53"
        refX="0"
        refY="0"
        orient="auto-start-reverse"
@@ -350,7 +350,26 @@
       <path
          style="fill:context-stroke;fill-rule:evenodd;stroke:none"
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="arrow1L-29-7"
+         id="arrow1L-29-5"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-61-53-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-29-5-9"
          transform="scale(-0.5)" />
     </marker>
   </defs>
@@ -362,8 +381,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.66216025"
-     inkscape:cx="213.69449"
-     inkscape:cy="336.77648"
+     inkscape:cx="375.2868"
+     inkscape:cy="323.18461"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -396,162 +415,160 @@
      inkscape:label="图层 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(51.304908,-279.36284)">
-    <rect
-       style="opacity:0.265931;fill:#ff0000;stroke:#0000ff;stroke-width:0.665001;stroke-dasharray:1.33, 0.665001;stroke-dashoffset:0;stop-color:#000000"
-       id="rect43244-5"
-       width="54.025291"
-       height="63.467297"
-       x="35.779072"
-       y="362.4574" />
-    <rect
-       style="opacity:0.265931;fill:#ff0000;stroke:#0000ff;stroke-width:0.665001;stroke-dasharray:1.33, 0.665001;stroke-dashoffset:0;stop-color:#000000"
-       id="rect43244"
-       width="54.025291"
-       height="63.467297"
-       x="-16.71982"
-       y="288.92947" />
+     transform="translate(94.400508,-260.00771)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="18.306395"
-       y="295.93112"
-       id="text1226-6-4-5"><tspan
+       x="8.4539213"
+       y="297.89706"
+       id="text1226-6-4-5-7"><tspan
          sodipodi:role="line"
-         id="tspan1224-1-5-4"
-         x="18.306395"
-         y="295.93112"
-         style="font-size:4.9389px;stroke-width:0.264583">up</tspan></text>
+         id="tspan1224-1-5-4-5"
+         x="8.4539213"
+         y="297.89706"
+         style="font-size:4.9389px;stroke-width:0.264583">po</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="-36.635963"
-       y="297.74243"
+       x="54.115368"
+       y="381.58951"
+       id="text1226-6-4-5-7-6"><tspan
+         sodipodi:role="line"
+         id="tspan1224-1-5-4-5-2"
+         x="54.115368"
+         y="381.58951"
+         style="font-size:4.9389px;stroke-width:0.264583">po</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-23.791779"
+       y="319.91422"
        id="text1226-6-4-5-5"><tspan
          sodipodi:role="line"
          id="tspan1224-1-5-4-2"
-         x="-36.635963"
-         y="297.74243"
-         style="font-size:4.9389px;stroke-width:0.264583">上下文1</tspan></text>
+         x="-23.791779"
+         y="319.91422"
+         style="font-size:4.9389px;stroke-width:0.264583">内存访问</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="22.343761"
-       y="334.23682"
-       id="text1226-6-4-5-0"><tspan
+       x="15.534406"
+       y="362.20746"
+       id="text1226-6-4-5-5-3"><tspan
          sodipodi:role="line"
-         id="tspan1224-1-5-4-3"
-         x="22.343761"
-         y="334.23682"
-         style="font-size:4.9389px;stroke-width:0.264583">s</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="61.120808"
-       y="368.7756"
-       id="text1226-6-4-5-0-4"><tspan
-         sodipodi:role="line"
-         id="tspan1224-1-5-4-3-7"
-         x="61.120808"
-         y="368.7756"
-         style="font-size:4.9389px;stroke-width:0.264583">w</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="73.293571"
-       y="408.1218"
-       id="text1226-6-4-5-0-6"><tspan
-         sodipodi:role="line"
-         id="tspan1224-1-5-4-3-1"
-         x="73.293571"
-         y="408.1218"
-         style="font-size:4.9389px;stroke-width:0.264583">us</tspan></text>
+         id="tspan1224-1-5-4-2-5"
+         x="15.534406"
+         y="362.20746"
+         style="font-size:4.9389px;stroke-width:0.264583">内存访问</tspan></text>
     <ellipse
        style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
        id="path1081"
-       cx="11.360067"
-       cy="338.07092"
-       rx="4.0730214"
-       ry="4.087069" />
-    <ellipse
-       style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
-       id="path1081-6"
-       cx="66.932205"
-       cy="412.85849"
+       cx="44.510826"
+       cy="360.65475"
        rx="4.0730214"
        ry="4.087069" />
     <ellipse
        style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
        id="path1081-5"
-       cx="56.411953"
-       cy="375.2341"
+       cx="49.64101"
+       cy="408.16946"
        rx="4.0730214"
        ry="4.087069" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="0.20486043"
-       y="319.427"
-       id="text1226-6-4-5-93-3-2-1"><tspan
-         id="tspan1224-1-5-4-60-5-7-9"
-         x="0.20486043"
-         y="319.427"
-         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583"
-         sodipodi:role="line">po</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="63.650791"
-       y="393.41833"
-       id="text1226-6-4-5-93-3-2-1-3"><tspan
-         id="tspan1224-1-5-4-60-5-7-9-0"
-         x="63.650791"
-         y="393.41833"
-         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583"
-         sodipodi:role="line">po</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="37.656849"
-       y="354.99249"
-       id="text1226-6-4-5-93-3-2-1-7"><tspan
-         id="tspan1224-1-5-4-60-5-7-9-8"
-         x="37.656849"
-         y="354.99249"
-         style="font-size:4.9389px;fill:#0000ff;stroke-width:0.264583"
-         sodipodi:role="line">com</tspan></text>
-    <ellipse
-       style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
-       id="path1081-2"
-       cx="10.045584"
-       cy="296.2186"
-       rx="4.0730214"
-       ry="4.087069" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61)"
-       d="m 10.615445,299.97889 0.315789,30.09239"
-       id="path5950-2-8-1-3"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#0000ff;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-5)"
-       d="m 14.815368,340.22873 34.871005,29.56925"
-       id="path5950-2-8-1-3-9"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-3)"
-       d="m 57.946203,379.53972 7.134344,26.06946"
-       id="path5950-2-8-1-3-4"
-       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="71.854218"
-       y="358.48508"
-       id="text1226-6-4-5-5-4"><tspan
+       x="28.768299"
+       y="337.47815"
+       id="text1226-6-4-5-93-3-2-1"><tspan
+         id="tspan1224-1-5-4-60-5-7-9"
+         x="28.768299"
+         y="337.47815"
+         style="font-size:4.9389px;fill:#000000;stroke-width:0.264583"
+         sodipodi:role="line">rfe/co/fr</tspan></text>
+    <ellipse
+       style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path1081-2"
+       cx="2.3475025"
+       cy="317.39612"
+       rx="4.0730214"
+       ry="4.087069" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="-30.465256"
+       y="285.55304"
+       id="text1226-6-4-5-3"><tspan
          sodipodi:role="line"
-         id="tspan1224-1-5-4-2-4"
-         x="71.854218"
-         y="358.48508"
-         style="font-size:4.9389px;stroke-width:0.264583">上下文2</tspan></text>
+         id="tspan1224-1-5-4-6"
+         x="-30.465256"
+         y="285.55304"
+         style="font-size:4.9389px;stroke-width:0.264583">RCU原语</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="19.488594"
+       y="411.32635"
+       id="text1226-6-4-5-3-3"><tspan
+         sodipodi:role="line"
+         id="tspan1224-1-5-4-6-6"
+         x="19.488594"
+         y="411.32635"
+         style="font-size:4.9389px;stroke-width:0.264583">RCU原语</tspan></text>
+    <ellipse
+       style="fill:#808000;stroke:#0000ff;stroke-width:0.365001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path1081-2-7"
+       cx="-0.44794399"
+       cy="282.65796"
+       rx="4.0730214"
+       ry="4.087069" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61)"
+       d="M 4.5640534,320.4353 39.555546,355.36162"
+       id="path5950-2-8-1-3"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-53)"
+       d="M -0.55513123,286.43364 2.7231398,310.35601"
+       id="path5950-2-8-1-3-6"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-53-2)"
+       d="M 4.1745068,282.54885 C 86.216877,298.96923 94.144557,355.8432 54.23594,403.93342"
+       id="path5950-2-8-1-3-6-1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-61-5)"
+       d="m 45.45473,365.04301 3.79929,35.75175"
+       id="path5950-2-8-1-3-9"
+       sodipodi:nodetypes="cc" />
+    <circle
+       id="path1979"
+       style="fill:#0000ff;stroke:#0000ff;stroke-width:0.264583"
+       cx="-145.12181"
+       cy="415.04404"
+       r="0.13377027" />
+    <circle
+       id="path1981"
+       style="fill:#0000ff;stroke:#0000ff;stroke-width:0.264583"
+       cx="-115.15829"
+       cy="386.86301"
+       r="0.13377027" />
+    <circle
+       id="path1983"
+       style="fill:#0000ff;stroke:#0000ff;stroke-width:0.264583"
+       cx="102.17826"
+       cy="358.91922"
+       r="0.13377027" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:8.46667px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="75.248009"
+       y="315.39655"
+       id="text1226-6-4-5-93-3-2-1-2-2"><tspan
+         id="tspan1224-1-5-4-60-5-7-9-7-6"
+         x="75.248009"
+         y="315.39655"
+         style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583"
+         sodipodi:role="line">rcu-link</tspan></text>
   </g>
 </svg>

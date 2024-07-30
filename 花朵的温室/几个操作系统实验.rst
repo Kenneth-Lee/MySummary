@@ -207,7 +207,7 @@ Debian的stable版本（Debian默认有三个版本：unstable，testing，stabl
 
 这样，我们就装完最基本的系统了，我们要配置我们的系统。做这种配置，常常我们需要
 运行命令，但这些命令都是改当前的root为基础的目录的，所以我们最好改成用我们的
-sda2作为root，但我们的root不是当前的内核认可的root，所以有些动态生成的文件不在
+/mnt作为root，但我们的root不是当前的内核认可的root，所以有些动态生成的文件不在
 里面，我们在我们的root中也加上这些动态目录：::
 
       mount -t proc none /mnt/proc             # OS运行信息文件
