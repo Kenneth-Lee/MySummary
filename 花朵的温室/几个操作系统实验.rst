@@ -213,7 +213,7 @@ Debian的stable版本（Debian默认有三个版本：unstable，testing，stabl
       mount -t proc none /mnt/proc             # OS运行信息文件
       mount --rbind /dev /mnt/dev              # 设备文件
       mount --rbind /sys /mnt/sys              # 另一部分OS运行信息文件
-      cp /etc/resolve.conf /mnt/etc/rsolve.conf  # DNS
+      cp /etc/resolv.conf /mnt/etc/resolv.conf # DNS
       chroot /mnt /bin/bash                    # 用目标系统作root
 
 前面三个mount都是在我们的/mnt目录中加上内核自动生成的文件系统，最后一个是借用
