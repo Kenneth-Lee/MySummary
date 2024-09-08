@@ -81,5 +81,6 @@
    python工程的原理
    几个操作系统实验
    怎样理解递归
+   在WSL上安装和使用MySQL
 
 .. vim: tw=80 fo+=mM
