@@ -349,6 +349,10 @@ miniconda很流行，所以不用担心这个方案不通用，在MacOS或者Lin
 
 无论如何，这个很麻烦吧，对这种麻烦有切身的认识，就开始理解软件是个什么工作了。
 
+对了，当我们进入虚拟环境以后，你不再需要python3或者pip3这样的命令了，你都用
+python和pip，虚拟环境是python3的它自然会用3这个版本，环境是2的，它自然会用
+2这个版本，你可以用python --version看真正的版本是什么。
+
 Python的库到底是什么
 ====================
 
@@ -410,3 +414,76 @@ __init__.py文件（这相当于这个子目录的类的初始化函数），这
 的，VM比较容易解释，这些文件的格式叫.pyc，但它和C的那种编译成二进制是两回事。
 pyc还是一句句解释的，不是机器代码，你随时可以删掉这些文件，让VM重新解释py文件
 的。pyc只是让VM解释py文件简单一些而已。
+
+pip使用国内镜像
+===============
+
+前面说过了，pip其实是一个python程序，用来管理python的包，所以不同的python程序，
+有不同的pip，如果你使用venv或者conda，它也有不同的版本，安装的包也会安装到不同
+的位置上。
+
+pip安装软件从网络上下载，默认是在这里：\ `<https://pypi.python.org/simple/>`_
+。但这个网站在国内经常访问不到，或者很慢，这时可以使用国内的镜像（镜像就是国内
+有些机构把前面说的网站的内容全部拷贝一份过来），比如清华的镜像在这里：
+`<https://pypi.tuna.tsinghua.edu.cn/simple>`_\ 。
+
+如果你用pip安装东西很慢，你就可以运行install的时候使用国内镜像，比如你要安装
+pandas，你可以这样：::
+
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
+
+
+使用notebook
+============
+
+python是最基本的运行环境，它的目的就是用来运行python程序，所以虽然它可以像命令
+行一样运行一句，执行一句，但其实是不好用的，它的主要目的还是运行整个Python程序。
+
+所以如果你只是要用命令行的方式运行python，你可以用ipython。这是在python的基础
+上写的增强（也就是说它使用的也是python的库和环境），如果你不是要运行python程序，
+而是用运行命令的方式和Python交互，它用起来会比直接用python方便。
+
+比如说，你可以直接运行exit退出，而在一般的Python中，你必须用quit()这个函数调用。
+更多的功能用?命令来看帮助吧。
+
+在没有虚拟环境的时候，像python3的pip叫pip3一样，python3的ipython叫ipython3。
+
+但对于大部分只是python3来做数据处理的人来说，可能更需要的是一个接近图形界面的
+界面，这时我们可以用jupyter notebook。jupyter是基于ipython做的一个框架，它提供
+很多不同的功能，notebook只是它其中一个功能，它还有很多其他功能。比如，你还可以
+用jupyter qtconsole这样启动一个图形的交互界面。但我们这里重点介绍jupyter最常用
+的功能：notebook。
+
+jupyter notebook的最大好处是它可以保存运行结果，就是你用python处理了一些数据，
+画了一些图，然后你可以直接存盘，下次你完全不用运行这些程序，你就直接可以看那个
+结果。你还可以在这些结果中添加笔记，解释你的思路，分析这些结果。这些全部都在存
+盘中。这就很方便。
+
+jupyter notebook可以这样启动：::
+
+  jupyter notebook
+
+它启动的是一个Web Server，只要这个Server还在，你可以在浏览器中用::
+
+  http://localhost:8888
+
+来访问它（第一次启动它会默认帮你启动浏览器）。所以你退出浏览器，这个程序也不会
+退出，你要主动关掉命令行，或者在命令行上运行Ctrl-C来关掉这个Web Server。其他功
+能都是界面上可以看到的，我这里就不具体解释了。热键可以按h来看。
+
+.. figure:: _static/jupyter-notebook.png
+
+jupyter notebook默认使用它自己的虚拟环境（叫ipykernel），这在它那里称为一个
+kernel（python内核）。这个内核中不一定有你要的那些包。所以你可以让它用你的虚拟
+环境。无论你的环境是venv创建的，还是miniconda创建的，在你进入那个环境后，你都
+可以这样创建一个kernel：::
+
+  python -m ipykernel install --user --name=mykernel
+  jupyter kernelspec list                 # 这个命令检查现在有哪些kernel
+
+这里运行ipykernel这个模块（这是ipython的内核管理工具），install是安装
+（uninstall是删除），--user表示这用于虚拟环境，--name指定kernel的名字，可以考
+虑和你的虚拟环境的名字一样，但说到底就是个名字，让你记住它。
+
+之后再使用jupyter notebook，创建新的notebook的时候就可以选择这个kernel了。你在
+这个虚拟环境中的包，就可以使用了。
