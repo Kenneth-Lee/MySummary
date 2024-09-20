@@ -475,6 +475,10 @@ jupyter notebook可以这样启动：::
 
 .. figure:: _static/jupyter-notebook.png
 
+   jupyter notebook的使用界面。可以看到，它很适合配合pandas使用。pandas相当于
+   一个脚本版本的excel，可以直接用read_excel()和to_excel()读写excel文件，可以
+   和notebook配合显示表格内容和绘制各种复杂的图表。
+
 jupyter notebook默认使用它自己的虚拟环境（叫ipykernel, python内核的意思）。这
 个内核中不一定有你要的那些包。所以你可以让它用你的虚拟环境。无论你的环境是venv
 创建的，还是miniconda创建的，在你进入那个环境后，你都可以这样创建一个kernel：::
