@@ -239,6 +239,9 @@ venv在当前目录上创建一个新的目录，和你给定的虚拟环境名�
 
   source myvenv/bin/activate
 
+  # 去激活直接运行deactivate就可以了，deactivate这个命令是activate脚本生成的脚本函数
+  deactivate
+
 这其实只是给你当前的命令行控制台设置一些环境变量，让python VM可以找到这个目录
 而已。这之后，你就不再需要用python3来运行python vm了，现在python就是指Python3，
 pip就是pip3，你在python程序中import numpy也会找这个目录中有没有numpy（原来的系
@@ -432,7 +435,6 @@ pandas，你可以这样：::
 
   pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
 
-
 使用notebook
 ============
 
@@ -448,11 +450,11 @@ python是最基本的运行环境，它的目的就是用来运行python程序�
 
 在没有虚拟环境的时候，像python3的pip叫pip3一样，python3的ipython叫ipython3。
 
-但对于大部分只是python3来做数据处理的人来说，可能更需要的是一个接近图形界面的
-界面，这时我们可以用jupyter notebook。jupyter是基于ipython做的一个框架，它提供
-很多不同的功能，notebook只是它其中一个功能，它还有很多其他功能。比如，你还可以
-用jupyter qtconsole这样启动一个图形的交互界面。但我们这里重点介绍jupyter最常用
-的功能：notebook。
+但对于大部分只是python3来做数据处理的人来说，可能更需要的是一个像Excel那样的使
+用界面。这时我们可以用jupyter notebook。jupyter是基于ipython做的一个框架，它提
+供很多不同的功能，notebook只是它其中一个功能，它还有很多其他功能。比如，你还可
+以用jupyter qtconsole这样启动一个图形的交互界面。但我们这里重点介绍jupyter最常
+用的功能：notebook。
 
 jupyter notebook的最大好处是它可以保存运行结果，就是你用python处理了一些数据，
 画了一些图，然后你可以直接存盘，下次你完全不用运行这些程序，你就直接可以看那个
@@ -473,17 +475,19 @@ jupyter notebook可以这样启动：::
 
 .. figure:: _static/jupyter-notebook.png
 
-jupyter notebook默认使用它自己的虚拟环境（叫ipykernel），这在它那里称为一个
-kernel（python内核）。这个内核中不一定有你要的那些包。所以你可以让它用你的虚拟
-环境。无论你的环境是venv创建的，还是miniconda创建的，在你进入那个环境后，你都
-可以这样创建一个kernel：::
+jupyter notebook默认使用它自己的虚拟环境（叫ipykernel, python内核的意思）。这
+个内核中不一定有你要的那些包。所以你可以让它用你的虚拟环境。无论你的环境是venv
+创建的，还是miniconda创建的，在你进入那个环境后，你都可以这样创建一个kernel：::
 
+  # 以下命令用当前虚拟环境创建一个叫mykernel的ipykernel。
   python -m ipykernel install --user --name=mykernel
-  jupyter kernelspec list                 # 这个命令检查现在有哪些kernel
+
+  # 这个命令检查现在有哪些kernel，你可检查你创建成功没有
+  jupyter kernelspec list
 
 这里运行ipykernel这个模块（这是ipython的内核管理工具），install是安装
 （uninstall是删除），--user表示这用于虚拟环境，--name指定kernel的名字，可以考
 虑和你的虚拟环境的名字一样，但说到底就是个名字，让你记住它。
 
-之后再使用jupyter notebook，创建新的notebook的时候就可以选择这个kernel了。你在
+之后你再使用jupyter notebook，创建新的notebook的时候就可以选择这个kernel了。你在
 这个虚拟环境中的包，就可以使用了。
