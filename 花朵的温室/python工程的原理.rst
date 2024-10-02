@@ -443,29 +443,49 @@ python是最基本的运行环境，它的目的就是用来运行python程序�
 
 所以如果你只是要用命令行的方式运行python，你可以用ipython。这是在python的基础
 上写的增强（也就是说它使用的也是python的库和环境），如果你不是要运行python程序，
-而是用运行命令的方式和Python交互，它用起来会比直接用python方便。
+而是用运行命令的方式和Python交互，它用起来会比直接用python方便。因为它更像是一
+个命令行而不是一个简单的Python语言解释器，它可以自动联想（输入的过程中按tab），
+可以直接运行命令行的命令，比如：::
 
-比如说，你可以直接运行exit退出，而在一般的Python中，你必须用quit()这个函数调用。
-更多的功能用?命令来看帮助吧。
+  ls
+  !myapp       # 默认运行外部命令需要加叹号，但很多常用命令已经定义成ipython的别名了，可以没有
+  exit
+
+可以用问号来看帮助，比如：::
+
+  numpy?
+  numpy.ndarray?
+
+还可以直接在里面用pip来安装缺失的包：::
+
+  %pip install numpy pandas
+
+（注意那个百分号是需要的，这表示运行ipython自己的命令）
+
+这会让这个python好用很多。
 
 在没有虚拟环境的时候，像python3的pip叫pip3一样，python3的ipython叫ipython3。
+ipython可以直接安装在虚拟环境中。比如你已经在某个虚拟环境中了，你可以用：::
+
+  pip install ipython
+
+来安装它。
 
 但对于大部分只是python3来做数据处理的人来说，可能更需要的是一个像Excel那样的使
 用界面。这时我们可以用jupyter notebook。jupyter是基于ipython做的一个框架，它提
-供很多不同的功能，notebook只是它其中一个功能，它还有很多其他功能。比如，你还可
-以用jupyter qtconsole这样启动一个图形的交互界面。但我们这里重点介绍jupyter最常
-用的功能：notebook。
+供很多不同的功能，notebook只是它其中一个功能，但这个功能用得最多。
+
+jupyter也可以用pip直接安装和运行：::
+
+  pip install jupyter
+  jupyter noteboot          # 或者直接运行jupyter-notebook也行
 
 jupyter notebook的最大好处是它可以保存运行结果，就是你用python处理了一些数据，
 画了一些图，然后你可以直接存盘，下次你完全不用运行这些程序，你就直接可以看那个
 结果。你还可以在这些结果中添加笔记，解释你的思路，分析这些结果。这些全部都在存
 盘中。这就很方便。
 
-jupyter notebook可以这样启动：::
-
-  jupyter notebook
-
-它启动的是一个Web Server，只要这个Server还在，你可以在浏览器中用::
+jupyter-notebook命令启动的是一个Web Server，只要这个Server还在，你可以在浏览器中用::
 
   http://localhost:8888
 
@@ -479,19 +499,4 @@ jupyter notebook可以这样启动：::
    一个脚本版本的excel，可以直接用read_excel()和to_excel()读写excel文件，可以
    和notebook配合显示表格内容和绘制各种复杂的图表。
 
-jupyter notebook默认使用它自己的虚拟环境（叫ipykernel, python内核的意思）。这
-个内核中不一定有你要的那些包。所以你可以让它用你的虚拟环境。无论你的环境是venv
-创建的，还是miniconda创建的，在你进入那个环境后，你都可以这样创建一个kernel：::
-
-  # 以下命令用当前虚拟环境创建一个叫mykernel的ipykernel。
-  python -m ipykernel install --user --name=mykernel
-
-  # 这个命令检查现在有哪些kernel，你可检查你创建成功没有
-  jupyter kernelspec list
-
-这里运行ipykernel这个模块（这是ipython的内核管理工具），install是安装
-（uninstall是删除），--user表示这用于虚拟环境，--name指定kernel的名字，可以考
-虑和你的虚拟环境的名字一样，但说到底就是个名字，让你记住它。
-
-之后你再使用jupyter notebook，创建新的notebook的时候就可以选择这个kernel了。你在
-这个虚拟环境中的包，就可以使用了。
+如果你用你的虚拟环境装的jupyter，缺失的包可以在这个环境中直接用pip装。
