@@ -324,37 +324,52 @@ IDE当作编辑器，运行的时候用自己的命令行好了。IDE只适合�
   cmd> python -m pip install venv
   cmd> python -m venv myvenv
 
-在我的机器上安装这个venv根本安装不上。我只能把这个解释为Windows实现这个Python
-版本的时候没有制作pip这个包，所以根本就没有。实际上，windows默认的这个VM用的人
-就不多，更多人用的是miniconda，这个可以在anaconda.com下载。从这个网站的名字就
-可以看出，这是个商业公司，所以它默认给你的安装程序是anaconda，但它也提供
-miniconda，这是一个没有那么多商业特性的版本，我们尽量用这个，方案比较独立，毕
-竟我们需要的是基本的功能。
+Windows的最佳实践
+-----------------
 
-miniconda默认安装是不修改PATH环境变量的，所以你在命令行中是运行不了python的，
-要在windows菜单上找miniconda设置过的命令行运行。你当然可以把miniconda加到你的
-路径中，但这样很容易导致其他程序误用这个版本的Python，所以推荐是不要设置这个路
-径，但这样vscode的Python插件就需要修改一下配置才能用这个Python了。
+前面我们说的是原理，无论你用Windows自己的Python还是从Python的官网上下载一个
+Python，或者用Anaconda公司提供的Python，原理都类似。
 
-miniconda的最大特点是默认就带了类似venv这个方案。你从菜单上启动一个miniconda的
-Python，它默认就有一个叫base的虚拟环境，你随时可以用conda create -n myvenv来创
-建新的目录，然后如下方法激活和反激活它：::
+但如果你不想折腾那么多的东西，我这里给一个我觉得最简单省事的安装策略。
 
-  conda activate myvenv
-  conda deactivate myvenv
+首先，在Windows下开一个控制台（cmd或者power shell都行），运行python，如果
+windows已经安装python了，它就能启动，如果不能启动，它会自动进入AppStore，让你
+安装Python3.11，你按这个安装就行了。
 
-其他用法就和前面的venv是一样的了。conda每个沙箱里面就带着python.exe这个命令，
-如果你用于vscode，你可以直接修改python的配置，把路径设置上这个路径上就可以了。
-（其实我个人更建议直接用命令行。）
+这样安装出来的是Windows自己默认的Python，功能中规中矩，版本不新不旧，但好处是
+是微软自己的版本，算是和Windows比较匹配吧。而且你要不用设置什么路径，因为已经
+默认在Windows的路径中了。
 
-miniconda很流行，所以不用担心这个方案不通用，在MacOS或者Linux下也可以装，只是
-在Linux下通常我们不需要装，因为venv已经够用了。
+这个版本的python自带了pip和venv，你自己不能另外用python -m pip install venv另
+外来装venv的。所以，你可以首先创建一个系统默认的venv，比如我会用%HOME%/.venv，
+这个看个人喜欢，我觉得无所谓的，你愿意放在c:\venv下也行。创建命令如下：::
 
-无论如何，这个很麻烦吧，对这种麻烦有切身的认识，就开始理解软件是个什么工作了。
+  python -m venv %HOME%/.venv
 
-对了，当我们进入虚拟环境以后，你不再需要python3或者pip3这样的命令了，你都用
-python和pip，虚拟环境是python3的它自然会用3这个版本，环境是2的，它自然会用
-2这个版本，你可以用python --version看真正的版本是什么。
+之后就可以用%HOME%/.venv/Script/activate命令来激活。之后在这个控制台上再运行
+pip安装软件，执行python运行脚本，用的都是这个环境了。
+
+.. note::
+
+  新版本的windows加了安全性，在命令行上禁止运行脚本，所以有些平台运行activate
+  命令会报错误。如果遇到这种情况，可以先用管理员模式运行一个PowerShell（在菜单
+  上运行Power Shell的时候可以选择用管理员模式运行），然后用如下命令看一下权限：
+
+    Get-ExecutionPolicy -List
+
+  如果CurrentUser没有RemoteSigned权限，就运行如下命令给它加上：
+
+    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+  之后就可以正常运行activate了。
+
+之后如果使用vscode，安装python插件以后，你可以按F1在vscode的命令界面上输入：
+python:select Interpreter在里面选择%HOME%/.venv/Script/python.exe作为python的
+命令。之后就是全部用这个venv来运行程序了。如果你要另选venv，可以重新运行python:
+selct Interpreter命令。
+
+这种方法我觉得现在是最顺利，问题最少的。
+
 
 Python的库到底是什么
 ====================
