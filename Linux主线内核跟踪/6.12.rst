@@ -1,0 +1,45 @@
+.. Kenneth Lee 版权所有 2024
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2024-11-22
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2024-11-17
+
+6.12
+****
+
+大特性
+======
+
+没啥惊喜的大特性，正如发布邮件说的：
+
+  | No strange surprises this last week, so we're sticking to the regular
+  | release schedule, and that obviously means that the merge window opens
+  | tomorrow. I already have two dozen+ pull requests in my mailbox, kudos
+  | to all the early birds.
+
+从细节来看，也许这个版本最大的主题是：很多模块都在向folio靠拢。
+
+其他有趣的东西
+==============
+
+1. console模块加了一堆对nbcon的修改，所谓nbcon是no-big-lock console的简称。
+   大部分补丁来自：John Ogness <john.ogness@linutronix.de>，通过Suse的维护者上
+   传的。
+
+2. netfs上传了一组优化代码。我还以为是一种新的文件系统，查了一下，发现这是一个
+   用来支持网络文件系统的库，把一些基本功能都抽象在这里了，比如本地cache的管理
+   等。它以一个inode成员(netfs_inode）的形式存在，代理网络文件系统在inode上的
+   部分功能，9p，afs，ceph，nfs，和smb都用了这个库。
+
+3. perf增加了一个check命令，可以判断某个特性是否存在，比如：perf check feature
+   bpf这样。
+
+4. risvc增加对smb_mb()等内存屏障函数的支持（敢情之前连这个都没有？）。还增加了
+   基于ACPI的外部中断控制器的支持。后一个补丁来自ventanamicro.com，这是一个
+   RISCV的服务咨询公司。
