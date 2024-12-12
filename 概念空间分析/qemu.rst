@@ -214,7 +214,15 @@ QoM可以动态构架，只要内存中有对应的函数，class和instance的�
      - DeviceState
      - 可以通过qdev_new创建，还包括一组qdev_控制函数
 
-实例化这些类，就可以构成一个完整的VM。
+实例化这些类，就可以构成一个完整的VM。下面是一个不完整的示例：::
+
+  /                                  <-- object_get_root()
+    machine                          <-- qdev_get_machine()
+      peripheral
+      peripheral-anon
+    objects
+    backend
+    chardevs
 
 我们看一个简单的例子对类建立感性认识：
 
@@ -270,6 +278,14 @@ QoM可以动态构架，只要内存中有对应的函数，class和instance的�
 在这个class的init里面我们用OBJECT_CLASS_CHECK把父类转换为子类，然后设置了
 Device这个子类的realize和unrealize函数。这样，整个类的初始化逻辑框架就撑起来了。
 
+.. note::
+
+  这里有必要特别解释一下这个realize的含义。理论上我们有类和对象的构造和析构，
+  一般面向对象的结构就建立起来了。但对于qemu来说，对象之间是有关系的，很多时候
+  我们需要先把所有对象都建立好了，然后才能初始化。所以就又补充了这个realize。
+  让所有实例和关系都挂接好了，才会真的去“realize（实现）它”，所以就多了这个回
+  调的阶段了。通常我们把需要所有类都在位才能做的初始化，放到这个地方来。
+
 在实际实现中，整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关联
 。这种关联有两种类型：composition和link，分别用object_property_add_child/link()
 建立。比如你在创建machine的时候，可以在machine中创建一个bus，然后把它作为
@@ -277,8 +293,28 @@ machine的child连到machine上，之后你还可以创建bus上的设备，作�
 bus上，你还可以创建一个iommu，作为一个link连到这个bus的每个设备上。这种关联接口
 ，可以在qemu console中用Info qom-tree命令查看（但只有child没有link）。
 
-child和link关联
-----------------
+props的实现具象
+---------------
+
+props相当于管理界面的对象属性（像大部分类似解决方案，每个prop有自己的setter和
+getter)，除了composition和link，一般的可配置项，都可以通过prop暴露出来，供qom
+维护接口访问。
+
+它的接口类似这样：::
+
+  static Property xxx_properties[] = {
+    DEFINE_PROP_BIT("prop_bit",   XXXState, field_name_in_state, BIT_MASK, false),
+    DEFINE_PROP_BOOL("prop_bool", XXXState, field_name_in_state, false),
+    DEFINE_PROP_LINK("prop_link", XXXState, field_name_in_state, TYPE_NAME, field_type),
+    DEFINE_PROP_END_OF_LIST(),
+  };
+
+  device_class_set_props(class, xxx_properties);
+
+
+child和link关联的进一步解释
+---------------------------
+
 除了一般用于设置对象参数的Property，qemu内部会经常使用child和link的概念。child
 和link是通过对象props建立的关联。本质上就是给一个对象增加一个prop，名字叫
 child<...>或者link<...>，和手工创建一个这样的属性也没有什么区别。
@@ -338,6 +374,52 @@ object_property_set_link()去设置。这两个步骤相当于在一个接口中
 
 这不算什么特别的功能，只是简单的数据结构控制而已。用户自己用其他方法建立索引
 去找到其他设备，也无不可。但qemu的惯例是用child和link。
+
+id关联
+------
+
+我们在使用qemu的时候经常用到通过id关联两个对象的手段，比如创建网卡：::
+
+  qemu-system-x86_64 -netdev user,id=n1,ipv6=off 
+                -device e1000,netdev=n1,mac=52:54:98:76:54:32
+
+这里的user netdev通过id n1和device e1000关联。这个即不是Child，也不是link，而
+是这两个对象专有的设施。它通过netdev上这个属性：::
+
+  #define DEFINE_PROP_NETDEV(_n, _s, _f)             \
+     DEFINE_PROP(_n, _s, _f, qdev_prop_netdev, NICPeers)
+
+建立两者的关联。其他设备有其他设备的手法，这并不是一个全局的技术，只是一个功能
+上的惯例。
+
+interface
+---------
+
+要理解qom的interface，我们首先理解一下泛泛的面向对象的interface是什么东西。它
+本质就是一组函数，如果某个对象说自己支持某个interface，其实我们就是说它提供这
+组函数的调用。
+
+所以，qom的interface其实很简单，如果某个qom说自己支持某个interface，它只要在自
+己的interface列出这组interface的声明就可以了，就像这样：::
+
+  static const TypeInfo virtio_mem_info = {
+    .interfaces = (InterfaceInfo[]) {
+        { TYPE_RAM_DISCARD_MANAGER },
+        { }
+    }
+    ...
+
+每个InterfaceInfo其实就是一个字符串（名字）。当你要从这个类转换为那个interface
+的接口的时候，它只要从名字找全局类库，找到那个类，然后把那么大的空间放到你这个
+类型的Interface Cache中就可以了。这个Cache就放在类的基类ObjectClass中（当前版
+本叫interfaces)，之后你初始化你的类的时候，进行类型转换，你就看见这个空间（都
+是回调函数），然后你给这个空间中每个函数附上你需要的回调，这个interface就生效
+了。如果有人转换了你的类为这个interface，调用其中的函数，那么这个回调函数拿到
+的Instance指针，就是你这个类的Instance指针，而这个interface的回调函数又是你提
+供的，你自然也就知道怎么解释它了。
+
+说起来，qom的实现实在是把面向对象语言明牌实现了一遍给你看了。
+
 
 MemoryRegion
 =============
@@ -1017,6 +1099,11 @@ virtio_pci_types_register()是register_type_static的封装，同时注册了多
 承的对象，但基本可以认为主要名字是.gnereric_name的类的封装，下面的那些回调函数
 这是针对这个类的，我们这里不深入细节。
 
+.. note::
+
+  transitional那个概念是用于表示是否支持PCIe的，如果是non-transitional，就仅支
+  持PCI标准，不支持PCIe。
+
 PCIE的BAR空间，中断等设计都代理给这个类，从而实现整个PCI之上的传输层。而真正的
 驱动要做的是把这个PCI设备的行为代理到一个真正的TYPE_VIRTIO_DEVICE设备，像这样
 ：
@@ -1578,5 +1665,17 @@ meson的主配置文件是根目录下的meson.build，qemu的这个基本文件
 xxx_ss文件集中，就可以参与编译。所以每个子目录的行为还是很简单的。
 
 .. _meson: https://mesonbuild.com
+
+
+命令行参数
+----------
+
+qemu的命令行参数在主程序system/vl.c中解释，但因为参数众多，它也做成一个框架了，
+在解释前通过qemu_add_opts()或者qemu_add_drive_opts()这一类的调用注册新的参数进
+去。然后在后面用循环去独处其中的参数，再设置给对应的模块。每个参数的自参数可以
+用qemu_opt_get...()系列函数分类型读出。
+
+更通用的参数可以通过qemu-options.hx直接生成，这基本是一个生成qemu_add_opts()的
+参数表。
 
 .. vim: set tw=78
