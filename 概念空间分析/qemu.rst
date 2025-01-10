@@ -1611,44 +1611,54 @@ hmp_info_version查qemu的版本，实际调用的是qmp_query_version()。
 
 Error
 ------
-Qemu使用一种层次化的报错机制，也就是说，由调用者决定这个错误的严重程度。比如这
-样一个调用关系：
+Qemu的报错机制做得有点怪，这里总结一下。首先，它采用了POSIX errno类似的机制来
+处理多级调用的错误问题，比如：
 
 .. code-block:: C
 
-   a(err) {
-     b(err) {
+   a() {
+     Error *err = NULL;
+     b(&err) {
         c(err);
      }
    }
 
-当a调用b的时候，不是b决定这个错误有多严重，而是a决定这个错误有多严重。c用b的err
-参数报错，而b用a提供参数报错。如果b调用c的时候，觉得我不在乎这个调用会错（这很
-常见，比如我查找一个字符串，找不到就找不到了，无所谓），就可以传一个NULL进去，
-这样c继续基于这个NULL报错，这个错误就会被忽略。
-
-Qemu当前提供了两种错误控制类型：
-
-error_abort
-        需要abort()的错误。
-
-error_fatal
-        需要exit()的错误。
+当a调用b的时候，有些错误可能是b本身产生的，有些可能是它调用的c产生的。a通过传
+入一个err变量来获得这个错误返回值。如果返回NULL的时候，就是没有错误，否则就是
+某种错误。
 
 报错的一层用这些函数报告错误：::
 
         error_setg(error, ...);         // 设置错误
         error_append_hint(error, ...);  // 补充错误提示
-        error_propagate(error, ...);    // 向上一级传递
 
-调用一方把error_abort或者error_fatal传进去，出来的时候根据这个参数检查实际的错误
-是什么。
+error_setg()可以生成这个Error对象，如果输入进来是个NULL，那么它就不产生，这表
+示调用者不关心这个错误，所以不生成对象也就很正常了。
+
+而a这一层处理返回错误的时候调用：::
+
+        error_propagate(error, ...);    // 传播错误
+
+可以释放这个错误对象。
+
+但qemu又定义了几个全局的错误参数：::
+
+  Error *error_abort;
+  Error *error_fatal;
+  Error *error_warn;
+
+所以如果你传进去的是这些全局变量，error_setg()和error_propagate()会自动根据类
+型报错和退出。
+
+所以，大部分时候你只看到调用者就是简单用这些全局变量发起各种请求，这最终的结果
+就是无论被调用者发生了什么错误，整个qemu都会abort()，exit()或者简单打印一个错
+误信息。
 
 事件通知
 --------
 Qemu的事件通知用于两个线程间进行消息同步，在Linux下主要是对eventfd(2)和
-signalfd(2)的封装，在Windows下是对CreateEvent()的封装。它主要是封装这样一对接口
-：::
+signalfd(2)的封装，在Windows下是对CreateEvent()的封装。它主要是封装这样一对接
+口：::
 
         event_notifier_set(EventNotifier);
         event_notifier_test_and_clear(EventNotifier);
