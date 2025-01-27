@@ -1,12 +1,10 @@
-.. Kenneth Lee 版权所有 2020-2021
+.. Kenneth Lee 版权所有 2020-2025
 
 :Authors: Kenneth Lee
-:Version: 0.3
+:Version: 0.4
 
 qemu概念空间分析
 ****************
-
-:index:`qemu`
 
 介绍
 =====
@@ -48,7 +46,7 @@ Qemu使用glib作为基础设施，所以，读者如果需要和代码细节进
 整个qemu软件的执行模型用Pyhton作为伪码可以表达如下：
 
 .. code-block:: python
-  
+
    def run_a_guest():
      vm = create_vm()
      vm.create_cpu_object()
@@ -115,7 +113,7 @@ Qemu有两种运行模式：softmmu和user，前者模拟整个系统，后者�
 如果程序中发起创建新线程的系统调用，Qemu会创建新的线程去做一个新的循环。这种模
 拟模拟器里面再也不用做设备处理了，因为那些都是内核的事情，内核也不用通知Guest，
 所以只要模拟系统调用的行为就可以了，很多时候这种模拟的速度会快很多，如果要在一
-个平台上支持多种平台的进程，这是一种相当好的方式。
+个平台上支持其他平台的进程，这是一种相当好的方式。
 
 QOM
 ====
@@ -124,7 +122,12 @@ Qemu的代码主要是基于C的，不支持面向对象特性，但偏偏设备
 。所以Qemu写了一套用C模拟的面向对象接口，QOM，Qemu Object Model。Qemu几乎所有被
 模拟的对象，都通过这种对象管理。
 
-QOM是一个粗封装的面向对象模型，它包含这样一些子概念：
+QOM模拟的其实不是简单的解释型语言的面向对象功能，还模拟了部分解释型语言的面向
+对象能力，这些对象可以被通过名字（字符串）等方式创建和访问。比如，你可以用
+object_new("digic")动态创建一个称为“digic”的对象，或者用
+object_property_get/set_xxx(object, property_name...)读写一个对象的属性。
+
+QOM包含这样一些子概念：
 
 Type
         类型。每种类型用TypeInfo描述。请注意了：类型是类的描述，在实现的时候，
@@ -142,8 +145,8 @@ Class
         并保证这个数据结构的第一个成员等于父类的私有数据结构。这样的结果就是父
         类拿到这个指针也可以直接索引到自己的数据结构。
 
-        类有abstract这个概念，和其他语言的abstract的概念相识，表示这个对象不能
-        被实例化。
+        类有abstract这个概念，和其他面向对象语言的abstract的概念相似，表示这个
+        对象不能被实例化。
 
         Class的继承树的根是ClassObject。
         
@@ -164,9 +167,13 @@ Interface
         Interface。它的基本原理和父类本质上是一样的，只是只有函数指针而没有数
         据结构而已。
 
+        它和Instance最大的区别是它只包含了函数，而没有Instance的空间，所以你把
+        它转化成什么类型，只是调用不同的函数，而不会有独特的数据空间。
+
 State
         一个纯概念的东西，表示类或者类实例的数据。呈现为TypeInfo的class_size和
-        instance_size，子类的State必须包含父类的数据本身。
+        instance_size，子类的State必须包含父类的数据本身。具体具象可以参考下面
+        的例子。
 
 props
         DeviceClass的一组属性，每个成员叫Property，包含一对set/get函数，从而可
@@ -184,9 +191,6 @@ props
 在内存上的理解用下面这张图表达：
 
 .. figure:: _static/qom_mem_model.svg
-
-QoM可以动态构架，只要内存中有对应的函数，class和instance的空间，相关的设施就可
-以成立。
 
 下面是一些常用的全局的类：
 
@@ -278,13 +282,8 @@ QoM可以动态构架，只要内存中有对应的函数，class和instance的�
 在这个class的init里面我们用OBJECT_CLASS_CHECK把父类转换为子类，然后设置了
 Device这个子类的realize和unrealize函数。这样，整个类的初始化逻辑框架就撑起来了。
 
-.. note::
-
-  这里有必要特别解释一下这个realize的含义。理论上我们有类和对象的构造和析构，
-  一般面向对象的结构就建立起来了。但对于qemu来说，对象之间是有关系的，很多时候
-  我们需要先把所有对象都建立好了，然后才能初始化。所以就又补充了这个realize。
-  让所有实例和关系都挂接好了，才会真的去“realize（实现）它”，所以就多了这个回
-  调的阶段了。通常我们把需要所有类都在位才能做的初始化，放到这个地方来。
+.. note:: 如前所述，realize这个属性主要解决类之间互相依赖的问题，通常对其他类
+   有依赖的初始化，需要放到realize中。
 
 在实际实现中，整个QOM主要就管理两种对象：Device和Bus。两者通过props进行互相关联
 。这种关联有两种类型：composition和link，分别用object_property_add_child/link()
@@ -408,6 +407,21 @@ interface
         { }
     }
     ...
+  }
+  static void virtio_mem_class_init(ObjectClass *klass, void *data)
+  {
+      ...
+      RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_CLASS(klass);
+  
+      // 把interface类的方法都替换成自己的版本
+      rdmc->get_min_granularity = virtio_mem_rdm_get_min_granularity;
+      rdmc->is_populated = virtio_mem_rdm_is_populated;
+      rdmc->replay_populated = virtio_mem_rdm_replay_populated;
+      rdmc->replay_discarded = virtio_mem_rdm_replay_discarded;
+      rdmc->register_listener = virtio_mem_rdm_register_listener;
+      rdmc->unregister_listener = virtio_mem_rdm_unregister_listener;
+      ...
+  }
 
 每个InterfaceInfo其实就是一个字符串（名字）。当你要从这个类转换为那个interface
 的接口的时候，它只要从名字找全局类库，找到那个类，然后把那么大的空间放到你这个
@@ -417,6 +431,8 @@ interface
 了。如果有人转换了你的类为这个interface，调用其中的函数，那么这个回调函数拿到
 的Instance指针，就是你这个类的Instance指针，而这个interface的回调函数又是你提
 供的，你自然也就知道怎么解释它了。
+
+所以，interface本质上是把你原来的数据结构，换一套规定接口的操作函数。
 
 说起来，qom的实现实在是把面向对象语言明牌实现了一遍给你看了。
 
@@ -668,13 +684,19 @@ KVM本身的硬件机制了，那个原理可以自然想像）。
 
 qemu通过cpu_reset_interrupt/cpu_interrupt()把一个标记种入到CPU中，CPU执行中就
 可以检查这个标记，发现有中断的要求，就调用一个回调让中断控制器backend修改CPU状
-态，之后CPU就在新的状态上执行了。
+态，之后CPU就在新的状态上执行了。（KVM等硬件配合的加速方式会有性能更高的手段，
+但可以很容易想象其原理。）
 
-所以，最原始的方法是你强行调用cpu_reset_interrupt()和cpu_interrupt()。当然，很
-少硬件会这么简单，大部分CPU需要通过中断控制器来控制。中断控制器是个设备（比如
-qdev），具体怎么做完全是实现者的自由度。
+所以，模拟中断最原始的方法是你强行调用cpu_reset_interrupt()和cpu_interrupt()。
 
-可能是历史原因，qemu各种实现都把中断看作是CPU的gpio行为，变成一套完整的接口。
+但很少硬件会这么简单，因为只靠中断你没法判断中断源。虽然cpu_interrup()可以带一
+个mask参数区分中断类型，但这通常用于区分不同的特权级的中断，没法靠一个mask就表
+示数十甚至数百数千的中断源的。所以，大部分CPU需要通过中断控制器来控制。中断控
+制器是个设备（比如qdev），具体怎么做就要靠硬件了。
+
+可能是历史原因，qemu习惯上把硬件的中断传递看作是一个gqio行为。大部分平台的实现
+就是把产生中断看作是给对应的中断线（作为gpio）发信号。
+
 比如RISCV就是这样的：
 
 .. code-block:: C
@@ -687,31 +709,11 @@ qdev），具体怎么做完全是实现者的自由度。
    }
    qdev_init_gpio_in(plic_dev, sifive_plic_irq_request, plic->num_sources);
 
-这样组织一下，给中断控制器加下级中断的方法就变成一套统一的函数：
-
-.. code-block:: C
-
-   qdev_init_gpio_in_xxx(plic, callback, num_irqs);
-   qemu_irq qdev_get_gpio_in(plic, n);
-   qdev_connect_gpio_in_xxx(cpu, n, qemu_irq);
-   sysbus_connect_irq(dev, n, qemu_irq);
-
-这里的in可以换成out，是gpio的片信号标记，对于模拟来说我觉得关系不大，都用同一
-种就好了。qemu_irq是表示中断的控制结构，包含中断控制器的信息，n是中断控制器内
-的下标。sysbus_开头的接口是对qdev接口的封装，把处理中断的设备作为参数传递进去
-而已（会据此建立设备间的一些关联）。综合起来，这个概念是：
-
-1. 用init实现中断控制器
-
-2. 中断控制器用qev系列函数建立qemu_irq的管理，把plic本地中断号和qemu_irq对应起
-   来
-
-3. connect系列函数把qemu_irq和设备关联起来，和CPU或者全局中断号关联起来（具体
-   和谁关联看中断控制器的设计）。
-
-有了这个设施以后，其他后端发中断就不用去找对应的CPU和设备了，只要给定qemu_irq就
-可以了。这个核心函数是qemu_set_irq()，在实际使用的时候封装成这样一些更贴近使用
-名称空间的接口：
+这里给sifive的CPU设置了plic->num_sources条输入的中断线，中断线设置了一个回调函
+数，之后，你要给这个中断线发信号，你可以在你的硬件对象上创建一个gpio_out的对象，
+然后用qdev_connect_gpio_out()连这个引线。之后，你可以用后者创建的qemu_irq来发
+出通知，调到前面这个gpio_in设置的回调函数。对qemu_irq发通知的函数主要有这样一
+些：
 
 .. code-block:: C
 
