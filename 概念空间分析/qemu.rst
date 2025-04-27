@@ -1226,14 +1226,14 @@ TCG，Tiny Code Generator，是Qemu最基本的模拟加速器，它是一个纯
 
 TCG target组织成多个Translate Buffer，简称TB。它把Guest的代码分成多个小块，一次
 连续翻译多条指令到这个TB中，然后跳进去执行，执行完了，再翻译一个TB。这些TB作为
-Cache存在，如果指令跳回到到翻译过的地方，可以直接复用这些Cache。这个算法大幅提升
-了Qemu的模拟效率，是qemu最初被称为“Quick EMUlator”的原因。
+Cache存在，如果指令跳回到到翻译过的地方，可以直接复用这些Cache（TB）。这个算法
+大幅提升了Qemu的模拟效率，是qemu最初被称为“Quick EMUlator”的原因。
 
 .. note::
 
-        如果运气好（通常Qemu很容易有这种运气），每段代码在Qemu中都只会被翻译一
-        次，之后基本上Qemu就在TB之间流转，而不再进入翻译。这在实际应用中，可以
-        成百倍提高Qemu的模拟速度。
+        如果运气好（实际上很容易发生），每段代码在Qemu中都只会被翻译一次，之后
+        基本上Qemu就在TB之间流转，而不再进入翻译。这在实际应用中，可以成百倍提
+        高Qemu的模拟速度。
 
 我们Review一下前面这个过程，这里其实有三个程序上下文：
 
@@ -1257,20 +1257,31 @@ helper函数，这样生成程序才能把这些函数链接进去。
    时间消耗在JIT中，这个JIT就是T上下文消耗的时间。
 
 在TB之外还有一个BB，Basic Block，的概念，它的定义是一个中间没有跳转的TB中的一段
-代码。这是一个逻辑上的概念，主要用于QOP变量的生命周期管理，后面我们讲TCGv的时候
-单独讨论。
+代码。这是一个逻辑上的概念，主要用于QOP变量的生命周期管理，这个概念我们在后面
+讲TCGv的时候单独讨论。
 
-为了支持多个平台，TCG框架支持南北两个翻译模块。北向是Qemu Target，这部分程序负
-责把Guest指令翻译到TB中（当前代码在target/<arch>目录下）。南向是TCG Target，这
-部分程序负责把TCG中间代码翻译成TB里面的真实代码（当前代码在tcg/<arch>目录下）。
+为了代码更好地复用，TCG把翻译过程分成两步。第一步把G指令翻译成中间指令（我们把
+这个称为QOP，Qemu Operation），第二步把中间指令翻译成Target的。这样就不用每个
+Guest都要提供一组Target的翻译了。而是分成南北两个实现：
+
+* 北向是Qemu Target，这部分程序负责把Guest指令翻译到TB中（当前代码在
+  target/<arch>目录下）。
+ 
+* 南向是TCG Target，这部分程序负责把QOP翻译成TB里面的真实代码（当前代码在
+  tcg/<arch>目录下）。
+
+.. note:: 由于QOP从来不需要任何人去“运行”，所以它只是一个放在TB中的记录
+   （struct TCGOp），记录操作需要的参数，让南向接口可以根据这个要求去翻译
+   Target而已。它并不需要有自己的指令编码。
+
+   当前的代码中，QOP支持的指令可以从tcg-opc.h文件中找到。
 
 整个CPU的模拟过程可以总结为这样一个过程的循环：
 
-1. 用北向模块的gen_intermediate_code()把Guest代码翻译成TCG的中间代码，作为一个
-   链表保存在TB中。
+1. 用北向模块的gen_intermediate_code()把Guest代码翻译成GOP，保存在TB中。
 2. 优化中间代码
-3. 用南向模块的tcg_out_op()接口生成Host测代码，也保存在TB的运行缓冲中
-4. 跳入TB中执行本地代码
+3. 用南向模块的tcg_out_op()接口生成Host侧代码，保存在TB的运行缓冲中
+4. 跳入TB的运行缓冲中执行本地代码
 
 这个跳入的过程对Q上下文来说，就是一个函数调用：::
 
@@ -1282,15 +1293,17 @@ T上下文根据这个调用的要求更新CPU的状态（即CPUArchState对象�
 北向模块接口
 ````````````
 
-Qemu写了一个Python程序基于定义文件自动生成decode程序，以便降低南向模块的写作成
-本。它的输入是一个.decode文件，格式在这里有介绍：docs/devel/decodetree.rst。在
-qemu的Make文件meson.build中调用decode_tree，可以生成一个.inc文件，里面包含一个
-decode_xxx函数，你包含这个inc文件，就可以直接调用这个函数直接进行解码。解码后，
-inc文件会主动调用对应代码的trans_函数，向TB中填充代码。所以，一般来说，你只需要
-写一个translate文件，包含decode产生的decode函数，并在里面定义所有的trans_函数，
-就可以支持这个Arch的TCG了。
+北向接口完成第一步：从Guest指令到GOP。
 
-trans_函数完成guest代码到tcg target的翻译过程，生成TCG中间代码，这通过一系列的
+Qemu写了一个Python程序基于定义文件自动生成decode程序，以便降低北向模块的写作成
+本。它的输入是一个.decode文件，格式在这里有介绍：docs/devel/decodetree.rst。在
+qemu的Make文件meson.build中调用decode_tree，可以生成一个.inc文件，里面为每个指
+令生成一个decode_xxx函数，你包含这个inc文件，就可以直接调用这个函数直接进行解
+码。解码后，inc文件会主动调用对应代码的“trans”为前缀的函数，向TB中填充代码。所
+以，一般来说，你只需要写一个translate文件，包含decode产生的decode函数，并在里
+面定义所有的trans函数，就可以支持这个Arch的TCG了。
+
+trans函数完成guest代码到tcg target的翻译过程，生成TCG中间代码，这通过一系列的
 tcg_gen_xxxx()函数来完成。
 
 看一个例子。下面是一个为了说明问题而改进过的riscv的trans_addi翻译算法：
@@ -1303,28 +1316,41 @@ tcg_gen_xxxx()函数来完成。
 
       tcg_gen_mov_i64(tmp, cpu_gpr[a->rs1]);
       tcg_gen_addi_i64(tmp, tmp, a->imm);
-      tcg_gen_mov_i64(cpu_gpr[a->rs1], tmp);
+      tcg_gen_mov_i64(cpu_gpr[a->rd], tmp);
 
       tcg_temp_free(source1);
       return true;
   }
 
-这表面上生成了3条指令：::
+RISCV的原始指令是这样的：::
+
+  addi rd, rs1, imm
+
+解码的时候我们得到的是三个数字rd, rs1和imm。我们用rs1作为下标可以找到代表rs1的
+寄存器，这个cpu_gpr数组其实是Q上下文里面的，但Qemu已经把它暴露到G空间了，所以
+直接访问并没有问题，这里没有直接对它做加法，而是选择另放了一个中间变量，然后
+rs1读进去，用中间变量完成加法后再写到rd要求的寄存器变量中。（这个地方写得有点
+冗余是有理由的，因为源和目标可能会是同一个寄存器，读走再写入才能不产生冲突。）
+
+所以，看起来这是翻译成三个GOP：::
 
   mov_i64 tmp, rs1
   addi_i64 tmp, tmp, imm
   mov_i64 rs1, tmp
 
-但那三个函数其实生成了4条TCG指令：::
+不过tcg_gen函数并非总是生成单条指令的，如果用qemu的跟踪功能，你会发现它实际产
+生了四条指令：::
 
    mov_i64 tmp2,x5/t0
    movi_i64 tmp3,imm
    add_i64 tmp2,tmp2,tmp3
    mov_i64 x12/a2,tmp2
   
-这是因为tcg_gen_addi_i64()实际上把那个立即数也换成了一个TB上的临时变量。
+明显tcg_gen_addi_i64()也申请了一个临时变量，然后先用movi_i64把立即数移进去，然
+后做通用的变量加法，实现变量加立即数的效果。
 
-Qemu优化器合并临时变量，4条TCG指令优化成2条：::
+Qemu优化器合并临时变量，和前后的指令一配合（这一点本上下文没有反映出来，读者认
+为会发生这种重新优化就行），4条TCG指令优化成2条：::
 
    movi_i64 tmp2,imm2
    mov_i64 x12/a2,tmp2
@@ -1338,7 +1364,7 @@ Qemu优化器合并临时变量，4条TCG指令优化成2条：::
 这里第一条指令先把前一条指令的结果（x20）更新到CPUState(env)上，然后更新tmp2分
 配的寄存器，再把它更新到CPUArchState上。
 
-从这个例子可以看到：
+从这个例子可以看到整个翻译过程包括这些动作：
 
 1. Guest翻译程序使用gen系列函数生成目标TCG程序逻辑。
 2. gen系列函数生成QOP。
@@ -1349,12 +1375,14 @@ Qemu优化器合并临时变量，4条TCG指令优化成2条：::
 
 QOP指令不使用寄存器，而是使用自己的变量来支持各种计算。这些变量称为TCGv，它们被
 翻译成T上下文指令的时候，会用Target的寄存器来取代。为了支持这种取代，它们有不同
-的生命周期，这主要包括：
+的类型，每种类型有不同的生命周期，这主要包括：
 
 1. 普通TCG变量：通过tcg_temp_new()等函数创建的临时变量，它们只在一个BB之内有效。
 
-   TCG变量对target寄存器的映射，在经过TCG跳转（比如tcg_jump, tcg_br，tcg_brcond
-   等）以后就会不保留，所以，要保证target代码正确，就不能跨BB使用它们。
+   BB是TB的一个子集，GOP是支持TB内跳转的（比如tcg_jump, tcg_br，tcg_brcond等），
+   一旦发生跳转，就算是离开当前的BB了，这种情况下，普通TCGv就可以被重新分配，
+   实现的时候必须在跳转前就释放它。搞这么复杂，主要是因为普通TCGv最后都对应着
+   target真实的寄存器，早点释放，寄存器Spoil的可能性就低一些。
 
 2. 本地TCG变量：通过tcg_temp_local_new()创建，它在一个TB内有效。
 
@@ -1385,10 +1413,10 @@ tcg_temp_new()或者tcg_temp_local_new()在翻译上下文上分配它。所以�
 一个运行上下文的指针。
 
 这个说法很绕，让我们换个角度再说一次：翻译的时候TCGv是一个说明运行的时候这个变
-量的要求一个ID（某种意义上的指针，只是不是C语言意义上的）。TCGv的真正要求在翻译
-上下文中，等这个QOP翻译成目标代码的时候，南向接口根据这个上下文分配寄存器去匹配
-它，那时就没有什么TCGv了，那就是真正的Target寄存器以及根据类型要求对内存中的数
-据进行回写。
+量的要求的一个ID（某种意义上的指针，只是不是C语言意义上的）。TCGv的真正要求在
+翻译上下文中，等这个QOP翻译成目标代码的时候，南向接口根据这个上下文分配寄存器
+去匹配它，那时就没有什么TCGv了，那就是真正的Target寄存器以及根据类型要求对内存
+中的数据进行回写。
 
 因此，tcg_global_mem_new()等函数建立的全局TCGv通常可以是普通的全局变量。因为它
 们也是固定分配在每个翻译上下文中的固定上下文，它们的值在任何一个翻译上下文中都
@@ -1397,9 +1425,9 @@ tcg_temp_new()或者tcg_temp_local_new()在翻译上下文上分配它。所以�
 正如我们前面提到的，T上下文其实就是Q上下文的一部分。所以，Function的作者在写QOP
 的时候，基本上可以认为自己就在Q上下文中，除了使用一般或者local TCGv进行计算外，
 可以用这些计算结果和外面进行互动。这种互动包括（下面的_y后缀通常是字长，_op表示
-某个的QOP）：
+某个QOP）：
 
-1. 如前所述，通过全局TCG变量绑定env（本身就是CPUArchState的一部分）
+1. 如前所述，通过全局TCG变量访问env（本身就是CPUArchState的一部分）
 
 2. 直接用tcg_gen_ld_y, tcg_gen_st_y, tcg_gen_op_ptr等QOP通过env相对偏移直接访问
    CPUArchState的其他变量，这常用于访问一些没法固定位置的变量，比如某个数组的下
@@ -1412,9 +1440,9 @@ tcg_temp_new()或者tcg_temp_local_new()在翻译上下文上分配它。所以�
 4. 调用helper函数直接进入Q的上下文任意访问Q的变量。这个方法相比前面的访问方法更
    通用，几乎可以无所不为，但有一定的成本。这种成本一方面体现在函数调用本身的成
    本上，同时由于无法预判你在helper中会用到和修改什么CPUArchState的环境，所以调
-   用前后所有有可能受影响的绑定需要全部进行同步。最基本的，至少PC就必须同步一次，
-   否则在TB执行的过程中，是不会更新PC的（实际上，如果更新了PC，一般你需要退出本
-   TB，查找下一个TB了）。
+   用前后所有有可能受影响的绑定（target寄存器和变量的定义关系）需要全部进行同
+   步。最基本的，至少PC就必须同步一次，否则在TB执行的过程中，是不会更新PC的
+   （实际上，如果更新了PC，一般你需要退出本TB，查找下一个TB了）。
 
    所以，选择不同的helper flags，可以有效提高helper的模拟效率，比如如果你不写
    CPU状态，加上TCG_CALL_FLAG_WG就能保证生成代码的时候不会恢复这些状态。
@@ -1489,33 +1517,39 @@ iothread机制后来升级了，除了main线程天然是个iothread外，用户
 令创建更多的io线程。（todo：其他iothread的BQL原理待分析）iothread使用glib的main
 loop机制进行事件处理，简单说就是所有的外部事件监控都封装成文件，然后对文件组进
 行polling，来一个事件用本线程处理一个事件，相当于所有io行为都在本线程上排队。这
-些我文件可以是字符设备，socket，eventfd，signalfd等等。
+些文件可以是字符设备，socket，eventfd，signalfd等等。
 
 原子操作模拟
 ````````````
 如前所述，每个Guest的CPU对应的就是Host的一个线程，所以要模拟Guest CPU的原子操作
-，只要用Host的原子仿存就可以了。但如果要模拟的平台没有对应的Host原子仿存怎么办？
-比如我们要在没有Transaction Memory的系统上模拟Transcation Memory怎么做？
+，只要用Host的原子访存就可以了。但如果要模拟的平台没有对应的Host原子访存指令怎
+么办？比如我们要在没有Transaction Memory的系统上模拟Transcation Memory怎么做？
 
 最粗暴的方法是用锁。但这样效率最低，因为每个访存操作都要上锁，而且你不可能每个
-内存单元都上锁，这样，只要访存，撞上的机会都会很高。
+内存单元的锁都独立，这样，只要访存，撞上的机会都会很高。
 
-一种可能的优化是对内存分段上锁，但这个算法成本也很高。由于\ :ref:`BQL<bql>`\ 的
-存在，TCG选择了另一个成本更低的算法：互斥区。这个执行区域通过start_exclusive()
-和end_exclusive()制造，它通过pthread_cond一类的接口，等待所有vcpu都离开翻译执行
-区以后，上锁，不让它们再进入执行，这样，成功进入start_exclusive()的vcpu就可以在
-其他vcpu停下的情况下执行了。
+一种可能的优化是对内存分段上锁，但这个算法成本也很高。
 
-在遇到需要翻译这种复杂的原子操作的时候，让翻译程序在TB中调用一个
-helper，helper_exit_atomic()，像发生异常一样离开TB，然后进入互斥区，在互斥区中完成
-原子功能，这种情况下，其他vcpu就不能在中间插入操作了。这个过程通过
-cpu_exec_step_atomic()来完成（它是框架的一部分，如果只是做翻译，这个事情留给框
-架就可以了）。
+由于\ :ref:`BQL<bql>`\ 的存在，TCG选择了另一个成本更低的算法：互斥区。这个执行
+区域通过start_exclusive()和end_exclusive()制造，它通过pthread_cond一类的接口，
+等待所有vcpu都离开翻译执行区以后，上锁，不让它们再进入执行，这样，成功进入
+start_exclusive()的vcpu就可以在其他vcpu停下的情况下执行了。
 
-.. note::
+所以，当你要翻译一条做原子操作的指令时，你首先可以判断当前翻译的上下文是否原子
+的（只有一个翻译线程的时候天然就是原子的），如果是原子的，就直接生成非原子的行
+为就可以了，因为不会有其他线程来争抢。这个可以通过在翻译程序中判断当前TB的
+CF_PARALLEL来判断。
 
-   cpu_exec_step_atomic()方法只支持一条指令，如果需要更多，需要更多的修改才能做
-   到。
+如果你发现这是并行的，可以gen_helper_exit_atomic()，生成一条异常指令（EXCP_ATOMIC），
+执行到这里的时候就会好像发生异常一样离开TB，进入互斥区，互斥去会用
+cpu_exec_step_atomic()去重新生成一个只有一条指令的TB，并且去掉其中的
+CF_PARALLEL参数，这样你的翻译程序就按非并行的方式生成非原子的TB执行一条指令就
+行了，qemu会在互斥区完成所有的执行，然后才回到原来的并行上下文中。
+
+.. warning::
+
+   cpu_exec_step_atomic()方法只支持一条指令，如果需要更多，需要更多的修改才能
+   做到。
 
 mmap_lock
 `````````
