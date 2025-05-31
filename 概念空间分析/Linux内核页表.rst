@@ -116,7 +116,7 @@ pfn_XXX(XXX, prot)
         从pfn求XXX
 
 XXX_pfn(pfn)
-        从XXX球pfn
+        从XXX求pfn
 
 XXX_page_vaddr(XXX)
         从XXX求下一级页表的虚拟地址
