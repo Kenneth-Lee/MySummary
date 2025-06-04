@@ -23,66 +23,133 @@ Linux内核启动的时候，它已经在使用内存了，它至少认为自己
 * BIOS说明
 
 有了这些数据，它就有一个内存表，这是一个分段的数据。类似“地址aaa到地址bbb是系
-统内存”，“地址cccc到地址dddd是IO空间等等”。这些数据被Linux记录在两个地方：
+统内存”，“地址cccc到地址dddd是IO空间等等”。这些数据被记录在两个地方：
 
 * memory_resource。这个接口是add_memory_resource()系列函数，这个部分的信息主要
-  是用来全局观察用的，至少可以知道整个系统的物理地址空间具体如何分布，是否有重
-  叠等等。这个数据在启动后可以从/proc/iomem看到。
+  是用来全局观察用的，不作为具体的内存分配算法的输入。主要用于知道整个系统的物
+  理地址空间具体如何分布，是否有重叠等等，在部分地方也用这个结构作为指定内存范
+  围的输入参数。这个数据在启动后可以从/proc/iomem看到。
 
 * memblock。这个接口是memblock_add()系列函数。每片内存按一个个连续空间的方式保
   存起来，可以通过memblock_alloc()系列函数进行分配。在其他机制没有起作用的时候
-  这种分配都被认为内存被reserved了（不能释放的）。等buddy管理系统初始化
-  （mem_init)的时候，没有reserved的内存全部交给buddy/slab系统进行管理。这之后
-  memblock_alloc()调用就会转化成kalloc()系列调用，被slub系统进行管理。这个数据
-  在使能了相关编译选项的时候，可以在debugfs的memblock中查到。
+  这种分配都被认为内存被reserved了（不能释放）。等buddy管理系统初始化
+  （mem_init())的时候，没有reserved的内存全部交给buddy/slab系统进行管理。这之后
+  memblock_alloc()调用就会转化成kalloc()系列调用，被slab系统进行管理。这个数据
+  在使能了相关编译选项的时候，可以在debugfs的memblock子目录中查到。
 
-buddy的接口是alloc_pages()系列函数，它提供指数方式分配的页分配接口，要求每次分
-配的都是固定的2的某个指数（称为order）个页。它成为伙伴系统，就是因为分配2的3次
-方页，可以从2的4次方也分成两份（伙伴）得到，释放的时候只要两个伙伴都释放了，就
-可以合并起来作为2的4次方的块使用。这种方法不容易出现碎片。只是通常被要求的大小
-大，空间利用率不那么高。
+buddy的接口是alloc_pages()系列函数，它提供指数方式指定页数的接口分配的页分配接
+口，要求每次分配的页数都是2的指数，该指数英文称为order，所以每次分配的页数是
+:math:`2^{order}`\ 。它称为伙伴系统，就是
+因为低次的分配可以从高次分配中分裂出来。比如，分配\ :math:`2^3`\ 个页，可以从
+:math:`2^4`\ 个页中分成两份得到。这两片\ :math:`2^3`\ 的内存就是
+:math:`2^4`\ 内存的一对伙伴。释放的时候只要两个伙伴都释放了，就可以合并起来作
+为\ :math:`2^4`\ 的内存使用。这种方法不容易出现碎片，只是分配的大小通常和期望
+不完全一致，空间利用率比较低。
 
-slob/slab/slub算法是buddy之上的实现（三个名字是三代不同的实现，当前版本主要用
-slub，但因为这个东西在用户态看到的管理接口叫slab，我们后面统一称为slab）。对外
-接口有两部分：
+slob/slab/slub算法是buddy之上的实现。三个名字是三代不同的实现，当前版本主要用
+slub，但因为这个东西在用户态看到的管理接口叫slab，我们后面统一称为slab。对外接
+口有两部分：
 
 * kmemcache_alloc系列函数
 * kmalloc系列函数
 
-这两者都是按固定的大小从buddy分配成order的页再零切成固定大小的小块给其他模块用
-的。slab接口的信息可以从/proc/slabinfo文件中获得。
+这两者的原理都是把order化的页按固定的大小拆成小块，以零存整取的方式供内核的各
+个模块使用。所以，这个接口可以和Buddy同时使用。Slab是Buddy的一种高层封装。
+Buddy是大部分内核程序观察内存世界的窗口。理解整个内存的概念空间，以这个部分的
+概念为中心。其他的，比如PageCache，LRU，都是在Buddy基础上的二次管理。
 
-内核模块最基础的设施就是Buddy这个接口，所以我们理解整个内存的概念空间，以这个
-部分的概念为中心。
-
-如前所述，Linux已知的内存区域加入到MemBlock中，每个Block会有一个固定的单位，这
-个单位在不同的平台是是不一样的，比如在ARM64上，这是128M。这个大小主要受限于管
-理成本，这种成本主要体现在Buddy系统所需的线性地址寻址要求，Linux尽量希望内核中
-访问的内存的虚拟地址和物理地址可以通过线性变换进行一一对应，如果中间出现空洞，
-就会需要多一个基址来表示这一段的截距，就会增加变换的成本，所以，这种128M的选择，
-是一种根据具体情况的权衡。
+让我们在现在的理解层次上做一个总结：Linux启动的时候把内存记录为
+MemoryReresource和MemBlock。以MemBlock为基础支持第一波内存分配需求。然后以
+MemBlock剩下的内存初始化Buddy模块，建立以页为单位的管理设施。最终，分配的页部
+分用于支撑内核模块的内存分配需求，部分用于支撑用户程序的内存使用需求。内核使用
+的部分还封装了slab接口，用于支撑通用化的内存分配需求。
 
 Block
 =====
 
-MemBlock模块混用两个概念：这种Block的空间，在一些数据结构或者函数中称为一个
-Block或者MemoryBlock，在一些数据结构中称为一个Region。我们在下文中统一称为
-Memory Block或者简称Block。
+初期的内存分段记录在MemBlock模块中。这个模块混用两个概念：这种分段的空间，在一
+些数据结构或者函数中称为一个Block或者MemoryBlock，在一些数据结构中称为一个
+Region。我们在下文中统一称为Memory Block或者在不会引起误会的时候简称Block。
+
+Linux设定了一个基本的Block大小（MIN_MEMORY_BLOCK_SIZE），这些内存空间必须对这
+个基本单位对齐并且大小是它的整倍数。这个基本单位在不同的平台是是不一样的，比如
+在ARM64上，这是128M。这个大小主要受限于管理成本，这种成本主要体现在Buddy系统所
+需的线性地址寻址要求上。Linux经常要进行虚拟地址和物理地址的变换，所以主要的内
+存都要虚拟地址和物理地址是线性对应关系（va=pa+base)。这种对应如果出现如果中间
+出现空洞，就会需要多一个基址(base）来表示这一段的截距，从而增加变换的成本，所
+以，这种128M的选择，是一种根据具体情况的选择。
 
 MemBlock中的内存如果没有被分配，就叫Memory，分配出去了，就叫Reserved。每个
-Block会被生成一个kobject device，呈现在/sys/bus/memory/devices中，名字叫
-memoryXXXX，后面的数字是这个Block的物理地址（以Block的大小为单位）。
+Block会被生成一个kobject device，呈现在/sys/bus/memory/devices中，下面是一个例
+子：::
 
-MemBlock具有一些控制属性，比如是否允许热插拔等。所以，Linux内存热插拔的单位是
-Block，但如果你物理上一个热插拔的单位不止一个Block，可以把他们创建为同一个
-group。这样它们会被一体插拔。
+  # ls
+  auto_online_blocks  memory2045          memory2058
+  block_size_bytes    memory2048          memory2059
+  hard_offline_page   memory2049          memory8
+  memory10            memory2052          memory9
+  memory11            memory2053          power
+  memory2041          memory2056          soft_offline_page
+  memory2044          memory2057          uevent
+  
+每个memory开头的设备代表一个Block，每个可以单独控制，后面的数字是这个Block的物
+理地址（以MIN_MEMORY_BLOCK_SIZE为单位）。lsmem命令主要就是从这里获得信息：::
 
-在系统启动后，可以通过add_memory_driver_managed()系列函数增加更多的内存。
+  # lsmem
+  RANGE                                  SIZE   STATE REMOVABLE     BLOCK
+  0x0000000040000000-0x000000005fffffff  512M  online       yes      8-11
+  0x0000003fc8000000-0x0000003fcfffffff  128M offline                2041
+  0x0000003fe0000000-0x0000003fefffffff  256M offline           2044-2045
+  0x0000004000000000-0x000000400fffffff  256M offline           2048-2049
+  0x0000004020000000-0x000000402fffffff  256M offline           2052-2053
+  0x0000004040000000-0x000000405fffffff  512M offline           2056-2059
+  
+  Memory block size:       128M
+  Total online memory:     512M
+  Total offline memory:    1.4G
+
+启动了debugfs和memblock调试的时候，可以在/sys/kernel/debug/memblock中查看这些
+内存片段。下面是一个例子：::
+
+  # cat memory
+     0: 0x0000000040000000..0x000000004fffffff    0 NONE
+     1: 0x0000000050000000..0x000000005fffffff    1 NONE
+     2: 0x0000003fc8000000..0x0000003fcfffffff    0 DRV_MNG
+     3: 0x0000003fe0000000..0x0000003fefffffff    0 DRV_MNG
+     4: 0x0000004000000000..0x000000400fffffff    0 DRV_MNG
+     5: 0x0000004020000000..0x000000402fffffff    0 DRV_MNG
+     6: 0x0000004040000000..0x000000405fffffff    0 DRV_MNG
+  # cat reserved 
+     0: 0x0000000040210000..0x000000004125ffff    0 NONE
+     1: 0x00000000416f0000..0x00000000419affff    0 NONE
+     2: 0x0000000048000000..0x00000000480fffff    0 NONE
+     3: 0x000000004fa00000..0x000000004fdfffff    0 NONE
+     4: 0x000000004ffdc000..0x000000004fffbfff    0 NONE
+
+内核命令行参数reserve_mem=可以主动预留部分内存。（不要和reserve=参数混淆了，后
+者预留的是IO空间。）
+
+Block是内存管理的单位，可以通过向memory设备的online属性文件写入控制参数控制内
+存段的online，offline，或者控制具体online到什么zone里面（参考下文）。
+
+所以，Linux内存热插拔的单位是Block，但如果你物理上一个热插拔的单位不止一个
+Block，可以把他们创建为同一个group。这样它们会被一体插拔。
+
+在系统启动后，内核驱动可以通过add_memory_driver_managed()系列函数增加更多的内
+存，这样的内存都是热插拔内存。
 
 Node
 ====
 
-MemBlock还有Node的概念。这个概念和物理地址是正交的，所有的MemBlock在一个物理地
+MemBlock还有Node的概念。下面是一个例子：::
+
+  # ls /sys/devices/system/memory/memory2045
+  node0        phys_device  power        state        uevent
+  online       phys_index   removable    subsystem    valid_zones
+
+这里的memory2045就属于node0。
+
+Node这个概念和物理地址是正交的，所有的MemBlock在一个物理地
 址空间中编址，但不同的Block可以在不同Node上。参考如下例子：
 
 .. figure:: _static/linux_memory_block_node.svg
@@ -95,7 +162,47 @@ Node表达的是距离的概念，每个Node包含一组CPU和一组内存，在
 的内存和CPU限制在一个Node内，不能在一个Node内，就尽量分布在距离近的Node之间，
 这样可以提高效率。
 
-大部分的内存管理接口，都带Node这个概念，允许你在指定的Node上分配内存。
+Linux把Node的具体抽象为一张二维表，类似这样：::
+
+  Node  0  1  2  3
+  0     10 20 20 30
+  1     20 10 30 20
+  2     20 30 10 20
+  3     30 20 20 10
+
+这是一个无向（1->2的1<-2的距离默认是一样的）的二维距离图，即使你物理上的连线是
+个3D甚至Mess的结构，在内核的数据表达（__numa_distance[]）上都是二维的。
+
+CPU和内存总是归属于某个Node，Buddy等系统在分配内存的时候根据当前的CPU决定尽量
+从最近的Node上分配内存，也允许强制指定从什么Node上分配内存（比如
+alloc_pages_node()）。
+
+内核也有内核线程在后台根据内存和应用的距离，把页动态迁移到靠近CPU的Node上。
+
+关于CPU，Node，内存的关系，通过qemu创建Node的命令最容易看出来，下面是一个qemu
+创建一个4 Node的机器的参数：::
+
+        ...
+	-m 512M,slots=2,maxmem=1G \
+	-smp 4,sockets=4 \
+	-object memory-backend-ram,id=mem0,size=256M \
+	-object memory-backend-ram,id=mem1,size=256M \
+	-numa node,nodeid=0,cpus=0,memdev=mem0 \
+	-numa node,nodeid=1,cpus=1,memdev=mem1 \
+	-numa node,nodeid=2,cpus=2 \
+	-numa node,nodeid=3,cpus=3 \
+        -numa dist,src=0,dst=1,val=20 \
+        -numa dist,src=0,dst=2,val=20 \
+        -numa dist,src=0,dst=3,val=30 \
+        -numa dist,src=1,dst=2,val=30 \
+        -numa dist,src=1,dst=3,val=20 \
+        -numa dist,src=2,dst=3,val=20 \
+
+这里我们创建了四个Node，分别分配了一个CPU，内存则只在Node 0/1上才有，所以CPU2
+必须从距离最近的Node 0上才能分配到内存。
+
+这种参数通过ACPI的SLIT，HMAT表，DeviceTree的numa-node-id系列参数等形式传递给内
+核，内核通过这些创建对应的管理结构。
 
 Zone
 ====
@@ -163,7 +270,7 @@ present_pages减去reserved_pages，表达为managed_pages。
 
 现代CPU支持页表映射，可以设定每个页（通常是4K）从虚拟地址的不同位置指向物理地
 址的不同位置。我们把这种映射关系称为乱序映射，使用这种映射，要从虚拟地址获得物
-理地址，或者反过来，需要查表，内核中经常要做这种操作，这个非常影响效率。所以
+理地址，或者反过来，需要查表，内核中经常要做这种操作，这非常影响效率。所以
 Buddy系统使用线性映射的方式来加速这个查询过程。也就是说，对于每片连续的空间
 （称为Section），物理地址pa和虚拟地址的va，总是呈现如下关系：
 
@@ -183,9 +290,11 @@ ZONE_HIGHMEM。ZONE_NORMAL的空间属于线性区，而ZONE_HIGHMEM属于非线
 ZONE_NORMAL只是用于剩下的线性区，这三者都属于线性区，都可以被Kernel的模块使用，
 这些ZONE就被统称为KERNEL ZONE（通过alloc_page(GFP_KERNEL)分配）。
 
-要注意：ZONE是物理空间的概念，ZONE_HIGHMEM是一个物理空间的范围，这个限制是虚拟
-空间不足造成的，这个这个限制被传递到物理空间是因为我们有线性映射这个要求。这很
-容易让我们误会ZONE是个虚拟空间的概念，其实它不是。
+.. note::
+
+        请注意：ZONE是物理空间的概念，ZONE_HIGHMEM是一个物理空间的范围，这个限
+        制是虚拟空间不足造成的，这个这个限制被传递到物理空间是因为我们有线性映
+        射这个要求。这很容易让我们误会ZONE是个虚拟空间的概念，其实它不是。
 
 对于64位的系统，这个问题就不存在了，比如ARM64的内核空间用64位空间的一半，这也
 是EB级别了，现阶段几乎没有什么系统有这么大的物理空间。所以线性区可以覆盖所有物
@@ -210,15 +319,15 @@ PageCompound(page)检查函数来检查，我们把Compound页称为复合页。
 在历史上，内核通过一个全局数组memmap[]保存所有的页的属性（比如上面这个Compound
 属性等），alloc_pages()分配一个页，返回的就是这个数据的一个数组项的内容。这就
 叫struct page。为了定位这个数组的下标，引入一个概念，pfn，page frame number，
-它和物理地址线性相关，所以，我们很容易从物理地址得到pfn，然后从pfn直接查表得到
-map。
+它和物理地址线性相关，所以，我们很容易从物理地址得到pfn（通常就是物理地址的高
+位），然后从pfn直接查表得到map。
 
-这样，我们就有两个“页”的概念了，一个是struct page，一个是这个page本身表示的物
+这样，我们就有两个“页”的概念了。一个是struct page，一个是这个page本身表示的物
 理内存。前者是后者的索引。我们常常混用这两个概念，但我们必须知道，这里有两个不
 同的实体。当我们需要强调我们说的是索引，我们用struct page这个名字。
 
-在支持稀疏的物理内存分布后，物理空间由多个section组成，memmap也被分布到每个
-section（struct mem_section）上，叫section_mem_map。这本质是一个页表一样的
+在Linux支持稀疏物理内存分布的时候，物理空间由多个section组成，memmap也被分布到
+每个section（struct mem_section）上，叫section_mem_map。这本质是一个页表一样的
 radix结构，我们从物理地址先定位section，然后从section定位section_mem_map，从而
 用pfn确定page。这也解释了为什么需要限制memblock的最小大小，因为这被section的大
 小影响了。这种情况下，pfn不是简单的section_mem_map的下标，而是一个全局的page表
@@ -227,7 +336,7 @@ radix结构，我们从物理地址先定位section，然后从section定位sect
 .. note::
 
    section还被另一个要素影响：它需要大于alloc_pages()的最大order表达的范围
-   （MAX_ORDER_NR_PAGES）。
+   （MAX_ORDER_NR_PAGES）。这可以保证每个setion都可以分配最大Order的成组页。
 
 mem_map是基于最小页的，对于Compound页来说，这对应多个page。这对使用者很不友好。
 所以最近的内核引入了另一个概念：folio。它表示一般意义的页，而不是最小页。这个
@@ -241,7 +350,7 @@ mem_map是基于最小页的，对于Compound页来说，这对应多个page。�
 alloc_pages()分配的是page，folio_alloc()分配的是folio，两者其实是可以换用的，
 因为你完全可以用folio->page来得到page，也可以用page_folio(folio)得到page。
 
-page和folio通过引用记数管理生命周期，alloc_pages()得到的页，可以通过put_page()
+page和folio通过引用计数管理生命周期，alloc_pages()得到的页，可以通过put_page()
 释放，可以通过get_page()增加生命周期。对应也有folio_get/put()函数。
 
 但要注意，这种管理是作用在单个页上的，不是成组的页。也就是说，你只能对
@@ -256,6 +365,39 @@ alloc_page()分配的页做这种引用计数。如果你调用alloc_pages()而o
 定的接口做这种转换），所以一般情况内核模块分配空间都用GPF_KERNEL属性，保证总在
 线性区进行内存分配。ZONE_HIGHMEM不到极端情形基本上是不会用的。
 
+页的锁和标记
+------------
+
+页状态管理是Linux内核最复杂的数据结构之一，它就好像一组巨大的全局变量，很多模
+块都在页上附着属性来进行状态管理，每个状态的功能很难单独解释，比如结合那个组功
+能单独讨论。所以在这个属性上我们无法简单建出概念空间，它和细节设计相关，没有宏
+观的，粗糙的概念理解可以记忆。
+
+但我们可以解释一些它的基本使用惯例。
+
+页的状态主要记录在struct page中，通常是一组原子化访问的位域。比如，页是否Dirty
+（被访问过），可以这样访问：::
+
+  SetPageDirty(page)        // 属性写1
+  ClearPageDirty(page)      // 属性写0
+  PageDirty(page)           // 读属性
+
+这组函数用一般方法是找不到定义的，因为它们都是通过宏加宏的方式叠加定义出来的，
+要找到大部分定义要直接去看include/linux/page-flags.h。这里也有每个属性的的基本
+解释，但细节含义，基本上都要找到和使用这个属性相关的所有代码片段才能最终确定。
+
+其中lock也是一个这样的属性（PG_locked），通过如下函数进行封装：::
+
+  lock_page(page);           // 上锁（TASK_UNINTERRUPTIBLE）
+  lock_page_killable(page);  // 上锁（TASK_KILLABLE）
+  unlock_page(page);         // 解锁
+  PageLocked(page);          // 检查
+
+lock/unlock函数通过对PG_locked进行检查实现上锁，从上锁函数的TASK属性就可以看出
+来，这不是spinlock，上锁的时候是可以被以不同的休眠方式进行休眠的。
+
+页的锁层次关系也是和具体使用这个页的模块相关的，必须和有影响的模块的实现细节联
+动才能维护好这部分代码。
 
 ZONE_MOVABLE
 ============
@@ -288,12 +430,12 @@ ZONE_MOVABLE的语义是：这部分空间不分配给GFP_KERNEL（虽然它的�
 对于热插拔的内存，在/sys/bus/memory/devices/memoryXXX中有一个online的文件，写
 入不同的参数可以把这片内存online到不同的zone。这可以动态改变启动的时候预设的参
 数。（注：通常我们不会直接操作这些文件，而是通过chmem命令操作memblock，但当前
-的chmem版本不支持选择如何加入online文件，所以，这种功能需要直接操作这些文件。）
+的chmem版本不支持选择online参数，所以，这种功能需要直接操作这些文件。）
 
 内存如果加入movable_zone，基本上内核就不会使用它了，只用于用户态的分配。由于
 LRU不是线性映射的，物理空间移动到其他地方，只要重新映射就可以了。
 
-内核不能直接使用ZONE_MOVABLE的内存，因为内核使用线性映射，如果直接也迁移了，va
+内核不能直接使用ZONE_MOVABLE的内存，因为内核使用线性映射，如果直接做页迁移，va
 也需要改变，这会导致用户态的应用工作不正常。但内核程序可以在显式知道这一点的情
 况下使用它。方法类似这样：::
 
@@ -302,11 +444,11 @@ LRU不是线性映射的，物理空间移动到其他地方，只要重新映�
   __SetPageMovable(p_movable, &movable_mops);
   unlock_page(p_movable);
   
-核心就是你必须为这一页提供移动时的回掉函数，从而内核程序主动认知这个地址是会改
+核心就是你必须为这一页提供移动时的回调函数，从而内核程序主动认知这个地址是会改
 变的。如果这个迁移过程失败，这片memblock就不能offline。
 
 如果出现迁移失败，内核会输出失败的页的信息，如果开启了page_owner调试功能，这可
-以输出具体是什么地方分配的页导致的迁移失败，这对于定位这部分功能非常有用。
+以定位具体是什么地方分配的页导致的迁移失败，这对于优化热插拔功能非常有用。
 
 ZONE_DEVICE
 ===========
@@ -351,3 +493,27 @@ kmem_cache_create()是针对大量使用固定大小内存的模块的，有些�
 
 这个列表前半段就是每个模块各自的slab，后半段就是kmalloc给各个模块公共的slab，
 概念是一目了然的。
+
+LRU
+===
+
+LRU是用户态部分的页管理算法。它和内核直接使用的页最大区别在与它肯定不在线性区，
+所以，它需要复杂的反向映射表（rmap）用于表达pa到va的映射关系。这是其一，更重要
+的是，这种映射是不稳定的，它在缺页的时候分配，分配后只要进程没在运行，都是可以
+回收的（回收前把内容同步到磁盘上），大不了下次要用的时候再分配一次就行了。LRU
+解决的主要问题就是这个回收问题，这决定了先回收谁的问题。这个回收在页管理相关算
+法中，称为Reclaim。
+
+LRU，Least Recently Used，这个名字就是这个算法的特征：最近最少使用的先回收。这
+是一种通用算法，广泛用于各种缓存的回收算法。基本原理就是访问了的页提升到队列头，
+然后优先淘汰队列尾的页。
+
+但这只是理想的算法，实际上软件模型无法直接捕获页被访问的信息。所以，这个算法通
+常是硬件在页被访问的时候更新页表中的ACCESSED位（设置了这个位的pte状态标记为
+young），然后通过特定的流程去扫描所有被监控的页（新加入的页天然是最热的，这个
+不用担心），发现有页的ACCESSED位被更新了，就提升它的热度（并且清掉这个ACCESSED
+位，以备后续继续跟踪）。所以在每个扫描周期内，我们无法区分谁是最热的。所以，只
+能分级来监控。传统的LRU算法只分成active和in_active两个列表，现在升级到MGLRU
+（当前阶段不是默认算法，但测试结果是很好的），Multi Generational LRU。这里的
+Generational是“代”的意思，本质是把冷热程度分了更多的层，减少扫描链表需要的CPU
+成本。不过这些已经都是算法细节了，和我们这里要建模的基本概念影响并不大。
