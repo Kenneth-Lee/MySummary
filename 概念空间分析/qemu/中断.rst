@@ -1,0 +1,63 @@
+.. Kenneth Lee 版权所有 2020-2025
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+中断
+****
+
+在qemu中，中断本质是cpu_exec()过程中的一个定期判断（如果是KVM一类的真正执行就靠
+KVM本身的硬件机制了，那个原理可以自然想像）。
+
+qemu通过cpu_reset_interrupt/cpu_interrupt()把一个标记种入到CPU中，CPU执行中就
+可以检查这个标记，发现有中断的要求，就调用一个回调让中断控制器backend修改CPU状
+态，之后CPU就在新的状态上执行了。（KVM等硬件配合的加速方式会有性能更高的手段，
+但可以很容易想象其原理。）
+
+所以，模拟中断最原始的方法是你强行调用cpu_reset_interrupt()和cpu_interrupt()。
+
+但很少硬件会这么简单，因为只靠中断你没法判断中断源。虽然cpu_interrup()可以带一
+个mask参数区分中断类型，但这通常用于区分不同的特权级的中断，没法靠一个mask就表
+示数十甚至数百数千的中断源的。所以，大部分CPU需要通过中断控制器来控制。中断控
+制器是个设备（比如qdev），具体怎么做就要靠硬件了。
+
+可能是历史原因，qemu习惯上把硬件的中断传递看作是一个gqio行为。大部分平台的实现
+就是把产生中断看作是给对应的中断线（作为gpio）发信号。
+
+比如RISCV就是这样的：
+
+.. code-block:: C
+
+   static void sifive_plic_irq_request(void *opaque, int irq, int level) {
+        plic_dev = opaque;
+        ...
+        cpu_interrupt(); //给对应的CPU发中断，是哪个CPU看plic算法了
+        ...
+   }
+   qdev_init_gpio_in(plic_dev, sifive_plic_irq_request, plic->num_sources);
+
+这里给sifive的CPU设置了plic->num_sources条输入的中断线，中断线设置了一个回调函
+数，之后，你要给这个中断线发信号，你可以在你的硬件对象上创建一个gpio_out的对象，
+然后用qdev_connect_gpio_out()连这个引线。之后，你可以用后者创建的qemu_irq来发
+出通知，调到前面这个gpio_in设置的回调函数。对qemu_irq发通知的函数主要有这样一
+些：
+
+.. code-block:: C
+
+        void qemu_irq_raise(qemu_irq irq);
+        void qemu_irq_lower(qemu_irq irq);
+        void qemu_irq_pulse(qemu_irq irq);
+        void pci_irq_assert(PCIDevice *pci_dev);
+        void pci_irq_deassert(PCIDevice *pci_dev);
+        void pci_irq_pulse(PCIDevice *pci_dev);
+
+如果用的是PCI MSI/MSI-X，则中断触发通过msi_notify()来做。按MSI/MSI-X的原理，这
+个行为实际上就是根据MSX PCI配置，在对应的内存地址中写入要求的参数，这个内存地
+址写入的过程通过MR的翻译，最终会匹配到中断控制器的io写上，最后还是那组
+qemu_set_irq()调用。
+
+.. note::
+
+   一点调试经验：qemu_irq_pulse()本质就是先raise在lower，但不要以为你拉起来过
+   就一定会产生中断，如果你在OS这一侧认为是电平中断，那么qemu_irq_pulse()很可
+   能不会触发OS的任何反应。

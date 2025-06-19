@@ -25,3 +25,4 @@
    :glob:
 
    *
+   qemu/README

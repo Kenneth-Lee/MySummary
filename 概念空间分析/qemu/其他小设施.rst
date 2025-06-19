@@ -1,0 +1,172 @@
+.. Kenneth Lee 版权所有 2020-2025
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+其他小设施
+**********
+
+.. _bql:
+
+BQL：Big Qemu Lock
+==================
+
+BQL是一个简化Qemu IO调度模型的锁机制。Qemu中主流的线程包括：
+
+1. 进程的主线程，这个线程完成初始化后，剩下的时间全部用于IO调度。调度通过glib的
+   MainLoop机制完成。也就是说，所有的IO都转化为文件fd，注册成MainLoop的一个
+   Source，内部的通知也通过eventfd和signalfd这些机制注册，之后只要用poll这组fd，
+   然后一个事件一个事件串行处理就可以了。
+
+2. vcpu线程，每个vcpu一个，用于处理翻译，执行和异常处理。
+
+3. 通过-object iothread,id=my_id额外创建的io线程。
+
+其中第三个是后来加的功能，在这个功能之前，第一个线程才是iothread，这个名字在代
+码现在还有痕迹。我们这里为了区分，把第一个叫main iothread，第三个叫extra
+iothread。
+
+BQL就是一个简单的mutex，通过qemu_mutex_lock/unlock_iothread()调用。和大多数锁不
+同，那些锁是在少数关键区域才上锁的，而这个锁在大部分时候都是锁上的，只在小部分
+地方才放开，比如：
+
+1. vcpu翻译和执行的时候
+2. main iothread做polling的时候
+
+除此以外，所有时间都是有锁的。这保证了qemu那些传统的io代码，比如设备模拟，vcpu
+的中断和异常处理，都是独占的。
+
+在这个基础上，Qemu提供start/end_exclusive()，这个两个函数创建一个互斥区，等待所有
+cpu都进入BQL的lock状态，这样在这个范围内的操作就是在所有CPU间互斥的。
+
+Extra iothread是另一个独立的体系，它的原理和main iothread相近，代码都有部分共享
+，有自己独立的时钟和bottom half等所有辅助机制。但它没有BQL，互斥使用
+aio_context_acquire/release()，也是个mutex。它的存在主要是为了帮某些子系统（主
+要是块设备）挂在它上面的事件处理独立运行，如果需要发回主线程处理，就只能通过发
+消息回去main iothread中来完成了。
+
+
+RCU
+===
+
+qemu也支持类似内核的RCU机制（从liburcu移植过来的），接口是这样的：
+
+1. 用到这个机制的线程都要调用rcu_register_thread()设置相关线程变量
+
+2. 读方用rcu_read_lock/unlock()保护，或者直接放一个RCU_READ_LOCK_GUARD进行区域
+   自动保护。
+
+3. 用原子指令替换变量，释放旧数据的有两种模式：
+
+   1. 修改完替换指针，调用sychonized_rcu()等所有reader都退出访问了，再释放旧数
+      据。
+
+   2. 用call_rcu1(head, func)设定一个释放函数，等reader退出自动释放。启动head通
+      常是放在数据中的一个成员，类型是struct rcu_head。
+      call_rcu(head, func, field)和g_free_rcu(obj, field)是call_rcu1的封装。
+
+Monitor
+=======
+
+Qemu的Monitor是Qemu的控制界面，它可以占据当前的控制台，也可以通过其他tty控制台
+进行访问。Qemu的Monitor当前在概念空间上有两种：
+
+QMP
+        Qemu Message Protocol，这是通过json消息对运行中的Qemu进行控制。
+        通过Qemu参数-qmp启动。启动后可以用telnet一类的中断登录上去控制。
+
+HMP
+        Human Message Protocol，这直接就是命令行接口了，这在Qemu启动后通过热键
+        进入（默认是ctl-a c）。
+
+QMP是Qemu的核心逻辑，HMP最终都是解释为QMP的实现完成相应的功能的。比如
+hmp_info_version查qemu的版本，实际调用的是qmp_query_version()。
+
+Error
+=====
+
+Qemu的报错机制做得有点怪，这里总结一下。首先，它采用了POSIX errno类似的机制来
+处理多级调用的错误问题，比如：
+
+.. code-block:: C
+
+   // 这只是表示调用关系，不是C语法
+   a() {
+     Error *err = NULL;
+     b(&err) {
+        c(err);
+     }
+   }
+
+当a调用b的时候，有些错误可能是b本身产生的，有些可能是它调用的c产生的。a通过传
+入一个err变量来获得这个错误返回值。如果返回NULL的时候，就是没有错误，否则就是
+某种错误。
+
+报错的一层用这些函数报告错误：::
+
+        error_setg(error, ...);         // 设置错误
+        error_append_hint(error, ...);  // 补充错误提示
+
+error_setg()可以生成这个Error对象，如果输入进来是个NULL，那么它就不产生，这说
+明调用者也不关心这个错误，所以浪费时间生成它也不值得。
+
+调用方如果关心这个返回是否成功，检查err是不是NULL就可以了，如果发现不是。有两
+种可能，一种err是它自己的，它可以用这种方法传递过去：::
+
+        error_propagate(error, ...);    // 传播错误
+
+如果err是上一层传进来的，那么让它直接返回，用原来的err传播就行。
+
+这里要注意的是：a一层定义的err是Error的指针，调用b的时候是指针的指针，b在调用c
+的时候也是指针的指针，b如果要判断c有没有产生错误，要判断的是Error的指针有没有
+值在其中就行了。实际上Error不是调用者分配的，而是报错的人分配的。
+
+这个方案和errno最大的不同是errno是全局变量，而这个变量是一层层传递进去的。好处
+是你可以选择在什么范围中传播，但实际上你是可以用全局参数的：::
+
+  Error *error_abort;
+  Error *error_fatal;
+  Error *error_warn;
+
+所以如果你传进去的是这些全局变量，error_setg()和error_propagate()会自动根据类
+型报错和退出。
+
+所以，大部分时候你只看到调用者就是简单用这些全局变量发起各种请求，这最终的结果
+就是无论被调用者发生了什么错误，整个qemu都会abort()，exit()或者简单打印一个错
+误信息。
+
+事件通知
+========
+
+Qemu的事件通知用于两个线程间进行消息同步，在Linux下主要是对eventfd(2)和
+signalfd(2)的封装，在Windows下是对CreateEvent()的封装。它主要是封装这样一对接
+口：::
+
+        event_notifier_set(EventNotifier);
+        event_notifier_test_and_clear(EventNotifier);
+
+前者发起通知，后者测试通知。
+
+编译系统
+========
+
+Qemu使用\ `meson`_\ 作为基础的编译系统，但它也提供一个基础的./configure文件作为
+配置命令入口，只是这个配置命令不靠auto-tool工具生成。
+
+meson的主配置文件是根目录下的meson.build，qemu的这个基本文件定义了所有下属子目
+录用的子meson.build，在这些meson.build文件中，你只需要把你的文件加到对应的
+xxx_ss文件集中，就可以参与编译。所以每个子目录的行为还是很简单的。
+
+.. _meson: https://mesonbuild.com
+
+
+命令行参数
+==========
+
+qemu的命令行参数在主程序system/vl.c中解释，但因为参数众多，它也做成一个框架了，
+在解释前通过qemu_add_opts()或者qemu_add_drive_opts()这一类的调用注册新的参数进
+去。然后在后面用循环去独处其中的参数，再设置给对应的模块。每个参数的自参数可以
+用qemu_opt_get...()系列函数分类型读出。
+
+更通用的参数可以通过qemu-options.hx直接生成，这基本是一个生成qemu_add_opts()的
+参数表。

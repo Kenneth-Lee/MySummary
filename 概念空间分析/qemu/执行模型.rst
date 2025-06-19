@@ -1,0 +1,79 @@
+.. Kenneth Lee 版权所有 2020-2025
+
+:Authors: Kenneth Lee
+:Version: 1.0
+
+执行模型
+********
+
+整个qemu软件的执行模型用Pyhton作为伪码可以表达如下：
+
+.. code-block:: python
+
+   def run_a_guest():
+     vm = create_vm()
+     vm.create_cpu_object()
+     vm.create_device_object()
+     for cpu in cpus:
+       create_thread(cpu_thread, cpu)
+
+   def cpu_thread(cpu):
+     while true:
+       try:
+         cpu.run(vm)
+       except EIO eio:
+         find_device(eio.io_address).handle_io();
+
+Qemu是Host上的一个进程，它模拟了一个VM，这是我们理解Qemu的基础。
+
+一个VM是一组被模拟对象（Object）的组合体，Qemu的模拟过程就是模拟这些对象在时间
+的发展过程中的状态变化，以及它们之间的互相影响，从而模拟整个VM的行为。
+
+Qemu的对象主要有两种：cpu和device。qemu为每个Guest的CPU对象创建一个线程，这些线
+程就可以利用Host CPU的算力，模拟VM CPU在遇到每条指令时的行为，更新VM CPU对象的
+状态，如果遇到VM CPU做了IO一类的影响其他对象的行为，这个线程就暂时离开VM CPU的
+模拟，跳出来，寻找对应的设备（或者其他CPU），去处理这个变化了。
+
+Device当然也可以创建自己的线程，但更多时候，是它被动地被CPU的行为所控制。
+
+.. note::
+
+   这里特别提醒一句：概念空间分析要重视名称空间的“空间”概念，这里说“qemu为每个
+   cpu创建一个线程”，其中的CPU是被模拟的系统空间中的“CPU”，而不是Host中的“CPU”
+   ，而线程，是Host中的线程，而不是被模拟系统中的线程。进行概念空间分析的时候，
+   我们常常不得不跨越这些独立空间之间的交叉空间，请读者特别注意分清楚这些概念属
+   于哪个概念空间。
+
+上面代码中的cpu.run(vm)，有不同的cpu backend。比如，对于KVM backend，这本质是一
+个系统调用，用户进程进入Hypervisor，由Hypervisor决定如何实际执行相关代码，而用
+户进程自身则等待在系统调用上。而对于TCG backend，TCG程序会直接使用当前线程去翻
+译当前指令为一段本地执行代码，然后跳进翻译缓冲去执行，这个执行本身就是用户线程
+的一部分。
+
+无论是哪种过程，我们在总体上都可以看作是一种黑盒，如果它用自己的逻辑可以一直执
+行下去，就在黑盒中一直占据Host上的这个线程，直到它碰到一个无法处理的事件，它就
+可以从cpu.run(vm)退出，Qemu本身的代码可以根据退出的原因，调用其他的对象去响应这
+个原因。比如cpu.run(vm)中有人访问了io，Qemu退出来后就可以根据这个io的地址看是哪
+个device backend提供的，让对应的backend完成自己的响应动作。
+
+User模式
+========
+
+Qemu有两种运行模式：softmmu和user，前者模拟整个系统，后者模拟单个进程。前面我们
+描述的主要是softmmu模式。User模拟的行为基本上是类似的，只是它不模拟VM，而是用一
+个vCPU模拟一个线程，在每个vCPU线程中的循环变成这样：
+
+.. code-block:: python
+  
+   def run_user():
+     load_elf()
+     while true:
+       try:
+         cpu.run(vm)
+       except SysCall:
+         do_local_syscall()
+
+如果程序中发起创建新线程的系统调用，Qemu会创建新的线程去做一个新的循环。这种模
+拟模拟器里面再也不用做设备处理了，因为那些都是内核的事情，内核也不用通知Guest，
+所以只要模拟系统调用的行为就可以了，很多时候这种模拟的速度会快很多，如果要在一
+个平台上支持其他平台的进程，这是一种相当好的方式。
