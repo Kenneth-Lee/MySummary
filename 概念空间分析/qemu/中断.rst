@@ -36,11 +36,20 @@ qemu通过cpu_reset_interrupt/cpu_interrupt()把一个标记种入到CPU中，CP
    }
    qdev_init_gpio_in(plic_dev, sifive_plic_irq_request, plic->num_sources);
 
-这里给sifive的CPU设置了plic->num_sources条输入的中断线，中断线设置了一个回调函
-数，之后，你要给这个中断线发信号，你可以在你的硬件对象上创建一个gpio_out的对象，
-然后用qdev_connect_gpio_out()连这个引线。之后，你可以用后者创建的qemu_irq来发
-出通知，调到前面这个gpio_in设置的回调函数。对qemu_irq发通知的函数主要有这样一
-些：
+这里给sifive的中断控制器（PLIC）CPU创建了plic->num_sources条输入的中断线，这些
+中断线收到信号后，调用回调函数，sifive_plic_irq_request，从中决定具体激活哪个
+CPU的中断。qdev_init_gpio_in()会把这些gpio_in记录在DeviceState中，你可以通过
+qdev本身找到它们。
+
+之后，你要给这个中断线发信号，你可以在你的硬件对象上创建一个gpio_out的对象，
+然后用qdev_connect_gpio_out()连这个引线。这个逻辑是这样的：::
+
+  qemu_irq *irqs = qemu_allocate_irqs(..., n);  // 创建n个irq
+  qdev_connect_gpio_out(plic_dev, x, irqs[y]);     // 把创建的第y个qemu_irqx连到plic_dev的第x条中断线上
+
+之后，你可以用对应的qemu_irq来通知到CPU上了。
+
+对qemu_irq发通知的函数主要有这样一些：
 
 .. code-block:: C
 
@@ -61,3 +70,7 @@ qemu_set_irq()调用。
    一点调试经验：qemu_irq_pulse()本质就是先raise在lower，但不要以为你拉起来过
    就一定会产生中断，如果你在OS这一侧认为是电平中断，那么qemu_irq_pulse()很可
    能不会触发OS的任何反应。
+
+如果用的是平台设备，大部分平台的适配代码已经在qdev上已经把平台总线适配上了，所
+以你只要在平台设备中用sysbus_init_irq(state, irq_no)注册中断号就可以了。具体中
+断号是多少，则需要找到这个平台的Machine代码来看。

@@ -179,7 +179,7 @@ Device子系统会全局查找这个名字的Bus，用第一个实例或者创�
 回到前面的例子，在OBJECT_DECLARE_SIMPLE_TYPE()是一个系列的宏，用来实现一组辅助
 函数或者宏，实现类型的各种转换。这包括：
 
-* 所有struct MyDeviceState的类型或者实例的定义，都定义称没有struct的形式
+* 所有struct MyDeviceState的类型或者实例的定义，都定义成没有struct的形式
 
 * 定义MYDEVICE(instance) 为任意继承树上的对象转换为MyDeviceClass，按我们前面对
   内存结构的理解，其实这个就是个强制类型转换，因为大家的指针都是一样的。
