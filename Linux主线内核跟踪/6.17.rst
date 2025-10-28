@@ -1,0 +1,87 @@
+.. Kenneth Lee 版权所有 2025
+
+:Authors: Kenneth Lee
+:Version: 0.1
+:Date: 2024-10-28
+:Status: Draft
+
+.. list-table::
+
+   * - 发布时间
+     - 2025-9-28
+
+6.17
+****
+
+我关注到的修改
+==============
+
+* 漏洞修补配置调整：之前的侧信道攻击其实一直都没有特别好的办法彻底解决，每个缓
+  解手段基本上都是增加攻击成本，缩小攻击窗口，而且每个都带来很大的性能下降。所
+  以基本上是一个个独立的修改手段和配置。这么搞用户也不大能接受，毕竟不是每个人
+  都是安全专家。所以现在统一了一下这些配置手段，用内核命令行参数mitigation=进
+  行配置，可以选择no_user_kernel/no_user_user/no_guest_guest/no_cross_thread，
+  选择以后，对应的攻击防御手段就放弃了，可以提升性能，但首先你得不在意那个攻击。
+
+* 增加了两个系统调用file_getattr/setattr()，可以用于get/set针对文件系统的扩展
+  文件属性，原型如下：::
+
+    SYSCALL_DEFINE5(file_getattr, int, dfd, const char __user *,
+        filename, struct file_attr __user *, ufattr, size_t, usize,
+        unsigned int, at_flags)
+    SYSCALL_DEFINE5(file_setattr, int, dfd, const char __user *, filename,
+        struct file_attr __user *, ufattr, size_t, usize,
+        unsigned int, at_flags)
+  
+  输入直接就是filename，不需要open文件就可以用。相当于
+  ioctl(FS_IOC_FSGETXATTR/FS_IOC_FSSETXATTR)。
+
+* 修复一个Core-dump漏洞，这个漏洞的攻击方法是这样的：先触发一个进程coredump，
+  然后理解创建一个sid的进程，让这个进程占据原来的pid，这会导致coredump的分析
+  hook主动去读新的进程的内容，导致新进程的内容被读出来，而这个进程有sid权限，
+  里面可能都包含了敏感的信息。我觉得这种复杂的组合漏洞，就留给具体的操作者玩吧，
+  我们得个知字。（lwn评论区有人说这个问题的根本不是coredump，而是为什么怎么容
+  易构造pid复用的进程，为什么不是把pid升级到64位，让攻击者根本复用不了原来的
+  pid？）
+
+* CONFIG_SCHED_PROXY_EXEC：一个优先级反转修复方案。我还以为优先级反转这种问题
+  是Linux这么成熟的解决方案中的默认特性呢，原来一直都是没有的，这个版本合入了
+  一个叫Single RunQueue Proxy Execution的特性补丁解决这个问题。策略也是标准的：
+  把被高优先级等待的线程提优先级。我没有看具体实现，但修改不但修改了rt.c，还修
+  改了fare.c，core.c，deadline.c等多个调度器。
+
+  修改者来自Google。
+
+* 这个不算什么改动，只是有点意思：这个版本开始没有CONFIG_SMP这个配置了，因为只
+  有SMP了，单CPU就是CPU的数量等于1的SMP。这也算是给老头子对于时代变迁的感叹提
+  供一个话题了。我还记得十几年前我们煞有介事地讨论到底多CPU是未来还是多核是未
+  来，还吵了一年都停不下来，都不知道吵个啥。
+
+* Per-NUMA也回收接口，类似这样：::
+
+    echo 512M swappiness=10 > /sys/devices/system/node/nodeX/reclaim
+
+* 引入Runtime Verification框架，接口提供在/sys/kernel/tracing/rv/上，功能类似
+  ftrace。也是先看available_monitors看有些什么跟踪器，然后把跟踪器写到
+  enabled_monitors中使能。
+
+  它可以做类似LTL（Linear Temporal Logic，线性时态逻辑）这样的验证手段。这个
+  LTL是一种形式验证方法。可以通过定义状态机预测在时间线上状态的可能变化，预测
+  系统的运行是否超出预期。这个内核实现只是对特定的算法（比如实时应用在所有执行
+  路径上是否可以产生pagefault）引入了这个统计并输出可能的时延。
+
+  我觉得这个实现更多是学术上的，我关注它主要是最近在做一个内存序的形式化验证，
+  我发现这种验证方法的可用范围非常有限，因为验证成本非常高（甚至高到很多场景根
+  本不能验证）。但这个特性提醒了我，其实这样验证不一定要用在事前，完全可以放在
+  运行系统上，这样至少我们通过一些低成本的统计，在运行中可以尝试发现我们一般测
+  试发现不了的问题。
+
+* rust目录下现在还是在建基础设施，没有看见有什么驱动或者功能是用这个东西写的。
+
+相关特性的深入分析
+==================
+
+.. toctree::
+   :caption: Contents:
+
+   delay_accounting
