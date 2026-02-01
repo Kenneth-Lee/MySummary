@@ -18,10 +18,10 @@ class cnote_directive(SphinxDirective):
 
     def run(self):
         node = nodes.admonition()
-        if 'caption' in self.options.keys():
+        if 'caption' in self.options:
             node += nodes.title(text=self.options['caption'])
         else:
-            node += nodes.title(text=u'说明')
+            node += nodes.title(text='说明')
 
         self.state.nested_parse(self.content, self.content_offset, node)
 

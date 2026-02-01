@@ -18,7 +18,7 @@ from docutils.parsers.rst import directives
 
 class Tags(nodes.Element):
     def __init__(self, content):
-        super().__init__(self)
+        super().__init__()
         raw_tags = content.split(',')
         self.tags = [x.strip() for x in raw_tags]
 
@@ -36,11 +36,13 @@ def process_dtags(app, doctree):
     if not hasattr(env, 'dtag_db'):
         env.dtag_db = {} #字典：{tag: 文档列表}
 
-    for node in doctree.traverse(DtagNode):
+    # 先收集所有节点，再删除（避免在遍历中修改树）
+    dtag_nodes = list(doctree.traverse(DtagNode))
+    for node in dtag_nodes:
         node.docname = env.docname
         for tag in node.tags:
-            if tag in env.dtag_db.keys():
-                if not (node.docname in env.dtag_db[tag]):
+            if tag in env.dtag_db:
+                if node.docname not in env.dtag_db[tag]:
                     env.dtag_db[tag].append(node.docname)
             else:
                 env.dtag_db[tag] = [node.docname]
@@ -61,13 +63,13 @@ def process_dtags_list(app, doctree, fromdocname):
     env = app.builder.env
     if not hasattr(env, 'dtag_db'):
         env.dtag_db = {}
-    
+
     for node in doctree.traverse(DtagListNode):
-        if len(node.tags)>0 and node.tags[0] == '@all':
+        if len(node.tags) > 0 and node.tags[0] == '@all':
             para = nodes.paragraph('', '')
             para['columns'] = 3
-            for tag in env.dtag_db.keys():
-                para += nodes.strong(tag, tag);
+            for tag in env.dtag_db:
+                para += nodes.strong(tag, tag)
                 entries = []
                 _create_dtag_entries(tag, env.dtag_db, entries, app.builder, fromdocname)
                 contents = nodes.bullet_list('', *entries)
@@ -76,16 +78,16 @@ def process_dtags_list(app, doctree, fromdocname):
         else:
             entries = []
             for tag in node.tags:
-                if tag in env.dtag_db.keys():
+                if tag in env.dtag_db:
                     _create_dtag_entries(tag, env.dtag_db, entries, app.builder, fromdocname)
             contents = nodes.bullet_list('', *entries)
             node.replace_self(contents)
 
-def dtag_role(typ, rawtext, etext, lineno, inliner, options={}, content=[]):
+def dtag_role(typ, rawtext, etext, lineno, inliner, options=None, content=None):
     node = DtagNode(etext, inliner.document)
     return [node], []
 
-def dtaglist_role(typ, rawtext, etext, lineno, inliner, options={}, content=[]):
+def dtaglist_role(typ, rawtext, etext, lineno, inliner, options=None, content=None):
     node = DtagListNode(etext)
     return [node], []
 
@@ -100,7 +102,7 @@ def setup(app):
     app.connect('doctree-resolved', process_dtags_list)
 
     return {
-        'version': '0.2',
-        'parallel_read_safe': True,
+        'version': '0.3',
+        'parallel_read_safe': False,
         'parallel_write_safe': True,
     }
