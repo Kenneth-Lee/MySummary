@@ -85,7 +85,7 @@ b，我选错的可能性就是2/3了。
 的：
 
         | 硬件团队预计在YYYY V2设备上实现了一个可以收集、统计、
-        | 调整PCIe桥和RC/RP的的设备，称为PCIeTuner，
+        | 调整PCIe桥和RC/RP的设备，称为PCIeTuner，
         | 本文讨论把该设备暴露为用户可见的功能的软件方案。
         |
         | PCIeTuner和PCIe总线Topo的关系如下：

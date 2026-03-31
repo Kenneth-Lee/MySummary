@@ -89,7 +89,7 @@ Sail把这种能力再推进了一步，它支持类型变体：Type Variable。
 
         type bits ('n : Int) = bitvector('n, dec)
 
-这里定义了类型bits，它有一个Int的超参'n，当'n固定下来的的时候，bits就是一个固定
+这里定义了类型bits，它有一个Int的超参'n，当'n固定下来的时候，bits就是一个固定
 长度的位向量
 
         | dec是bitvector的一个类型参数，用于表示高位的方向的，
@@ -155,7 +155,7 @@ Sail把这种能力再推进了一步，它支持类型变体：Type Variable。
         val test: int -> int
         function test a = a
 
-第一句是签名，说明test是一个把int转化为int的的函数，第二句是实现，表示调用
+第一句是签名，说明test是一个把int转化为int的函数，第二句是实现，表示调用
 test(a)，就返回a。由于前面签名已经规定了a是int，所以这里的a就可以被匹配为int，
 
 两者也可以写在一起：::
