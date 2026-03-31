@@ -348,5 +348,5 @@ qdev_create()创建，也可能会是在处理命令行参数device的时候用q
 
 整个QOM就管理两种对象：Device和Bus。两者通过props进行互相关联。这种关联有两种类
 型：composition和link，分别用object_property_add_child/link()建立。最后用qemu
-console中使用Info qom-tree命令看到的树状结构就是这个属性建立的关联。
+console中使用info qom-tree命令看到的树状结构就是这个属性建立的关联。
 

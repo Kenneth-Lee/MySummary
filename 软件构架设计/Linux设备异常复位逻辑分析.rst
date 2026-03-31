@@ -36,9 +36,9 @@ driver在probe阶段为device分配的资源通过remove释放，这个调用是
 话说，系统可以无条件要求你释放资源，你一定要响应。所以，我们应该可以比较安全地
 建立一个初步的认识：如果一个硬件被强行从socket上拔走了，总线可以强行删除这个设
 备，而设备和用户态建立的关联（比如打开了一个设备），必须可以在remove后保持状态
-自恰。
+自洽。
 
-我们再解释一下“remove后保持状态自恰”的含义：unregister_device()包含两个动作，一
+我们再解释一下“remove后保持状态自洽”的含义：unregister_device()包含两个动作，一
 个是device_del()，负责删除device相关的所有资源和资源关联——除了device这个数据结
 构本身。另一个是device_put()，这个负责把device这个数据结构本身的引用计数减1。所
 以，如果你靠open建立了一个fd和这个device关联，在里面必须保证你get了这个device，

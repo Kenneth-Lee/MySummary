@@ -100,7 +100,7 @@ vq的报文描述符称为Descriptor，在本文中我们简称bd（Buffer Descr
 
 前面描述的概念是virtio 1.0和之前支持的格式，称为split vq。1.1以后增加了一种
 packed vq，其原理是把Available和Used队列合并，Buffer下去一个处理一个，不需要不
-同步的Used队列来响应。除了这一点，概念空间完全是自恰的。
+同步的Used队列来响应。除了这一点，概念空间完全是自洽的。
 
 Host侧的实现
 ============

@@ -267,7 +267,7 @@ link可以建立复杂的关联关系，QOM还支持另一种关系，称为Comp
 object_property_add_child/link()建立。比如你在创建machine的时候，可以在machine
 中创建一个bus，然后把它作为machine的child连到machine上，之后你还可以创建bus上
 的设备，作为bus的child，连到bus上，你还可以创建一个iommu，作为一个link连到这个
-bus的每个设备上。这种关联接口，可以在qemu console中用Info qom-tree命令查看（但
+bus的每个设备上。这种关联接口，可以在qemu console中用info qom-tree命令查看（但
 只有child没有link）。
 
 child和link关联的进一步解释
