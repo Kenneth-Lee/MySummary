@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="61.230625mm"
+   height="38.720413mm"
+   viewBox="0 0 61.230625 38.720413"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="神经网络原理.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.7500124"
+     inkscape:cx="228.2841"
+     inkscape:cy="25.714103"
+     inkscape:window-width="1440"
+     inkscape:window-height="831"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1L"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-3"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-6"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-2"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-3-9"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-6-1"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-0"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-2"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-0-7"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-2-5"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-0-7-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-2-5-2"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-9"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-7"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-9-1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-7-2"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-7"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-8"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-7-5"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-8-0"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-7-5-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-8-0-1"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-1-7-5-6-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-8-8-0-1-3"
+         transform="scale(-0.5)" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-67.357727,-56.471954)">
+    <text
+       xml:space="preserve"
+       style="font-size:3.37548px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="70.579102"
+       y="62.24213"
+       id="text344-6-5"
+       transform="scale(0.99321321,1.0068332)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3"
+         style="font-size:3.37548px;stroke-width:0.264583"
+         x="70.579102"
+         y="62.24213">武力</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L)"
+       d="m 69.978621,64.585767 h 15.22159"
+       id="path418" />
+    <path
+       style="fill:none;stroke:#808000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1)"
+       d="m 91.13313,64.589944 11.47255,7.66531"
+       id="path418-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-7)"
+       d="M 90.784857,65.668945 103.44888,80.787634"
+       id="path418-7-4"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-7-5)"
+       d="m 90.961684,74.115112 12.223426,7.973034"
+       id="path418-7-4-3"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-7-5-6)"
+       d="M 91.250154,82.85984 103.10526,83.3435"
+       id="path418-7-4-3-0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#ff00ff;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-7-5-6-6)"
+       d="M 91.774559,91.35217 103.67878,84.432615"
+       id="path418-7-4-3-0-2"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#808000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-0)"
+       d="M 91.109508,73.639198 102.31834,74.07603"
+       id="path418-7-3"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#808000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-0-7)"
+       d="M 91.185981,82.081717 102.75615,75.857173"
+       id="path418-7-3-9"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#808000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-1-0-7-2)"
+       d="M 91.424548,91.058138 103.79472,76.843573"
+       id="path418-7-3-9-8"
+       sodipodi:nodetypes="cc" />
+    <ellipse
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.164999;stroke-miterlimit:3.9;stroke-dasharray:none;stop-color:#000000"
+       id="path1235"
+       cx="88.940056"
+       cy="64.392708"
+       rx="1.9817175"
+       ry="1.8432184" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.37548px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="70.638535"
+       y="71.243805"
+       id="text344-6-5-7"
+       transform="scale(0.99321321,1.0068332)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-5"
+         style="font-size:3.37548px;stroke-width:0.264583"
+         x="70.638535"
+         y="71.243805">智力</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-3)"
+       d="m 70.037633,73.648949 h 15.22159"
+       id="path418-3" />
+    <ellipse
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.164999;stroke-miterlimit:3.9;stroke-dasharray:none;stop-color:#000000"
+       id="path1235-5"
+       cx="88.999069"
+       cy="73.455887"
+       rx="1.9817175"
+       ry="1.8432184" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.37548px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="70.689545"
+       y="79.831772"
+       id="text344-6-5-2"
+       transform="scale(0.99321321,1.0068332)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-7"
+         style="font-size:3.37548px;stroke-width:0.264583"
+         x="70.689545"
+         y="79.831772">敏捷</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-6)"
+       d="m 70.088311,82.295621 h 15.22159"
+       id="path418-0" />
+    <ellipse
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.164999;stroke-miterlimit:3.9;stroke-dasharray:none;stop-color:#000000"
+       id="path1235-9"
+       cx="89.049744"
+       cy="82.10257"
+       rx="1.9817175"
+       ry="1.8432184" />
+    <ellipse
+       style="opacity:0.53743;fill:#808000;stroke:#0000ff;stroke-width:0.164999;stroke-miterlimit:3.9;stroke-dasharray:none;stop-color:#000000"
+       id="path1235-5-2"
+       cx="105.74086"
+       cy="73.963181"
+       rx="1.9817175"
+       ry="1.8432184" />
+    <ellipse
+       style="opacity:0.53743;fill:#ff00ff;stroke:#0000ff;stroke-width:0.164999;stroke-miterlimit:3.9;stroke-dasharray:none;stop-color:#000000"
+       id="path1235-9-6"
+       cx="105.79153"
+       cy="82.609871"
+       rx="1.9817175"
+       ry="1.8432184" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.37548px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="70.74897"
+       y="88.833458"
+       id="text344-6-5-7-3"
+       transform="scale(0.99321321,1.0068332)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-5-6"
+         style="font-size:3.37548px;stroke-width:0.264583"
+         x="70.74897"
+         y="88.833458">防御</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-3-9)"
+       d="m 70.147322,91.358802 h 15.22159"
+       id="path418-3-0" />
+    <ellipse
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.164999;stroke-miterlimit:3.9;stroke-dasharray:none;stop-color:#000000"
+       id="path1235-5-6"
+       cx="89.108765"
+       cy="91.165733"
+       rx="1.9817175"
+       ry="1.8432184" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-9)"
+       d="m 107.5347,73.794538 h 15.22158"
+       id="path418-36" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.164999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1L-9-1)"
+       d="m 107.85182,82.590821 h 15.22159"
+       id="path418-36-9" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.37548px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="111.41153"
+       y="71.487984"
+       id="text344-6-5-3"
+       transform="scale(0.99321321,1.0068332)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-1"
+         style="font-size:3.37548px;stroke-width:0.264583"
+         x="111.41153"
+         y="71.487984">招聘费用</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.37548px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="112.00793"
+       y="80.427734"
+       id="text344-6-5-3-9"
+       transform="scale(0.99321321,1.0068332)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-1-4"
+         style="font-size:3.37548px;stroke-width:0.264583"
+         x="112.00793"
+         y="80.427734">战场生存力</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.03995px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="95.305412"
+       y="68.140656"
+       id="text344-6-5-3-0"
+       transform="scale(0.99484593,1.0051808)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-1-6"
+         style="font-size:2.03995px;stroke-width:0.264583"
+         x="95.305412"
+         y="68.140656">40%</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.03995px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="92.37574"
+       y="73.979561"
+       id="text344-6-5-3-0-1"
+       transform="scale(0.99484593,1.0051808)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-1-6-5"
+         style="font-size:2.03995px;stroke-width:0.264583"
+         x="92.37574"
+         y="73.979561">30%</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.03995px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="93.026031"
+       y="80.615555"
+       id="text344-6-5-3-0-1-5"
+       transform="scale(0.99484593,1.0051808)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-1-6-5-4"
+         style="font-size:2.03995px;stroke-width:0.264583"
+         x="93.026031"
+         y="80.615555">25%</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.03995px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="94.253815"
+       y="86.728172"
+       id="text344-6-5-3-0-1-5-7"
+       transform="scale(0.99484593,1.0051808)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-1-6-5-4-6"
+         style="font-size:2.03995px;stroke-width:0.264583"
+         x="94.253815"
+         y="86.728172">5%</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="125.06554mm"
+   height="63.02356mm"
+   viewBox="0 0 125.06554 63.023559"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="线性变换.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.7500124"
+     inkscape:cx="281.998"
+     inkscape:cy="127.99909"
+     inkscape:window-width="1440"
+     inkscape:window-height="831"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1L"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-36"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-75"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-5"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-6"
+         transform="scale(-0.5)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1L-36-2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1L"
+       markerWidth="8.75"
+       markerHeight="5"
+       viewBox="0 0 8.75 5"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="arrow1L-75-9"
+         transform="scale(-0.5)" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-56.814028,-45.09199)">
+    <g
+       id="g1673">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L)"
+         d="M 62.247904,77.748128 H 100.08715"
+         id="path672" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-36)"
+         d="M 81.661592,96.382942 V 58.543701"
+         id="path672-3" />
+      <rect
+         style="opacity:0.53743;fill:#808000;stroke:#ff00ff;stroke-width:0.365001;stroke-miterlimit:3.9;stop-color:#000000"
+         id="rect1595"
+         width="6.0139389"
+         height="6.3075161"
+         x="86.725861"
+         y="66.434769" />
+      <ellipse
+         style="opacity:0.53743;fill:#808000;stroke:#ff00ff;stroke-width:0.365001;stroke-miterlimit:3.9;stop-color:#000000"
+         id="path1665"
+         cx="82.20507"
+         cy="79.757019"
+         rx="6.3348694"
+         ry="6.5044169" />
+    </g>
+    <g
+       id="g1673-1"
+       transform="matrix(0.89470995,0.57768783,-0.01128322,0.40690633,80.501934,-2.7151947)"
+       style="stroke-width:1.6427">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.43463px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-5)"
+         d="M 62.247904,77.748128 H 100.08715"
+         id="path672-2" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.43463px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1L-36-2)"
+         d="M 81.661592,96.382942 V 58.543701"
+         id="path672-3-7" />
+      <rect
+         style="opacity:0.53743;fill:#808000;stroke:#ff00ff;stroke-width:0.599587;stroke-miterlimit:3.9;stop-color:#000000"
+         id="rect1595-0"
+         width="6.0139389"
+         height="6.3075161"
+         x="86.725861"
+         y="66.434769" />
+      <ellipse
+         style="opacity:0.53743;fill:#808000;stroke:#ff00ff;stroke-width:0.599587;stroke-miterlimit:3.9;stop-color:#000000"
+         id="path1665-9"
+         cx="82.20507"
+         cy="79.757019"
+         rx="6.3348694"
+         ry="6.5044169" />
+    </g>
+    <path
+       id="rect1840"
+       style="opacity:0.53743;fill:#000000;stroke:#000000;stroke-width:0.365001;stroke-miterlimit:3.9;stop-color:#000000"
+       d="m 117.7686,72.399147 v 2.183329 h -4.08554 v 4.518588 h 4.08554 v 2.183329 l 3.84731,-2.22157 3.84731,-2.221053 -3.84731,-2.221053 z" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="110.05514"
+       y="68.545242"
+       id="text2029"><tspan
+         sodipodi:role="line"
+         id="tspan2027"
+         style="stroke-width:0.264583"
+         x="110.05514"
+         y="68.545242">线性变换</tspan></text>
+  </g>
+</svg>

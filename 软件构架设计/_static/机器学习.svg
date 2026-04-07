@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="61.230625mm"
+   height="38.720413mm"
+   viewBox="0 0 61.230625 38.720413"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="机器学习.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.881243"
+     inkscape:cx="116.07106"
+     inkscape:cy="73.172435"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-67.357727,-56.471954)">
+    <rect
+       style="opacity:0.53743;fill:#e0e000;stroke:#0000ff;stroke-width:0.264999;stroke-miterlimit:3.9;stop-color:#000000"
+       id="rect234"
+       width="21.59687"
+       height="17.343019"
+       x="87.6745"
+       y="61.83725" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.82222px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="96.270836"
+       y="65.890358"
+       id="text344"><tspan
+         sodipodi:role="line"
+         id="tspan342"
+         style="font-size:2.82222px;stroke-width:0.264583"
+         x="96.270836"
+         y="65.890358">机器|大脑</tspan></text>
+    <rect
+       style="opacity:0.53743;fill:#ff00ff;stroke:#0000ff;stroke-width:0.264999;stroke-miterlimit:3.9;stop-color:#000000"
+       id="rect234-3"
+       width="9.8451204"
+       height="7.9515266"
+       x="97.125526"
+       y="70.520927" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.13017px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="103.39914"
+       y="73.067574"
+       id="text344-6"
+       transform="scale(0.98783353,1.0123163)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7"
+         style="font-size:2.13017px;stroke-width:0.264583"
+         x="103.39914"
+         y="73.067574">参数</tspan></text>
+    <path
+       id="rect562"
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.264999;stroke-miterlimit:3.9;stop-color:#000000"
+       d="m 80.332002,66.013966 v 2.668571 H 74.37836 v 5.215186 h 5.953642 v 2.254642 l 4.39043,-2.534729 4.389913,-2.534212 -4.389913,-2.534729 z" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.13017px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="77.253517"
+       y="62.892731"
+       id="text344-6-5"
+       transform="scale(0.98783354,1.0123163)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3"
+         style="font-size:2.13017px;stroke-width:0.264583"
+         x="77.253517"
+         y="62.892731">输入</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.13017px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="118.79362"
+       y="62.368202"
+       id="text344-6-5-6"
+       transform="scale(0.98783354,1.0123163)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-2"
+         style="font-size:2.13017px;stroke-width:0.264583"
+         x="118.79362"
+         y="62.368202">决策</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.13017px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="106.32533"
+       y="90.972519"
+       id="text344-6-5-6-2"
+       transform="scale(0.98783354,1.0123163)"><tspan
+         sodipodi:role="line"
+         id="tspan342-7-3-2-7"
+         style="font-size:2.13017px;stroke-width:0.264583"
+         x="106.32533"
+         y="90.972519">反馈（经验）</tspan></text>
+    <path
+       id="rect562-5"
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.264999;stroke-miterlimit:3.9;stop-color:#000000"
+       d="m 114.37633,65.313988 v 2.668571 h -5.95364 v 5.215186 h 5.95364 v 2.254642 l 4.39044,-2.534729 4.38991,-2.534212 -4.38991,-2.534729 z" />
+    <path
+       id="rect562-5-9"
+       style="opacity:0.53743;fill:#00ff00;stroke:#0000ff;stroke-width:0.264999;stroke-miterlimit:3.9;stop-color:#000000"
+       d="m 115.98,69.77972 v 15.080217 l -12.78762,-0.100806 v -3.587895 h 1.32705 l -1.4919,-2.884062 -1.4919,-2.884062 -1.4919,2.884062 -1.491898,2.884062 h 1.570448 v 3.911389 h 0.0465 v 2.831352 L 115.98,88.014783 v 0.03101 h 3.15485 V 69.77972 Z"
+       sodipodi:nodetypes="cccccccccccccccccc" />
+  </g>
+</svg>
