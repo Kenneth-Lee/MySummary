@@ -39,13 +39,10 @@ def _tran_chinese_text(text):
 
 class ParaVisitor(GenericNodeVisitor):
     def default_visit(self, node):
-        pass
-
-    def default_departure(self, node):
-        pass
-
-    def visit_TextElement(self, node):
-        if not isinstance(node, literal_block):
+        if isinstance(node, TextElement) and not isinstance(node, literal_block):
             for i in range(len(node.children)):
                 if isinstance(node[i], Text):
                     node[i] = Text(_tran_chinese_text(node[i]))
+
+    def default_departure(self, node):
+        pass
