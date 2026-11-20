@@ -1707,3 +1707,127 @@ Android Kotlin业务架构问题
 上项目是一个连续的决断过程，每次决断，都是不那么完整的推理，需要人对推理的置信
 度有清楚的认识，而你决断以后，后面的推理就会基于这个决断来，就再也回不去了。AI
 现在恰恰就缺乏这种在每个状态上的决断力。
+
+多看一步
+========
+
+这是前一个案例同一个项目，我收集这个案例主要是想记录一个AI想问题只顾眼前这个问
+题的行为。
+
+在前述项目实现到第三阶段，pi@glm做了一个把benchmark功能从cli独立出来的设计，它
+的原始设计是这样的：::
+
+  **决策修正**：Phase 1 起把 bench 做成 `rackdict-cli --bench` 内嵌模式
+  是演化残留（当时只有 PING 循环），Phase 3 曾将其强化为两层框架但
+  仍留在 cli 里——与 Redis 的形态偏离。Rackdict 的目标是（在 UB 等
+  场合）替代 Redis，**降低 Redis 用户学习成本是核心方向**，工具面
+  同构因此是硬需求：bench 独立二进制、参数族与行为对齐
+  redis-benchmark，cli 回归纯客户端角色（同构 redis-cli：单命令/
+  交互式，无 bench 模式，内嵌实现整体移除、不保留两套）。
+
+  **形态**：新 crate `rackdict-benchmark`（独立二进制）。参照系有两层：
+  redis-benchmark（TCP 原版的功能面）与 redis-benchmark-gqm（gqm 适配
+  层的参数形态，src/redis-benchmark-gqm.c:36-38 默认值）。
+
+  **参数族**（名字与默认值对齐；gqm 以 `-s/-S` 替代 `-h/-p`）：
+
+  ```text
+  -s, --shm-path PATH     共享内存地址（gqm 适配，替代 -h/-p）
+  -S, --shm-size SIZE     共享内存大小（默认 16 MiB，对齐 gqm 版默认）
+  -c, --clients NUM       并发 client 数（默认 50，redis-benchmark-gqm.c:36）
+  -n, --requests NUM      总请求数（默认 100000，:37）
+  -t, --threads NUM       压测线程数（默认 4，:38）
+  -d, --data-size SIZE    SET 值字节数（默认 3，对齐 redis-benchmark -d）
+  -r, --keyspace LEN      随机 key 空间大小（key:<rand % LEN>；对齐
+                           redis-benchmark -r randomkeys_keyspacelen，
+                           redis-benchmark.c:1436-1446。注意 gqm 版的
+                           __rand_int__ 占位符无替换逻辑（原样发送即
+                           固定 key），是该工具的未完成项，不复制）
+  -T, --tests TESTS       测试集（默认全部；可用：PING,SET,GET,INCR,DEL，
+                           后续命令落地时逐个补）
+  -q, --quiet / --csv     输出模式（对齐 redis-benchmark 习惯）
+  ```
+
+  **在途并发与 pipeline 的概念辨析**（为什么没有 `-P`）：socket 的
+  pipeline 是"一个连接内连续写 P 条命令不读应答"——本质是连接内的
+  在途并发，总在途 = `-c` × `-P`。gqm 没有连接，原生等价物是 **caller
+  级在途并发**：M 个 caller 各自一发一收、发送端不等上一个应答就轮到
+  下一个 caller 发出（redis-benchmark-gqm 主循环即此形态：对每个
+  `!request_pending` 的 caller 发送后立即轮下一个）。uu RPC 的 caller
+  单块语义决定**总在途 = caller 数**，因此 socket 的 c×P 在途总量在
+  gqm 下直接映射为 `-c`，`-P` 没有存在的必要。
+
+  redis-benchmark-gqm 仍保留了 `-P`，但其实现是**请求内命令打包**：
+  gqm_encode_request 把同一条命令重复 P 次编码进一个请求的 payload
+  （gqm_client_request_payload.cmd_count，gqm_codec.c），一次 RPC 完成
+  ——这是 batching（均摊每 RPC 固定开销），不是 pipeline 的语义对应
+  物；当时把"client 数承载的并发"与"这个请求内打包"混在同一个
+  pipeline 名字下，是概念纠缠的来源。Rackdict 的 proto 一个请求即一组
+  argv，不存在请求内多命令；要支持打包需改协议语义，而其收益已被
+  caller 并发覆盖，故不设 `-P`，`-c` 承载全部在途语义。老 redis 用户
+  的 `-c N -P M` 习惯映射为 `-c N×M`。
+  ...
+
+我懒得截取完整的内容了，经典“头头是道其实抓住不重点”。对比一下我的版本就能看出
+来：
+
+  | redis-gqm项目上有两个benchmark，一个是原生的redis-benchmark，另一个基于gqm扩展
+  | 的redis-benchmark-gqm。理论上我们应该复制后者的设计思路，但后者是对前者的简单
+  | 适配，很多概念没有理清，我们这里必须重新建模一下它的概念空间。
+  | 
+  | redis的客户端主要针对同步调用，但同步对极限的带宽benchmark的结果，因为前一个请
+  | 求没有返回，后一个请求不能发出，会在中间形成一个带宽空隙。redis-benchmark为了
+  | 体现极限的性能能力，使用了一个socket通讯专有的pipeline能力，不等待服务器响应，
+  | 在请求通道上异步持续多个请求，然后持续在响应通道上接收响应，从而在多个请求对之
+  | 间形成流水线，提高带宽的测试结果。
+  | 
+  | 为此，redis-benchmark有一个-P参数（令为P），指定流水线窗口的长度。这个参数针对
+  | 每个客户端，同（对应一对首发socket，用-c参数指定，令为C），所以，实际的在途请
+  | 求，可以有P\*C 个。这才是这个通讯真正的流水线数量。
+  | 
+  | 但GQM每个客户端都是同步的，要形成这样的流水线效果，我们只能增加客户端的数量。
+  | redis-benchmark增加C可以增加socket通道，然后用P去提高C的流水线。GQM对这两者是
+  | 一体管理的，最终都是一体管理的。如果非要分出区别，我们可以以P作为分组，控制完
+  | 成一组再允许下一组，但这对测试并没有意义。
+  | 
+  | redis-benchmark-gqm只是对redis-benchmark的简单改造，原来的参数几乎都没有调整，
+  | 只是改变了用法。在rackdict-benchmark这里，我们决定删除P参数，只允许C参数。增加
+  | C就能增加流水线效果。这些C都复用同一个Node，以便构成流水线调度。
+  | 
+  | 这个决策不影响线程数量，因为redis-benchmark的概念中，线程是一个独立实例，每个
+  | 实例各自的C个客户端的。
+
+这是它的响应：::
+
+  同意这个修改，而且认为它确实抓住了我上一版没抓住的重点。先说我的理解，再回应 TODO 方向：
+ 
+  你的版本抓住的三个重点：
+ 
+  1. 以概念重新建模为纲：我的版本重心放在参数族罗列上，概念辨析只是补丁；你的
+       版本把推理链放在最前面——同步调用的带宽空隙 → socket pipeline 补空隙 →
+       P×C 才是真实流水线数量 → GQM 一体管理 → 删 P 留 C。“如果非要分出区别，
+       可以以 P 作为分组……但对测试没有意义”这句把最后的伪需求也封掉了。
+ 
+  2. “C 都复用同一个 Node，以便构成流水线调度”——这是我完全漏掉的关键技术决策。
+       我原来写的“每线程持 N 个 StandaloneCaller 各自循环”是 50 个独立poll 的
+       形态；而 gqm 的正确形态是一个 caller-only Node 统一调度 C 个 caller（正
+       是 redis-gqm 那边 gqm_benchmark_caller_pool_design.md 批评现状、想要而
+       未完成的形态——redis-benchmark-gqm 现在每个 client 建独立 Node）。
+ 
+  3. 线程是独立实例、每实例各自的 C 个客户端：线程与 caller 池的关系理清了。
+
+纠正以后，它认识得挺好的。如果你能看懂我的设计，其实我认为是因为我给它提前抓了
+重点导致的。我的重点很简单：原来是简单实现了一个临时的bench，不长远，所以我们
+访redis-benchmark实现一个新的，那么剩下的问题就是redis-benchmark有什么功能，在
+我们的场景中如何实现的问题了。和我们那个临时的bench实现得如何，几乎没有关系。
+所以它前面摆了那么多理由，其实全部都是无效的，多余的，没事找事的。这一点，你思
+考的时候不去对应”因果“是否可以成立，只看表面形态，根本就看不出来。
+
+然后探讨流水线那个功能，它堆砌的几个理由都似是而非……但你要我解释……我已经写出来
+了。这只能读者您自己对比了。如果你明白什么是流水线，我觉得我的建模很硬吧？而它
+承认它会犯的那个StandalongCaller的设计错误，是实打实对架构的破坏了：本来底层就
+设计为对多个客户端进行调度。它把这些客户端分配到每个分配到一个调度器中独立调度，
+这在初期跑起来，你甚至看不出会有问题，但如果规模上去，你就等着全部重写吧。
+
+像这种类型的错误，有人认为找多找几个不同的LLM来看就能解决，这我是不信的。这里
+的关键就在于：这不是一个封闭的逻辑空间，这个穷举的可能性是无限的。
